@@ -1,0 +1,11 @@
+version: "3.4"
+services:
+  web-pdf-toolbox:
+    container_name: pdf
+    image: zpex/web-pdf-toolbox
+    environment:
+      - TZ=Asia/Kolkata
+    ports:
+      - 25568:80
+    volumes:
+        - /home/putin/.config/pdf:/tmp/pdf/

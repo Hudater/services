@@ -1,0 +1,18 @@
+version: "2"
+services:
+    ytdl_material:
+        container_name: yt-dl
+        environment: 
+            UID: 1000
+            GID: 1000
+            ALLOW_CONFIG_MUTATIONS: 'true'
+        restart: unless-stopped
+        volumes:
+            - /home/putin/.config/yt-dl/appdata:/app/appdata
+            - /home/putin/.config/yt-dl/users:/app/users
+            - /mnt/Media/Torrent/yt/audio:/app/audio
+            - /mnt/Media/Torrent/yt/video:/app/video
+            - /mnt/Media/Torrent/yt/subs:/app/subscriptions
+        ports:
+            - 8998:17442
+        image: tzahi12345/youtubedl-material:latest

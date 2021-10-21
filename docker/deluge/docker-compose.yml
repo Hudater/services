@@ -1,0 +1,17 @@
+version: "2.1"
+services:
+  deluge:
+    image: linuxserver/deluge:latest
+    container_name: deluge
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+      - DELUGE_LOGLEVEL=error #optional
+      - DOCKER_MODS=gilbn/theme.park:deluge
+      - TP_THEME=dark
+    volumes:
+      - /home/putin/.config/deluge:/config
+      - /home/putin/.config/deluge/Torrent:/downloads
+    restart: unless-stopped

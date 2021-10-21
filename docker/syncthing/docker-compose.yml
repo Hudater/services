@@ -1,0 +1,21 @@
+version: "2.1"
+services:
+  syncthing:
+    network_mode: host
+    image: linuxserver/syncthing
+    container_name: sync
+    hostname: syncthing #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - /home/putin/.config/syncthing:/config
+      - /home/putin:/home_dir
+      - /mnt:/hdd
+    # ports:
+    #   - 8384:8384
+    #   - 22000:22000/tcp
+    #   - 22000:22000/udp
+    #   - 21027:21027/udp
+    restart: unless-stopped

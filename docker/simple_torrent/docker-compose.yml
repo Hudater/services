@@ -1,0 +1,16 @@
+version: '3'
+services:
+  simpletorrent:
+    image: boypt/cloud-torrent:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "50012:50012"
+      - "50012:50012/udp"
+    environment:
+      AUTH: "p:p"
+      TITLE: "MySimpleTorrent"
+    volumes:
+      - /home/putin/.config/sim_tor/Torrent:/srv/downloads
+      - /home/putin/.config/sim_tor/cloud-torrent.yaml:/etc/cloud-torrent.yaml
+    command: ["-c", "/etc/cloud-torrent.yaml"]

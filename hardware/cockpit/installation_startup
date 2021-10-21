@@ -1,0 +1,2 @@
+sudo pacman -Sy cockpit
+sudo systemctl enable --now cockpit.socket

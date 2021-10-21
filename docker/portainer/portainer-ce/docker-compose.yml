@@ -1,0 +1,23 @@
+version: "2.1"
+services:
+  portainer-ce:
+    network_mode: bridge
+    image: portainer/portainer-ce:latest
+    container_name: port-ce
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    ports:
+      - 8000:8000
+      - 9000:9000
+    restart: unless-stopped
+
+    # TRY MAKING VOLUME INSIDE COMPOSE NEXT TIME
+    
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+  portainer_data:
+    external: true

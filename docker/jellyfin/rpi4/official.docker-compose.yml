@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    user: 1000:1000
+    network_mode: "host"
+    volumes:
+      - /home/putin/.config/jellyfin/jellyfin-config:/config
+      - /home/putin/.config/jellyfin/jellyfin-cache:/cache
+      - /mnt/Media:/media
+    restart: unless-stopped
+    environment:
+      - JELLYFIN_PublishedServerUrl=192.168.29.10

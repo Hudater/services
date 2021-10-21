@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  jellyfin:
+    container_name: jellyfin
+    image: jellyfin/jellyfin
+    group_add:
+      - 989 #adding group `render` so that VAAPI can use the almighrty radeon r5
+      #remeber to change the group id which is present in /etc/group
+    network_mode: "host"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Asia/Kolkata
+      - JELLYFIN_PublishedServerUrl=192.168.29.11:8096
+    volumes:
+      - /opt/vc/lib:/opt/vc/lib #optional
+      - /home/putin/.config/jellyfin:/config
+      - /mnt:/data/mnt_dir
+      - /mount/Acer_Storage:/data/acer_storage
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128 #optional
+      - /dev/dri/card0:/dev/dri/card0
+    restart: unless-stopped

@@ -1,0 +1,31 @@
+version: "2.1"
+services:
+  flood:
+    hostname: flood
+    container_name: flood
+    image: jesec/flood
+    user: 1000:1000
+    restart: unless-stopped
+    command: --port 3001 --allowedpath /data
+    environment:
+      HOME: /config
+    volumes:
+      - /home/putin/.config/dlconfig:/config
+      - /mnt/Media/Torrent/downloading:/data
+    ports:
+      - 0.0.0.0:3001:3001
+
+  rtorrent:
+    hostname: rtor
+    container_name: rtor
+    image: jesec/rtorrent
+    user: 1000:1000
+    restart: unless-stopped
+    command: -o network.port_range.set=6881-6881,system.daemon.set=true
+    environment:
+      HOME: /config
+    volumes:
+      - /home/putin/.config/dlconfig:/config
+      - /mnt/Media/Torrent/downloading:/data
+    ports:
+      - 0.0.0.0:6881:6881

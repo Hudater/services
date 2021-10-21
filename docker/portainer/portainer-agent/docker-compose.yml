@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  portainer-agent:
+    network_mode: bridge
+    image: portainer/agent
+    container_name: port-agent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    ports:
+      - 9001:9001
+    restart: unless-stopped
+    volumes:
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /var/run/docker.sock:/var/run/docker.sock

@@ -1,0 +1,15 @@
+version: "2.1"
+services:
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - /home/putin/.config/heimdall:/config
+    ports:
+      - 82:80
+      - 444:443
+    restart: unless-stopped
