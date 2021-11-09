@@ -9,3 +9,4 @@
 ||1337xx.to/^
 ||1377x.is/^
 ||blog.jdpfu.com/^
+||jdownloader.org/^

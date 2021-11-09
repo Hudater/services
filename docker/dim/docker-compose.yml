@@ -1,0 +1,1 @@
+docker run -d -p 8000:8000/tcp --mount type=bind,source=$HOME/.config/dim,target=/opt/dim/config --mount type=bind,source=/media,target=/media --device=/dev/dri/renderD128 vgarleanu/dim:latest

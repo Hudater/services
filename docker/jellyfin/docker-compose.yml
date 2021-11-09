@@ -1,5 +1,4 @@
 version: "3.7"
-
 services:
   jellyfin:
     container_name: jellyfin
@@ -13,7 +12,6 @@ services:
       - PGID=1000
       - UMASK=002
       - TZ=Asia/Kolkata
-      - JELLYFIN_PublishedServerUrl=192.168.29.11:8096
     volumes:
       - /opt/vc/lib:/opt/vc/lib #optional
       - /home/putin/.config/jellyfin:/config
@@ -23,3 +21,25 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128 #optional
       - /dev/dri/card0:/dev/dri/card0
     restart: unless-stopped
+
+
+
+version: "3"
+services:
+  jellyfin:
+    container_name: jellyfin
+    image: jellyfin/jellyfin
+    user: 1000:1000
+    network_mode: "host"
+    restart: "unless-stopped"
+    environment:
+      - JELLYFIN_CACHE_DIR=/var/cache/jellyfin
+      - JELLYFIN_CONFIG_DIR=/etc/jellyfin
+      - JELLYFIN_DATA_DIR=/var/lib/jellyfin
+      - JELLYFIN_LOG_DIR=/var/log/jellyfin
+    volumes:
+      - /etc/jellyfin:/etc/jellyfin
+      - /var/cache/jellyfin:/var/cache/jellyfin
+      - /var/lib/jellyfin:/var/lib/jellyfin
+      - /var/log/jellyfin:/var/log/jellyfin
+      - <path-to-media>:<path-to-media>

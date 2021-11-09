@@ -94,6 +94,13 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
   - Linuxserver.io image
   - <https://hub.docker.com/r/syncthing/syncthing>
 
+- Uptime-Kuma
+  - Uptime status monitor and dashboard
+  - Device: `RPI-4`
+  - Ports: `3001`
+  - Official image by louislam
+  - <https://hub.docker.com/r/louislam/uptime-kuma>
+
 - Watchtower
     - Auto update docker images and redeploy containers
     - Device: `RPI-4 and Acer laptop`
