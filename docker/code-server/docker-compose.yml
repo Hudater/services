@@ -1,0 +1,19 @@
+version: "2.1"
+services:
+  code-server:
+    image: linuxserver/code-server
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+      - PASSWORD=q #optional
+      # - HASHED_PASSWORD= #optional
+      - SUDO_PASSWORD=q #optional
+      # - SUDO_PASSWORD_HASH= #optional
+      # - PROXY_DOMAIN=code-server.my.domain #optional
+    volumes:
+      - /home/putin/.config/code:/config
+    ports:
+      - 8443:8443
+    restart: unless-stopped

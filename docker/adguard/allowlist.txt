@@ -10,3 +10,5 @@
 ||1377x.is/^
 ||blog.jdpfu.com/^
 ||jdownloader.org/^
+||https://whattomine.com/^
+||https://xmrig.com/^
