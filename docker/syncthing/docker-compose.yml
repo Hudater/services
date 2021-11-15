@@ -12,7 +12,7 @@ services:
     volumes:
       - /home/putin/.config/syncthing:/config
       - /home/putin:/home_dir
-      - /mnt:/hdd
+      - /:/root_dir
     # ports:
     #   - 8384:8384
     #   - 22000:22000/tcp

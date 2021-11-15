@@ -20,4 +20,6 @@ services:
       - 8780:8080
     devices:
       - /dev/sda:/dev/sda
+      - /dev/sdb:/dev/sdb
+      - /dev/sdc:/dev/sdc
     restart: unless-stopped
