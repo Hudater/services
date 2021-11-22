@@ -19,5 +19,5 @@ services:
     ports:
       - 8780:8080
     devices:
-      - /dev/nvme0n1:/dev/nvme0n1
+      - /dev/nvme0:/dev/nvme0
     restart: unless-stopped

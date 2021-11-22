@@ -1,11 +1,12 @@
 # A repo of 'docker-compose', 'docker run' and other Selfhosted things, configs and other files
 
-Running these on `RPI-4`, `Acer laptop` & `RPI-Zero` with `Manjaro ARM64`, `Arch BTW` & `Arch ARM` respectively
+Running these on `Acer-Laptop`, `Main-PC`, `RPI-4`, & `RPI-Zero` with `Artix Runit`, `Arch BTW`, `Manjaro ARM64` & `Arch ARM` respectively
 Most of these should work on x86_64 and ARMv8 too
 
-`RPI-4` acts as the main server with main storage attached to it
-`Acer laptop` runs media server and other heavy stuff
-`RPI-Zero` runs adguard. May add wireguard later
+`Acer-Laptop` has all storage attached and runs anything that needs access to media
+`Main-PC` not dedicated for server. My main PC
+`RPI-4` runs anything without direct media access
+`RPI-Zero` runs adguard, ddns and other critical ops
 
 First port is for Web GUI in compose file or run files (`host:container` or `source:destination`)
 
@@ -14,7 +15,7 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
 ### Bare Metal Services
 
 - Crontab
-  - Device: `RPI-4`
+  - Device: `Acer-Laptop`
   - Downloading a playlist every hour to `/mnt/Media/Music`
   - Script location: `/mnt/IT/coding/Scripts/ytmusic.sh`
 
@@ -31,17 +32,10 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
 
 - Filebrowser
   - Web based file browser
-  - Device: `RPI-4`
+  - Device: `Acer-Laptop`
   - Ports: `420`
   - Image by hurlenko on dockerhub
   - <https://hub.docker.com/r/hurlenko/filebrowser>
-
-- Guacamole
-  - Web based remote gateway
-  - Device: `RPI-4`
-  - Ports: `8888`
-  - Image by maxwaldorf on dockerhub
-  - <https://hub.docker.com/r/maxwaldorf/guacamole/>
 
 - Heimdall
   - Dashboard for all services
@@ -52,14 +46,14 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
 
 - Jellyfin
   - Media Server
-  - Device: `Acer laptop`
+  - Device: `Acer-Laptop`
   - Network mode: host
   - Official image
   - <https://hub.docker.com/r/jellyfin/jellyfin>
 
 - Portainer-agent
   - Agent for portainer
-  - Device: `Acer laptop`
+  - Device: `Acer-Laptop, Main-PC, RPI-Zero`
   - Ports: `9001`
   - Network mode: bridge
   - Portainer official image
@@ -68,52 +62,45 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
 - Portainer-ce
   - Web GUI for docker
   - Device: `RPI-4`
-  - Ports: `9000`   `8000`
+  - Ports: `9000` `8000`
   - Network mode: bridge
   - Portainer official image
   - <https://hub.docker.com/r/portainer/portainer-ce>
 
 - qBitTorrent
   - Torrent with Vue theme
-  - Device: `RPI-4`
+  - Device: `Acer-Laptop`
   - Ports: `4000`
   - Hotio.dev image
   - <https://hotio.dev/containers/qbittorrent/>
 
 - Scrutiny
   - Disk monitoring via http
-  - Device: `RPI-4 and Acer laptop`
+  - Device: `Acer-Laptop, Main-PC, RPI-4, RPI-Zero`
   - Ports: `8780`
   - Linuxserver.io image
   - <https://hub.docker.com/r/linuxserver/scrutiny>
 
 - Syncthing
   - Multi way folder sync
-  - Device: `RPI-4 and Acer laptop`
+  - Device: `Acer-Laptop, Main-PC, RPI-4, RPI-Zero`
   - Network mode: host
   - Linuxserver.io image
   - <https://hub.docker.com/r/syncthing/syncthing>
 
 - Uptime-Kuma
   - Uptime status monitor and dashboard
-  - Device: `RPI-4`
+  - Device: `TESTING`
   - Ports: `3001`
   - Official image by louislam
   - <https://hub.docker.com/r/louislam/uptime-kuma>
 
 - Watchtower
     - Auto update docker images and redeploy containers
-    - Device: `RPI-4 and Acer laptop`
+    - Device: `Acer-Laptop, Main-PC, RPI-4`
     - Bridge mode network
     - Official network
     - <https://hub.docker.com/r/containrrr/watchtower>
-
-- Youtubedl-Material
-  - Web GUI for yt-dl
-  - Device: `RPI-4`
-  - Ports: `8998`
-  - Image by tzahi12345 on dockerhub
-  - <https://hub.docker.com/r/tzahi12345/youtubedl-material>
 
 #### Rarely Deployed Containers
 
@@ -134,6 +121,13 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
   - Ports: `89`
   - Linuxserver.io image
   - <https://hub.docker.com/r/linuxserver/freshrss>
+
+ - Guacamole
+  - Web based remote gateway
+  - Device: `RPI-4`
+  - Ports: `8888`
+  - Image by maxwaldorf on dockerhub
+  - <https://hub.docker.com/r/maxwaldorf/guacamole/> 
 
 - Libreoffice
   - Self hosted Libreoffice instance
@@ -158,6 +152,13 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
   - Ports: `81` `443`  `67` `53`
   - Official image
   - <https://hub.docker.com/r/pihole/pihole>
+
+  - Youtubedl-Material
+  - Web GUI for yt-dl
+  - Device: `RPI-4`
+  - Ports: `8998`
+  - Image by tzahi12345 on dockerhub
+  - <https://hub.docker.com/r/tzahi12345/youtubedl-material>
 
 
 # Link to other repos and resources for selfhosters
