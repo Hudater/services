@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  olivetin:
+    container_name: olivetin
+    image: jamesread/olivetin
+    volumes:
+      - /home/putin/.config/olivetin:/config
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "1337:1337"
+    restart: unless-stopped
+
+# networks:
+#   web: # should match the network defined under the container's networks
+#   section
+#       external: true

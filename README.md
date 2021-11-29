@@ -51,6 +51,13 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
   - Official image
   - <https://hub.docker.com/r/jellyfin/jellyfin>
 
+- Olivetin
+  - Web based Command runner
+  - Device: `RPI-4`
+  - Ports: `1337`
+  - Official image
+  - <https://hub.docker.com/r/jamesread/olivetin>
+
 - Portainer-agent
   - Agent for portainer
   - Device: `Acer-Laptop, Main-PC, RPI-Zero`
@@ -90,7 +97,7 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
 
 - Uptime-Kuma
   - Uptime status monitor and dashboard
-  - Device: `TESTING`
+  - Device: `RPI-4`
   - Ports: `3001`
   - Official image by louislam
   - <https://hub.docker.com/r/louislam/uptime-kuma>
@@ -167,3 +174,4 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
 - Awesome-sysadmin (deprecated but new link gives 404): <https://github.com/awesome-foss/awesome-sysadmin>
 - Similar docker-compose and cfg list: <https://github.com/abhilesh/self-hosted_docker_setups>
 - Selfhost Wiki by Geeked: <https://thehomelab.wiki>
+- Documentation by Techno Tim: <https://techno-tim.github.io/>
