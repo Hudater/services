@@ -13,5 +13,5 @@ services:
       - TP_THEME=dark
     volumes:
       - /home/putin/.config/deluge:/config
-      - /home/putin/.config/deluge/Torrent:/downloads
+      - /mnt/Files/sim:/downloads
     restart: unless-stopped

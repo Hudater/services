@@ -1,0 +1,27 @@
+allowruntimeconfigure: true
+alwaysaddtrackers: true
+autostart: true
+disableipv6: false
+disabletrackers: false
+disableutp: false
+donecmd: ""
+downloaddirectory: /srv/downloads
+downloadrate: Unlimited
+enableseeding: true
+enableupload: true
+enginedebug: false
+incomingport: 50007
+maxconcurrenttask: 0
+muteenginelog: true
+nodefaultportforwarding: true
+obfspreferred: true
+obfsrequirepreferred: false
+proxyurl: ""
+rssurl: |-
+  # http://domian./rss.xml
+  # http://some-other-site/rss.xml
+seedratio: 1.5
+seedtime: 60m
+trackerlisturl: https:#raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+uploadrate: High
+watchdirectory: /torrents

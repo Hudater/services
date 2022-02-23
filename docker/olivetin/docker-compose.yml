@@ -1,10 +1,12 @@
 version: "3.8"
 services:
   olivetin:
+    # network_mode: "host"
     container_name: olivetin
     image: jamesread/olivetin
     volumes:
-      - /home/putin/.config/olivetin:/config
+      - /home/putin/.config/olivetin:/config:ro
+      - /home/putin/.ssh/:/home/olivetin/.ssh/
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "1337:1337"
