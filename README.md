@@ -19,6 +19,13 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
   - Downloading a playlist every hour to `/mnt/Media/Music`
   - Script location: `/mnt/IT/coding/Scripts/ytmusic.sh`
 
+- Olivetin
+  - Web based Command runner
+  - Device: `RPI-Zero`
+  - Ports: `1337`
+  - Download via github releases
+  - Installation instructions: `services/hardware/olivetin/installation.md`
+
 ### Docker based services
 
 #### Often Deployed Containers
@@ -50,13 +57,6 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
   - Network mode: host
   - Official image
   - <https://hub.docker.com/r/jellyfin/jellyfin>
-
-- Olivetin
-  - Web based Command runner
-  - Device: `RPI-4`
-  - Ports: `1337`
-  - Official image
-  - <https://hub.docker.com/r/jamesread/olivetin>
 
 - Portainer-agent
   - Agent for portainer

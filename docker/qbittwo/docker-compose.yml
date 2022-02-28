@@ -12,5 +12,5 @@ services:
       - TZ=Asia/Kolkata
     volumes:
       - /home/putin/.config/qbittwo:/config
-      - /mnt/Files/sim:/data
+      - /mnt/Pi_Storage/Shows/Tor:/data
     restart: unless-stopped
