@@ -156,11 +156,11 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
 
 - Pihole
   - DNS level ad blocker
-  - Ports: `81` `443`  `67` `53`
+  - Ports: `81` `443` `67` `53`
   - Official image
   - <https://hub.docker.com/r/pihole/pihole>
 
-  - Youtubedl-Material
+- Youtubedl-Material
   - Web GUI for yt-dl
   - Device: `RPI-4`
   - Ports: `8998`
