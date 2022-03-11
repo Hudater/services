@@ -129,7 +129,7 @@ First port is for Web GUI in compose file or run files (`host:container` or `sou
   - Linuxserver.io image
   - <https://hub.docker.com/r/linuxserver/freshrss>
 
- - Guacamole
+- Guacamole
   - Web based remote gateway
   - Device: `RPI-4`
   - Ports: `8888`
