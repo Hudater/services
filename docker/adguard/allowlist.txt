@@ -12,3 +12,5 @@
 ||jdownloader.org/^
 ||whattomine.com/^
 ||xmrig.com/^
+||hiveos.farm/^
+||download.hiveos.farm/^
