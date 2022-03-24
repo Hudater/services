@@ -25,7 +25,7 @@
 2. Enable wakeonlan function and pxe boot at firmware level on client devices.
 
 3. Enable wol on OS level:
-    1. `ip a` to look at all network interfaces
-    2. `ethtool interface | grep Wake-on` to get current wake-on-lan status (replace interface with your etherner port id)
-    3. `nmcli con show` to get connection name
-    4. `nmcli c modify "wired1" 802-3-ethernet.wake-on-lan magic` to enable wol (replace wired1 with connection name from previous command)
+    - `ip a` to look at all network interfaces
+    - `ethtool interface | grep Wake-on` to get current wake-on-lan status (replace interface with your etherner port id)
+    - `nmcli con show` to get connection name
+    - `nmcli c modify "wired1" 802-3-ethernet.wake-on-lan magic` to enable wol (replace wired1 with connection name from previous command)
