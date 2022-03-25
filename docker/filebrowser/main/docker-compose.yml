@@ -7,7 +7,7 @@ services:
     ports:
       - 420:8080
     volumes:
-      - /:/data
+      - /storage:/data
       - /home/putin/.config/filebrowser:/config
     environment:
       - FB_BASEURL=/filebrowser
