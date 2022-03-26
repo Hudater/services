@@ -13,7 +13,7 @@
 # * * * * *  command_to_execute
 
 ####Downloading a playlist from youtube ever hour
-0 * * * * /bin/sh /mnt/IT/coding/Scripts/ytmusic.sh
+0 * * * * /bin/sh /mnt/Media/Git/Scripts/ytmusic.sh
 
 
 
