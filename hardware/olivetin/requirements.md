@@ -14,8 +14,8 @@
 
 5. Set `shutdown`, `reboot` and `poweroff` commands to `ALL ALL=NOPASSWD` in `sudoers` file:\
   `sudo visudo`\
-  `ALL ALL=NOPASSWD: /usr/bin/reboot,/usr/bin/shutdown,/usr/bin/poweroff,/usr/sbin/reboot,/usr/sbin/shutdown,/usr/sbin/poweroff`\
-  Tip: run `which reboot` etc to find binary location and replace above.
+  `ALL ALL=NOPASSWD: /sbin/poweroff,/sbin/reboot,/sbin/shutdown`\
+  Tip: Add this line after `%wheel ALL=(ALL) ALL` line
 
 
 ## Wake on LAN
