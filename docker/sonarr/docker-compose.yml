@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - /home/putin/.config/sonarr:/config
+      - /mnt/merger/Torrents:/data
+      - /mnt/merger/TO/SHOWS:/data/shows
+    ports:
+      - 8989:8989
+    restart: unless-stopped

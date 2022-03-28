@@ -162,8 +162,11 @@
 
 # Link to other repos and resources for selfhosters
 
-- List of self-hostable services: <https://github.com/awesome-selfhosted/awesome-selfhosted>
-- Awesome-sysadmin (deprecated but new link gives 404): <https://github.com/awesome-foss/awesome-sysadmin>
-- Similar docker-compose and cfg list: <https://github.com/abhilesh/self-hosted_docker_setups>
-- Selfhost Wiki by Geeked: <https://thehomelab.wiki>
-- Documentation by Techno Tim: <https://techno-tim.github.io/>
+[Perfect Media Server](https://perfectmediaserver.com/index.html)  
+[Servarr](https://wiki.servarr.com/)  
+[Trash-Guides](https://trash-guides.info/)  
+[List of self-hostable services](https://github.com/awesome-selfhosted/awesome-selfhosted)  
+[Awesome-sysadmin (deprecated but new link gives 404)](https://github.com/awesome-foss/awesome-sysadmin)  
+[Similar docker-compose and cfg list](https://github.com/abhilesh/self-hosted_docker_setups)  
+[Selfhost Wiki by Geeked](https://thehomelab.wiki)  
+[Documentation by Techno Tim](https://techno-tim.github.io/)  

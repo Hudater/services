@@ -12,5 +12,5 @@ services:
       - TZ=Asia/Kolkata
     volumes:
       - /home/putin/.config/qbittorrent:/config
-      - /mnt/Media/Torrent:/data
+      - /mnt/merger/Torrents:/data
     restart: unless-stopped

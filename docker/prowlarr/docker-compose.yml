@@ -1,0 +1,14 @@
+version: "2.1"
+services:
+  prowlarr:
+    image: linuxserver/prowlarr:develop
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - /home/putin/.config/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
