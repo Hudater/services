@@ -2,7 +2,7 @@ version: "3.7"
 services:
   qbittorrent:
     container_name: qbit
-    image: hotio/qbittorrent
+    image: hotio/qbittorrent:release-4.3.9
     ports:
       - "4000:8080"
     environment:

@@ -1,30 +1,22 @@
-# A repo of 'docker-compose', 'docker run' and other Selfhosted things, configs and other files
+# A repo of `docker-compose`, `docker run`, `configs` etc for my selfhosted services.
 
-Running these on `Acer-Laptop`, `Main-PC`, `RPI-4`, & `RPI-Zero` with `Artix Runit`, `Arch BTW`, `Manjaro ARM64` & `Arch ARM` respectively
-Most of these should work on x86_64 and ARMv8 too
+## For hardware and OS setup overview: [Overview](hardware/olivetin/installation.md)
 
-`Acer-Laptop` has all storage attached and runs anything that needs access to media
-`Main-PC` not dedicated for server. My main PC
-`RPI-4` runs anything without direct media access
-`RPI-Zero` runs adguard, ddns and other critical ops
-
-First port is for Web GUI in compose file or run files (`host:container` or `source:destination`)
-
-## Service List Section
+### Note: First port is for Web GUI in compose file or run files (`host:container` or `source:destination`)
 
 ### Bare Metal Services
 
 - Crontab
   - Device: `Acer-Laptop`
-  - Downloading a playlist every hour to `/mnt/Media/Music`
-  - Script location: `/mnt/IT/coding/Scripts/ytmusic.sh`
+  - Downloading a playlist every hour to `/mnt/merger/Music`
+  - Script location: [Github](https://github.com/Hudater/scripts/blob/main/ytmusic.sh)
 
 - Olivetin
   - Web based Command runner
   - Device: `RPI-Zero`
   - Ports: `1337`
   - Download via github releases
-  - Installation instructions: `services/hardware/olivetin/installation.md`
+  - Installation instructions: [Installation](hardware/olivetin/installation.md)
 
 ### Docker based services
 
