@@ -9,8 +9,9 @@ services:
       - TZ=Asia/Kolkata
     volumes:
       - /home/putin/.config/sonarr:/config
+      - /home/putin/GitIt/SyncFiles/configBak/sonarr:/config/Backups
       - /mnt/merger/Torrents:/data
-      - /mnt/merger/TO/SHOWS:/data/shows
+      - /mnt/merger/Shows:/data/shows
     ports:
       - 8989:8989
     restart: unless-stopped

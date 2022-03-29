@@ -1,0 +1,5 @@
+Radarr (Movies):
+
+  Replace with Dash for Colon replacement
+  {Movie.CleanTitle}.{Release.Year}.{Quality.Title}
+  {Movie Collection}.{Movie.CleanTitle}.{Release.Year}  or {Movie.Collection}/{Movie.CleanTitle}.{Release.Year}

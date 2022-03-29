@@ -9,6 +9,7 @@ services:
       - TZ=Asia/Kolkata
     volumes:
       - /home/putin/.config/prowlarr:/config
+      - /home/putin/GitIt/SyncFiles/configBak/prowlarr:/config/Backups
     ports:
       - 9696:9696
     restart: unless-stopped
