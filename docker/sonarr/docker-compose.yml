@@ -10,8 +10,8 @@ services:
     volumes:
       - /home/putin/.config/sonarr:/config
       - /home/putin/GitIt/SyncFiles/configBak/sonarr:/config/Backups
-      - /mnt/merger/Torrents:/data
-      - /mnt/merger/Shows:/data/shows
+      - /mnt/merger:/data
+        #      - /mnt/merger/Media/Shows:/data/Shows
     ports:
       - 8989:8989
     restart: unless-stopped

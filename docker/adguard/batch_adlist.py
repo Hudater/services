@@ -87,6 +87,9 @@ urls = [
 "https://www.fanboy.co.nz/fanboy-indian.txt",
 "https://raw.githubusercontent.com/chadmayfield/my-pihole-blocklists/master/lists/pi_blocklist_porn_top1m.list"
 ]
+allow_urls = [
+"https://raw.githubusercontent.com/Hudater/services/main/docker/adguard/allowlist.txt",
+]
 
 ############ End Edits #################
 

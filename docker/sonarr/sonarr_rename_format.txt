@@ -1,9 +1,0 @@
-Sonarr (TV):
-
-  {Series.CleanTitle}.S{season:00}.E{episode:00}.{Episode.CleanTitle}
-  {Series.CleanTitle}.{Air-Date}.{Episode.CleanTitle}
-  {Series.CleanTitle}.S{season:00}.E{episode:00}.{Episode.CleanTitle}
-  {Series.Title}
-  Season.{season:00}
-  Specials
-  Prefixed Range  S01E01-E03

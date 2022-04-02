@@ -9,19 +9,7 @@ listenAddressSingleHTTPFrontend: 0.0.0.0:1337
 logLevel: "INFO"
 
 # Actions (buttons) to show up on the WebUI:
-actions:   
-
-# - title: Restart Computers
-#   icon: restart
-#   shell: ssh {{ pcIp }} 'sudo reboot'
-#   arguments:
-#     - name: pcIp
-#       title: PC Names
-#       choices:
-#         - value: putin@192.168.29.10
-#         - value: putin@192.168.29.11
-#         - value: putin@192.168.29.12
-#         - value: putin@192.168.29.40
+actions:
 
 - title: Restart Computers
   icon: "&#10226;"

@@ -1,3 +1,5 @@
+# This setup works on raspbian armv6. Package names might change with distro. Issues with other things like visudo, selinux etc might arise too.
+
 # To make the config work, make sure to meet these requirements:
 
 ## SSH setup:
@@ -20,7 +22,7 @@
 
 ## Wake on LAN
 
-1. Install `wakeonlan` package on the server (package name on raspbian atleast)
+1. Install `wakeonlan` package on the server: `sudo apt install wakeonlan -y`
 
 2. Enable wakeonlan function and pxe boot at firmware level on client devices.
 
