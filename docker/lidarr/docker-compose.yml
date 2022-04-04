@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  lidarr:
+    image: linuxserver/lidarr
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - /home/putin/.config/lidarr:/config
+      - /home/putin/GitIt/SyncFiles/configBak/lidarr:/config/Backups
+      - /mnt/merger:/data
+    ports:
+      - 8686:8686
+    restart: unless-stopped
