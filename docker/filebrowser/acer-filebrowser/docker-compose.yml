@@ -7,8 +7,8 @@ services:
     ports:
       - 420:8080
     volumes:
-      - /mnt/merger:/data
       - /home/putin/.config/filebrowser:/config
+      - /mnt/merger:/data
     environment:
       - FB_BASEURL=/filebrowser
     restart: unless-stopped

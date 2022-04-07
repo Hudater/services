@@ -8,11 +8,11 @@ services:
             ALLOW_CONFIG_MUTATIONS: 'true'
         restart: unless-stopped
         volumes:
-            - /home/putin/.config/yt-dl/appdata:/app/appdata
-            - /home/putin/.config/yt-dl/users:/app/users
-            - /mnt/Media/Torrent/yt/audio:/app/audio
-            - /mnt/Media/Torrent/yt/video:/app/video
-            - /mnt/Media/Torrent/yt/subs:/app/subscriptions
+            - /home/putin/.config/ytdlmat/appdata:/app/appdata
+            - /home/putin/.config/ytdlmat/users:/app/users
+            - /mnt/merger/Youtube/audio:/app/audio
+            - /mnt/merger/Youtube/video:/app/video
+            - /mnt/merger/Youtube/subs:/app/subscriptions
         ports:
             - 8998:17442
         image: tzahi12345/youtubedl-material:latest
