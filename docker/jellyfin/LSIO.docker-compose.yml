@@ -15,10 +15,7 @@ services:
     volumes:
       - /opt/vc/lib:/opt/vc/lib #optional
       - /home/putin/.config/jellyfin:/config
-      - /mnt/Media:/data/media_hd
-      - /mnt/Seagate:/data/sea_hd
-      - /mnt/Pi_Root/home/putin/GitIt/Storage_pi:/data/pi_shows
-      - /home/putin/GitIt/Storage_acer:/data/acer_movies
+      - /mnt/merger:/data
     # ports:
     #   - 8096:8096
     #   - 8920:8920 #optional

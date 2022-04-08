@@ -1,6 +1,6 @@
 # A repo of `docker-compose`, `docker run`, `configs` etc for my selfhosted services.
 
-## For hardware and OS setup overview: [Overview](hardware/olivetin/installation.md)
+## For hardware and OS setup overview: [Overview](OVERVIEW.md)
 
 ### Note: First port is for Web GUI in compose file or run files (`host:container` or `source:destination`)
 
