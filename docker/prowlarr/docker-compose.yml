@@ -3,7 +3,7 @@ services:
   prowlarr:
     image: linuxserver/prowlarr:develop
     container_name: prowlarr
-    network_mode: "container:gluetun"
+    # network_mode: "container:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
@@ -11,6 +11,6 @@ services:
     volumes:
       - /home/putin/.config/prowlarr:/config
       - /home/putin/GitIt/SyncFiles/configBak/prowlarr:/config/Backups
-    # ports:
-    #   - 9696:9696
+    ports:
+      - 9696:9696
     restart: unless-stopped

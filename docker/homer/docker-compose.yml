@@ -1,0 +1,17 @@
+---
+version: "2"
+services:
+  homer:
+    image: b4bz/homer
+    container_name: homer
+    labels:
+      - com.centurylinklabs.watchtower.monitor-only="true"
+    volumes:
+      - /home/putin/GitIt/SyncFiles/configBak/homer:/www/assets
+      - /home/putin/GitIt/SyncFiles/configBak/icons:/www/assets/manicons
+    ports:
+      - 8080:8080
+    environment:
+      - UID=1000
+      - GID=1000
+    restart: unless-stopped
