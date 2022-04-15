@@ -162,6 +162,7 @@
 
 # Link to other repos and resources for selfhosters
 
+[Good Docker, Compose, Treafik etc Starter Guider](https://www.smarthomebeginner.com/traefik-2-docker-tutorial/)  
 [Perfect Media Server](https://perfectmediaserver.com/index.html)  
 [Servarr](https://wiki.servarr.com/)  
 [Trash-Guides](https://trash-guides.info/)  

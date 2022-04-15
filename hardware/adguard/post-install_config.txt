@@ -1,0 +1,16 @@
+Set upstream DNS to:
+  https://dns10.quad9.net/dns-query
+  tls://1dot1dot1dot1.cloudflare-dns.com
+  https://cloudflare-dns.com/dns-query
+  tls://dns-unfiltered.adguard.com
+  https://dns-unfiltered.adguard.com/dns-query
+  1.1.1.1
+  8.8.8.8 
+
+Parallel Requests rather then Load-balancing
+Test upstream and Apply
+
+
+To add blocklist, change ip address, username and password according to your setup and then run these commands:
+  pip install requests
+  python batch_adlist.py

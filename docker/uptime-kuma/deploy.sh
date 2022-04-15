@@ -1,2 +1,2 @@
-mkdir -p /home/putin/.config/uptime
+mkdir -p /home/$USER/.config/uptime
 docker-compose up -d
