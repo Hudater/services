@@ -5,8 +5,8 @@ services:
     container_name: adguard
     restart: unless-stopped
     volumes:
-      - /home/putin/.config/adguard/work:/opt/adguardhome/work
-      - /home/putin/.config/adguard/conf:/opt/adguardhome/conf
+      - /home/$USER/.config/adguard/work:/opt/adguardhome/work
+      - /home/$USER/.config/adguard/conf:/opt/adguardhome/conf
     ports:
       - 192.168.29.12:53:53/tcp
       - 192.168.29.12:53:53/udp

@@ -7,7 +7,7 @@
 1. Switch to root user then his home directory: `sudo su` `cd`
 
 2. Copy `.ssh` directory to root user's home dir:\
-  `cp -r /home/putin/.ssh /root/.ssh`
+  `cp -r /home/$USER/.ssh /root/.ssh`
 
 3. Make sure the permissions are right:\
   `chmod 700 /root/.ssh` `chmod 600 /root/.ssh/authorized_keys`

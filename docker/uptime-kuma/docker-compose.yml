@@ -4,7 +4,7 @@ services:
     image: louislam/uptime-kuma
     container_name: uptime
     volumes:
-      - /home/putin/.config/uptime:/app/data
+      - /home/$USER/.config/uptime:/app/data
     ports:
       - 3001:3001
     restart: unless-stopped

@@ -11,7 +11,7 @@ services:
       - UMASK=002
       - TZ=Asia/Kolkata
     volumes:
-      - /home/putin/.config/qbittorrent:/config
+      - /home/$USER/.config/qbittorrent:/config
       - /mnt/merger/Torrents:/data/Torrents
       - /mnt/merger/Del:/Del
     restart: unless-stopped

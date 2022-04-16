@@ -13,7 +13,7 @@ services:
       # - SUDO_PASSWORD_HASH= #optional
       # - PROXY_DOMAIN=code-server.my.domain #optional
     volumes:
-      - /home/putin/.config/code:/config
+      - /home/$USER/.config/code:/config
     ports:
       - 8443:8443
     restart: unless-stopped

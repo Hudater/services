@@ -18,16 +18,16 @@ actions:
     - name: computers
       choices:
         - title: Acer
-          value: putin@192.168.29.11
+          value: $USER@192.168.29.11
 
         - title: Main PC
-          value: putin@192.168.29.40
+          value: $USER@192.168.29.40
 
         - title: Pi4
-          value: putin@192.168.29.10
+          value: $USER@192.168.29.10
 
         - title: Pi Zero
-          value: putin@192.168.29.12
+          value: $USER@192.168.29.12
 
 - title: Poweroff Computers
   icon: "&#9211;"
@@ -36,16 +36,16 @@ actions:
     - name: computers
       choices:
         - title: Acer
-          value: putin@192.168.29.11
+          value: $USER@192.168.29.11
 
         - title: Main PC
-          value: putin@192.168.29.40
+          value: $USER@192.168.29.40
 
         - title: Pi4
-          value: putin@192.168.29.10
+          value: $USER@192.168.29.10
 
         - title: Pi Zero
-          value: putin@192.168.29.12
+          value: $USER@192.168.29.12
 
 - title: Boot Computers
   icon: "&#129406;"
@@ -60,14 +60,14 @@ actions:
           value: 18:c0:4d:39:0c:ff
 
         # - title: Pi4
-        #   value: putin@192.168.29.10
+        #   value: $USER@192.168.29.10
 
         # - title: Pi Zero
-        #   value: putin@192.168.29.12
+        #   value: $USER@192.168.29.12
 
 - title: Monitor Functions
   icon: "&#128437;"
-  shell: ssh putin@192.168.29.40 'xset -display :0 dpms force "{{ function }}"'
+  shell: ssh $USER@192.168.29.40 'xset -display :0 dpms force "{{ function }}"'
   arguments:
     - name: function
       choices:
@@ -78,22 +78,22 @@ actions:
           value: "off"
 
 # - title: Restart Pi4
-#   shell: ssh putin@192.168.29.10 'sudo reboot'
+#   shell: ssh $USER@192.168.29.10 'sudo reboot'
 #   icon: ping
 #   timeout: 5
 
 # - title: Restart Acer
-#   shell: ssh putin@192.168.29.11 'sudo reboot'
+#   shell: ssh $USER@192.168.29.11 'sudo reboot'
 #   icon: "&#128187;"
 #   timeout: 5
 
 # - title: Restart PiZero
-#   shell: ssh putin@192.168.29.12 'sudo reboot'
+#   shell: ssh $USER@192.168.29.12 'sudo reboot'
 #   icon: ping
 #   timeout: 5
 
 # - title: Restart MainPC
-#   shell: ssh putin@192.168.29.40 'sudo reboot'
+#   shell: ssh $USER@192.168.29.40 'sudo reboot'
 #   icon: "&#128421;"
 #   timeout: 5
 

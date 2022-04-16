@@ -14,7 +14,7 @@ services:
       - JELLYFIN_PublishedServerUrl=192.168.29.11 #optional
     volumes:
       - /opt/vc/lib:/opt/vc/lib #optional
-      - /home/putin/.config/jellyfin:/config
+      - /home/$USER/.config/jellyfin:/config
       - /mnt/merger:/data
     # ports:
     #   - 8096:8096

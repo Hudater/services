@@ -14,7 +14,7 @@ services:
       - TZ=Asia/Kolkata
     volumes:
       - /opt/vc/lib:/opt/vc/lib #optional
-      - /home/putin/.config/jellyfin:/config
+      - /home/$USER/.config/jellyfin:/config
       - /mnt:/data/mnt_dir
       - /mount:/data/mount_dir
     devices:

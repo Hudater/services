@@ -1,2 +1,2 @@
-mkdir -p /home/putin/.config/
+mkdir -p /home/$USER/.config/
 docker-compose up -d

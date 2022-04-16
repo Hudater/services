@@ -8,8 +8,8 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
     volumes:
-      - /home/putin/.config/radarr:/config
-      - /home/putin/GitIt/SyncFiles/configBak/radarr:/config/Backups
+      - /home/$USER/.config/radarr:/config
+      - /home/$USER/GitIt/SyncFiles/configBak/radarr:/config/Backups
       - /mnt/merger:/data
         #      - /mnt/merger/Media/Movies:/data/Movies
     ports:

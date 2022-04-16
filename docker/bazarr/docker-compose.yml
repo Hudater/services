@@ -8,8 +8,8 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
     volumes:
-      - /home/putin/.config/bazarr:/config
-      - /home/putin/GitIt/SyncFiles/configBak/bazarr:/config/Backups
+      - /home/$USER/.config/bazarr:/config
+      - /home/$USER/GitIt/SyncFiles/configBak/bazarr:/config/Backups
       - /mnt/merger/Media:/data/Media
         #      - /mnt/merger/Shows:/tv
     ports:

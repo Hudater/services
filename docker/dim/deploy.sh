@@ -1,2 +1,2 @@
-mkdir -p /home/putin/.config/dim
+mkdir -p /home/$USER/.config/dim
 docker-compose up -d

@@ -14,7 +14,7 @@
 4. Make a backup copy of default config at path: `/etc/OliveTin/config.yaml`\
   `sudo mv /etc/OliveTin/config.yaml /etc/OliveTin/BAK.config.yaml`
 
-5. Copy modified config file: `sudo cp /home/putin/GitIt/services/hardware/olivetin/config.yaml /etc/OliveTin/config.yaml`
+5. Copy modified config file: `sudo cp /home/$USER/GitIt/services/hardware/olivetin/config.yaml /etc/OliveTin/config.yaml`
 
 6. Start and enable OliveTin service: `sudo systemctl enable OliveTin.service --now`
 

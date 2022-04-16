@@ -10,8 +10,8 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
     volumes:
-      - /home/putin/.config/syncthing:/config
-      - /home/putin:/home_dir
+      - /home/$USER/.config/syncthing:/config
+      - /home/$USER:/home_dir
       - /:/root_dir
     # ports:
     #   - 8384:8384

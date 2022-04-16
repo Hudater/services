@@ -14,7 +14,7 @@ services:
       - SCRUTINY_WEB=true
       - SCRUTINY_COLLECTOR=true
     volumes:
-      - /home/putin/.config/scrutiny:/config
+      - /home/$USER/.config/scrutiny:/config
       - /run/udev:/run/udev:ro
     ports:
       - 8780:8080

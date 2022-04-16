@@ -8,8 +8,8 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
     volumes:
-      - /home/putin/.config/sonarr:/config
-      - /home/putin/GitIt/SyncFiles/configBak/sonarr:/config/Backups
+      - /home/$USER/.config/sonarr:/config
+      - /home/$USER/GitIt/SyncFiles/configBak/sonarr:/config/Backups
       - /mnt/merger:/data
         #      - /mnt/merger/Media/Shows:/data/Shows
     ports:

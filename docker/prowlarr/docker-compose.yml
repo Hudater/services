@@ -9,8 +9,8 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
     volumes:
-      - /home/putin/.config/prowlarr:/config
-      - /home/putin/GitIt/SyncFiles/configBak/prowlarr:/config/Backups
+      - /home/$USER/.config/prowlarr:/config
+      - /home/$USER/GitIt/SyncFiles/configBak/prowlarr:/config/Backups
     ports:
       - 9696:9696
     restart: unless-stopped

@@ -8,4 +8,4 @@ services:
     ports:
       - 25568:80
     volumes:
-        - /home/putin/.config/pdf:/tmp/pdf/
+        - /home/$USER/.config/pdf:/tmp/pdf/

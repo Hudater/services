@@ -1,2 +1,2 @@
-mkdir -p /home/putin/.config/scrutiny
+mkdir -p /home/$USER/.config/scrutiny
 docker-compose up -d

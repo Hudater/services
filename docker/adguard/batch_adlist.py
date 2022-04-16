@@ -10,7 +10,8 @@ import json
 ## CHANGE HERE ##
 # ip address of AdGuard Home
 # "http(s)://<adguardHomeIp:<port>"
-host = "http://192.168.29.12:80" 
+# host = "http://your.instance.ip.address:port"
+host = "http://192.168.29.12:80"
 # user name
 userName = "USERNAME_HERE"
 # password
@@ -112,6 +113,6 @@ for u in urls:
 	x = s.post(host + "/control/filtering/add_url", data = filterObj, headers=headers)
 	print(x.text)
 
-# help from 
+# help from
 # https://stackoverflow.com/questions/30946370/using-requests-to-login-to-a-website-that-has-javascript-login-form
 # https://stackoverflow.com/questions/33818206/python-login-into-a-website-with-javascript-form

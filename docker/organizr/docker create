@@ -1,7 +1,7 @@
 docker create \
   --name=organizr \
   --restart=unless-stopped \
-  -v /home/putin/.config/organizr:/config \
+  -v /home/$USER/.config/organizr:/config \
   -e PGID=1000 -e PUID=1000  \
   -p 83:80 \
   -e branch="v2-master" \

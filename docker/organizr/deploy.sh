@@ -1,2 +1,2 @@
-mkdir -p /home/putin/.config/organizr
+mkdir -p /home/$USER/.config/organizr
 docker-compose up -d

@@ -1,3 +1,3 @@
-mkdir -p /home/putin/.config/sonarr
-mkdir -p /home/putin/GitIt/SyncFiles/configBak/sonarr
+mkdir -p /home/$USER/.config/sonarr
+mkdir -p /home/$USER/GitIt/SyncFiles/configBak/sonarr
 docker-compose up -d

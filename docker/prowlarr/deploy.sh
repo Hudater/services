@@ -1,3 +1,3 @@
-mkdir -p /home/putin/.config/prowlarr
-mkdir -p /home/putin/GitIt/SyncFiles/configBak/prowlarr
+mkdir -p /home/$USER/.config/prowlarr
+mkdir -p /home/$USER/GitIt/SyncFiles/configBak/prowlarr
 docker-compose up -d

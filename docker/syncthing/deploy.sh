@@ -1,2 +1,2 @@
-mkdir -p /home/putin/.config/syncthing
+mkdir -p /home/$USER/.config/syncthing
 docker-compose up -d
