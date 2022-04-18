@@ -1,0 +1,14 @@
+version: "3"
+services:
+  filebrowser:
+    container_name: fbrow
+    image: hurlenko/filebrowser
+    user: 1000:1000
+    ports:
+      - 420:8080
+    volumes:
+      - /mnt/Pi_Storage:/data
+      - /home/$USER/.config/fb:/config
+    environment:
+      - FB_BASEURL=/filebrowser
+    restart: unless-stopped
