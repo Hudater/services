@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   portainer-ce:
-    network_mode: bridge
+    #    network_mode: bridge
     image: portainer/portainer-ce:latest
     container_name: port-ce
     environment:
@@ -17,3 +17,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   portainer_data:
+networks:
+  default:
+      external:
+          name: proxy

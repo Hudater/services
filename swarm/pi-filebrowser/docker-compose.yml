@@ -1,9 +1,11 @@
+---
 version: "3"
 services:
   filebrowser:
-    container_name: fbrow
     image: hurlenko/filebrowser
     user: 1000:1000
+    networks:
+      - web
     ports:
       - 420:8080
     volumes:
@@ -11,4 +13,7 @@ services:
       - /home/$USER/.config/fb:/config
     environment:
       - FB_BASEURL=/filebrowser
-    restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - pinux

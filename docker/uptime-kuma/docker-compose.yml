@@ -10,3 +10,7 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+networks:
+  default:
+      external:
+          name: proxy
