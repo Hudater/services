@@ -170,4 +170,5 @@
 [Awesome-sysadmin (deprecated but new link gives 404)](https://github.com/awesome-foss/awesome-sysadmin)  
 [Similar docker-compose and cfg list](https://github.com/abhilesh/self-hosted_docker_setups)  
 [Selfhost Wiki by Geeked](https://thehomelab.wiki)  
-[Documentation by Techno Tim](https://techno-tim.github.io/)  
+[Documentation by Techno Tim](https://docs.technotim.live/)  
+[IBRACORP Documentation](https://docs.ibracorp.io/ibracorp/)  
