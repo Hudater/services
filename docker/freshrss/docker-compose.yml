@@ -1,14 +1,22 @@
+---
 version: "2.1"
 services:
   freshrss:
-    image: linuxserver/freshrss
+    image: linuxserver/freshrss:latest
     container_name: freshrss
+    networks:
+      - proxy # rename this to your custom docker network
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Kolkata
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /home/$USER/.config/freshrss:/config
+      - ${CFG_DIR}/freshrss:/config
     ports:
       - 89:80
     restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

@@ -1,17 +1,20 @@
+---
 version: '3.3'
 services:
   adguard-home:
-    image: adguard/adguardhome
+    image: adguard/adguardhome:latest
     container_name: adguard
+    networks:
+      - proxy # rename this to your custom docker network
     restart: unless-stopped
     volumes:
-      - /home/$USER/.config/adguard/work:/opt/adguardhome/work
-      - /home/$USER/.config/adguard/conf:/opt/adguardhome/conf
+      - ${CFG_DIR}/adguard/work:/opt/adguardhome/work
+      - ${CFG_DIR}/adguard/conf:/opt/adguardhome/conf
     ports:
       - 192.168.29.12:53:53/tcp
       - 192.168.29.12:53:53/udp
-      # - 67:67/udp
-      # - 68:68/udp
+      - 67:67/udp
+      - 68:68/udp
       - 80:80/tcp
       - 443:443/tcp
       - 443:443/udp
@@ -24,3 +27,8 @@ services:
       - 5443:5443/udp
     cap_add:
       - NET_ADMIN
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

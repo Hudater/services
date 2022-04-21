@@ -1,2 +1,2 @@
-mkdir -p /home/$USER/.config/filebrowser
+mkdir -p ${CFG_DIR}/filebrowser
 docker-compose up -d

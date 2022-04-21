@@ -1,2 +1,2 @@
-mkdir -p /home/$USER/.config/syncthing
+mkdir -p ${CFG_DIR}/syncthing
 docker-compose up -d

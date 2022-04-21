@@ -1,3 +1,3 @@
-mkdir -p /home/$USER/.config/prowlarr
-mkdir -p /home/$USER/GitIt/SyncFiles/configBak/prowlarr
+mkdir -p ${CFG_DIR}/prowlarr
+mkdir -p ${BAK_CFG_DIR}/prowlarr
 docker-compose up -d

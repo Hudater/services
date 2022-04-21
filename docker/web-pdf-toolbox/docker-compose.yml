@@ -1,11 +1,19 @@
+---
 version: "3.4"
 services:
   web-pdf-toolbox:
     container_name: pdf
-    image: zpex/web-pdf-toolbox
+    image: zpex/web-pdf-toolbox:latest
+    networks:
+      - proxy # rename this to your custom docker network 
     environment:
-      - TZ=Asia/Kolkata
+      - TZ=${TZ}
     ports:
       - 25568:80
     volumes:
-        - /home/$USER/.config/pdf:/tmp/pdf/
+        - ${CFG_DIR}/pdf:/tmp/pdf/
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

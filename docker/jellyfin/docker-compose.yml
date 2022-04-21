@@ -1,23 +1,30 @@
+---
 version: "3.7"
 services:
   jellyfin:
     container_name: jellyfin
-    image: jellyfin/jellyfin
+    image: jellyfin/jellyfin:latest
+    networks:
+      - proxy # rename this to your custom docker network
     group_add:
       - 989 #adding group `render` so that VAAPI can use the almighrty radeon r5
       #remeber to change the group id which is present in /etc/group
-    network_mode: "host"
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - UMASK=002
-      - TZ=Asia/Kolkata
+      - TZ=${TZ}
     volumes:
       - /opt/vc/lib:/opt/vc/lib #optional
-      - /home/$USER/.config/jellyfin:/config
+      - ${CFG_DIR}/jellyfin:/config
       - /mnt:/data/mnt_dir
       - /mount:/data/mount_dir
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128 #optional
       - /dev/dri/card0:/dev/dri/card0
     restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

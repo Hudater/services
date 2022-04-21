@@ -4,17 +4,20 @@ services:
   portainer-agent:
     image: portainer/agent:latest
     container_name: port-agent
+    networks:
+      - proxy # rename this to your custom docker network 
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Kolkata
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     ports:
       - 9001:9001
     restart: unless-stopped
     volumes:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
       - /var/run/docker.sock:/var/run/docker.sock
+
 networks:
-  default:
-      external:
-          name: web
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

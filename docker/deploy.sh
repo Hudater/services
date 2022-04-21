@@ -1,2 +1,2 @@
-mkdir -p /home/$USER/.config/
+mkdir -p ${CFG_DIR}/
 docker-compose up -d

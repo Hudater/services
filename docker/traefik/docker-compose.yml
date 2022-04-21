@@ -4,6 +4,8 @@ services:
   traefik:
     container_name: traefik
     image: traefik:latest
+    networks:
+      - proxy # rename this to your custom docker network
     security_opt:
       - no-new-privileges:true
     ports:
@@ -12,20 +14,16 @@ services:
       - 8081:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro # ro = read-only access to the docker.sock
-      - /home/$USER/GitIt/SyncFiles/configBak/traefik/:/etc/traefik/
-    networks:
-      - proxy # rename this to your custom docker network
+      - ${BAK_CFG_DIR}/traefik/:/etc/traefik/
     labels:
-      traefik.http.routers.api.rule: Host(`traefik.DOMAIN.com`)    # Define the subdomain for the traefik dashboard.
+      traefik.http.routers.api.rule: Host(`traefik.${CF_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
       traefik.http.routers.api.entryPoints: https    # Set the Traefik entry point.
       traefik.http.routers.api.service: api@internal    # Enable Traefik API.
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
     environment:
-      CF_API_KEY: Global-API-Key
-      CF_DNS_API_TOKEN: Custom-DNS-Api-Token
-      CF_API_EMAIL: email@email.com
+      CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
+      CF_API_EMAIL: ${CF_API_EMAIL}
     restart: unless-stopped
-
 
 networks:
   proxy:    # rename this to your custom docker network.

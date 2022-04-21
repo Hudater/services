@@ -1,16 +1,24 @@
+---
 version: "2.1"
 services:
   prowlarr:
     image: linuxserver/prowlarr:develop
     container_name: prowlarr
+    networks:
+      - proxy # rename this to your custom docker network
     # network_mode: "container:gluetun"
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Kolkata
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /home/$USER/.config/prowlarr:/config
-      - /home/$USER/GitIt/SyncFiles/configBak/prowlarr:/config/Backups
+      - ${CFG_DIR}/prowlarr:/config
+      - ${BAK_CFG_DIR}/prowlarr:/config/Backups
     ports:
       - 9696:9696
     restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

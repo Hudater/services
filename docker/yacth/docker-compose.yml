@@ -1,13 +1,23 @@
+---
 version: '3'
 services:
   yacht:
     container_name: yacht
+    image: selfhostedpro/yacht:latest
+    networks:
+      - proxy # rename this to your custom docker network
     restart: unless-stopped
     ports:
       - 8001:8000
     volumes:
       - yacht:/config
       - /var/run/docker.sock:/var/run/docker.sock
-    image: selfhostedpro/yacht
+
+
 volumes:
   yacht:
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

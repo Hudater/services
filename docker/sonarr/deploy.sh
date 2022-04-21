@@ -1,3 +1,3 @@
-mkdir -p /home/$USER/.config/sonarr
-mkdir -p /home/$USER/GitIt/SyncFiles/configBak/sonarr
+mkdir -p ${CFG_DIR}/sonarr
+mkdir -p ${BAK_CFG_DIR}/sonarr
 docker-compose up -d

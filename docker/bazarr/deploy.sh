@@ -1,3 +1,3 @@
-mkdir -p /home/$USER/.config/bazarr
-mkdir -p /home/$USER/GitIt/SyncFiles/configBak/bazarr
+mkdir -p ${CFG_DIR}/bazarr
+mkdir -p ${BAK_CFG_DIR}/bazarr
 docker-compose up -d

@@ -1,0 +1,23 @@
+---
+version: "2.1"
+services:
+  duckdns:
+    image: linuxserver/duckdns:arm32v6-latest #using this on pi zero so armv6 is tagged
+    container_name: duckdns
+    networks:
+      - proxy # rename this to your custom docker network
+    environment:
+      - PUID=${PUID} #optional
+      - PGID=${PGID} #optional
+      - TZ=${TZ}
+      - SUBDOMAINS=${DD_SUBDOMAINS}
+      - TOKEN=${DD_TOKEN}
+      - LOG_FILE=true #optional
+    volumes:
+      - ${CFG_DIR}/duckdns:/config #optional
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

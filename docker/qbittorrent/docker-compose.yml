@@ -1,22 +1,22 @@
 ---
-version: "2.1"
+version: "3.7"
 services:
-  sonarr:
-    image: linuxserver/sonarr:latest
-    container_name: sonarr
+  qbittorrent:
+    container_name: qbit
+    image: hotio/qbittorrent:release-4.3.9
     networks:
       - proxy # rename this to your custom docker network
+    ports:
+      - "4000:8080"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+      - UMASK=002
       - TZ=${TZ}
     volumes:
-      - ${CFG_DIR}/sonarr:/config
-      - ${BAK_CFG_DIR}/sonarr:/config/Backups
-      - ${DATA_DIR}:/data
-        #      - ${DATA_DIR}/Media/Shows:/data/Shows
-    ports:
-      - 8989:8989
+      - ${CFG_DIR}/qbittorrent:/config
+      - ${DATA_DIR}/Torrents:/data/Torrents
+      - ${DATA_DIR}/Del:/Del
     restart: unless-stopped
 
 networks:

@@ -1,14 +1,24 @@
+---
 version: "3"
 services:
   filebrowser:
     container_name: fbrow
-    image: hurlenko/filebrowser
-    user: 1000:1000
+    image: hurlenko/filebrowser:latest
+    networks:
+      - proxy # rename this to your custom docker network
     ports:
       - 420:8080
     volumes:
-      - /home/$USER/.config/filebrowser:/config
-      - /mnt/merger:/data
+      - ${CFG_DIR}/filebrowser:/config
+      - ${DATA_DIR}:/data
     environment:
       - FB_BASEURL=/filebrowser
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

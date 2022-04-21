@@ -1,8 +1,11 @@
+---
 version: '3'
 services:
   miniflux:
     image: miniflux/miniflux:latest
     restart: unless-stopped
+    networks:
+      - proxy # rename this to your custom docker network
     ports:
       - "88:8080"
     depends_on:
@@ -25,3 +28,8 @@ services:
       start_period: 30s
 volumes:
   miniflux-db:
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

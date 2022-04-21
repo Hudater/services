@@ -1,2 +1,2 @@
-mkdir -p /home/$USER/.config/organizr
+mkdir -p ${CFG_DIR}/organizr
 docker-compose up -d

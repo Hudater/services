@@ -1,16 +1,24 @@
+---
 version: "2.1"
 services:
   lidarr:
-    image: linuxserver/lidarr
+    image: linuxserver/lidarr:latest
     container_name: lidarr
+    networks:
+      - proxy # rename this to your custom docker network
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Kolkata
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /home/$USER/.config/lidarr:/config
-      - /home/$USER/GitIt/SyncFiles/configBak/lidarr:/config/Backups
-      - /mnt/merger:/data
+      - ${CFG_DIR}/lidarr:/config
+      - ${BAK_CFG_DIR}/lidarr:/config/Backups
+      - ${DATA_DIR}:/data
     ports:
       - 8686:8686
     restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

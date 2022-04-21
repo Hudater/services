@@ -1,23 +1,29 @@
 ---
-version: "2.1"
+version: '3'
 services:
-  portainer-ce:
+  portainer:
     image: portainer/portainer-ce:latest
-    container_name: port-ce
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Kolkata
+    container_name: portainer
+    networks:
+      - proxy # rename this to your custom docker network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - 8000:8000
       - 9000:9000
-    restart: unless-stopped
     volumes:
       - portainer_data:/data
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      traefik.enable: true
+      traefik.http.routers.portainer.entryPoints: https
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
+
 volumes:
   portainer_data:
+
 networks:
-  default:
-      external:
-          name: web
+  proxy:
+    external: true

@@ -1,15 +1,23 @@
+---
 version: "2.1"
 services:
   heimdall:
-    image: linuxserver/heimdall
+    image: linuxserver/heimdall:latest
     container_name: heimdall
+    networks:
+      - proxy # rename this to your custom docker network
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Kolkata
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /home/$USER/.config/heimdall:/config
+      - ${CFG_DIR}/heimdall:/config
     ports:
       - 82:80
       - 444:443
     restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

@@ -1,16 +1,20 @@
+---
 version: '3.3'
 services:
   uptime-kuma:
-    image: louislam/uptime-kuma
+    image: louislam/uptime-kuma:latest
     container_name: uptime
+    networks:
+      - proxy # rename this to your custom docker network
     volumes:
-      - /home/$USER/.config/uptime:/app/data
+      - ${CFG_DIR}/uptime:/app/data
     ports:
       - 3001:3001
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+
 networks:
-  default:
-      external:
-          name: proxy
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

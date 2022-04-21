@@ -1,17 +1,24 @@
+---
 version: "2.1"
 services:
   bazarr:
-    image: linuxserver/bazarr
+    image: linuxserver/bazarr:latest
     container_name: bazarr
+    networks:
+      - proxy # rename this to your custom docker network
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Kolkata
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /home/$USER/.config/bazarr:/config
-      - /home/$USER/GitIt/SyncFiles/configBak/bazarr:/config/Backups
-      - /mnt/merger/Media:/data/Media
-        #      - /mnt/merger/Shows:/tv
+      - ${CFG_DIR}/bazarr:/config
+      - ${BAK_CFG_DIR}/bazarr:/config/Backups
+      - ${DATA_DIR}/Media:/data/Media
     ports:
       - 6767:6767
     restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

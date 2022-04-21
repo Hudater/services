@@ -1,13 +1,21 @@
+---
 version: "3"
 services:
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:latest
     container_name: watchtower
+    networks:
+      - proxy # rename this to your custom docker network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - TZ=Asia/Kolkata
+      - TZ=${TZ}
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_DEBUG=true
       - WATCHTOWER_POLL_INTERVAL=86400
-    restart: unless-stopped 
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    driver: bridge
+    external: true

@@ -1,2 +1,2 @@
-mkdir -p /home/$USER/.config/heimdall
+mkdir -p ${CFG_DIR}/heimdall
 docker-compose up -d
