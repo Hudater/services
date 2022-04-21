@@ -10,7 +10,7 @@ services:
     environment:
       - WG_HOST=${CF_DOMAIN}
       - PASSWORD=${WG_PASS}
-      - WG_PORT=${WG_PORT}
+      - WG_PORT=51820
       - WG_DEFAULT_DNS=${LOCAL_DNS}
         #      - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24 # doesn't work with this option enabled
     volumes:

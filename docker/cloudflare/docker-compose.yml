@@ -10,9 +10,9 @@ services:
     environment:
       - API_KEY=${CF_DDNS_API}
       - ZONE=${CF_DOMAIN}
-      - PROXIED=true
+      - PROXIED=false
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
+    # driver: bridge
     external: true

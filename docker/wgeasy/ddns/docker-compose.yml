@@ -1,6 +1,7 @@
 # Can't use wireguard with proxied option enabled since they only support selected few ports to be proxied
+# Backup VPN on Pi-Zero
 ---
-version: "3.8"
+version: "3"
 services:
   wg-easy:
     image: weejewel/wg-easy:latest
@@ -10,13 +11,13 @@ services:
     environment:
       - WG_HOST=${DD_DOMAIN}
       - PASSWORD=${WG_PASS}
-      - WG_PORT=${WG_PORT}
+      - WG_PORT=51822
       - WG_DEFAULT_DNS=${LOCAL_DNS}
         #      - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24 # doesn't work with this option enabled
     volumes:
       - ${CFG_DIR}/wgdd:/etc/wireguard
     ports:
-      - "51820:51820/udp" #wg traffic port; match with WG_PORT
+      - "51822:51820/udp" #wg traffic port; match with WG_PORT
       - "51821:51821/tcp" #webgui port
     restart: unless-stopped
     cap_add:
