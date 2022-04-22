@@ -100,15 +100,15 @@ class MyAdapter(HTTPAdapter):
                                        block=block,
                                        ssl_version=ssl.PROTOCOL_TLSv1)
 
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0'}     
+headers = "{'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0'}"     
 
 s = requests.Session()
 s.mount(host, MyAdapter())
-x = s.post(host + "/control/login", json.dumps({"name": userName, "password" : password}), headers=headers )
+x = s.post(host + "/control/login", json.dumps("{"name": userName, "password" : password}"), headers=headers )
 print(x.text)
 
 for u in urls:
-	filterObj = json.dumps({'url':u, "name":u,"whitelist":False})
+	filterObj = json.dumps("{'url':u, "name":u,"whitelist":False}")
 	print(filterObj)
 	x = s.post(host + "/control/filtering/add_url", data = filterObj, headers=headers)
 	print(x.text)

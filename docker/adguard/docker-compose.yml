@@ -8,8 +8,8 @@ services:
       - proxy # rename this to your custom docker network
     restart: unless-stopped
     volumes:
-      - ${CFG_DIR}/adguard/work:/opt/adguardhome/work
-      - ${CFG_DIR}/adguard/conf:/opt/adguardhome/conf
+      - "${CFG_DIR}/adguard/work:/opt/adguardhome/work"
+      - "${CFG_DIR}/adguard/conf:/opt/adguardhome/conf"
     ports:
       - 192.168.29.12:53:53/tcp
       - 192.168.29.12:53:53/udp
@@ -30,5 +30,4 @@ services:
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

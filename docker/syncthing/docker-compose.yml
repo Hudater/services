@@ -8,11 +8,11 @@ services:
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID="${PUID}"
+      - PGID="${PGID}"
+      - TZ="${TZ}"
     volumes:
-      - ${CFG_DIR}/syncthing:/config
+      - "${CFG_DIR}/syncthing:/config"
       - /home/$USER:/home_dir
       - /:/root_dir
     ports:
@@ -24,5 +24,4 @@ services:
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

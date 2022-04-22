@@ -1,8 +1,8 @@
 docker create \
   --name=organizr \
   --restart=unless-stopped \
-  -v ${CFG_DIR}/organizr:/config \
-  -e PGID=${PGID} -e PUID=${PUID}  \
+  -v "${CFG_DIR}"/organizr:/config \
+  -e PGID="${PGID}" -e PUID="${PUID}"  \
   -p 83:80 \
   -e branch="v2-master" \
   organizr/organizr

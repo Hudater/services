@@ -1,2 +1,2 @@
-mkdir -p ${CFG_DIR}/
+mkdir -p "${CFG_DIR}"/
 docker-compose up -d

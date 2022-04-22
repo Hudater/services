@@ -10,15 +10,14 @@ services:
       - 420:8080
     volumes:
       - /storage:/data
-      - ${CFG_DIR}/filebrowser:/config
+      - "${CFG_DIR}/filebrowser:/config"
     environment:
       - FB_BASEURL=/filebrowser
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID="${PUID}"
+      - PGID="${PGID}"
+      - TZ="${TZ}"
     restart: unless-stopped
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

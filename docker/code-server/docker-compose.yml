@@ -7,21 +7,20 @@ services:
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID="${PUID}"
+      - PGID="${PGID}"
+      - TZ="${TZ}"
       - PASSWORD=q #optional
       # - HASHED_PASSWORD= #optional
       - SUDO_PASSWORD=q #optional
       # - SUDO_PASSWORD_HASH= #optional
       # - PROXY_DOMAIN=code-server.my.domain #optional
     volumes:
-      - ${CFG_DIR}/code:/config
+      - "${CFG_DIR}/code:/config"
     ports:
       - 8443:8443
     restart: unless-stopped
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

@@ -9,7 +9,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - TZ=${TZ}
+      - TZ="${TZ}"
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_DEBUG=true
       - WATCHTOWER_POLL_INTERVAL=86400
@@ -17,5 +17,4 @@ services:
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

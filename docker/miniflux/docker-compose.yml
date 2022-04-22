@@ -26,10 +26,10 @@ services:
       test: ["CMD", "pg_isready", "-U", "miniflux"]
       interval: 10s
       start_period: 30s
+
 volumes:
   miniflux-db:
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

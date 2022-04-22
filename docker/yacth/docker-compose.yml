@@ -13,11 +13,9 @@ services:
       - yacht:/config
       - /var/run/docker.sock:/var/run/docker.sock
 
-
 volumes:
   yacht:
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

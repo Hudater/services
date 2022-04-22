@@ -7,19 +7,17 @@ services:
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID="${PUID}"
+      - PGID="${PGID}"
+      - TZ="${TZ}"
     volumes:
-      - ${CFG_DIR}/sonarr:/config
-      - ${BAK_CFG_DIR}/sonarr:/config/Backups
-      - ${DATA_DIR}:/data
-        #      - ${DATA_DIR}/Media/Shows:/data/Shows
+      - "${CFG_DIR}/sonarr:/config"
+      - "${BAK_CFG_DIR}/sonarr:/config/Backups"
+      - "${DATA_DIR}:/data"
     ports:
       - 8989:8989
     restart: unless-stopped
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

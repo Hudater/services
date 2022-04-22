@@ -12,15 +12,14 @@ services:
             ALLOW_CONFIG_MUTATIONS: 'true'
         restart: unless-stopped
         volumes:
-            - ${CFG_DIR}/ytdlmat/appdata:/app/appdata
-            - ${CFG_DIR}/ytdlmat/users:/app/users
-            - ${DATA_DIR}/Youtube/audio:/app/audio
-            - ${DATA_DIR}/Youtube/video:/app/video
-            - ${DATA_DIR}/Youtube/subs:/app/subscriptions
+            - "${CFG_DIR}/ytdlmat/appdata:/app/appdata"
+            - "${CFG_DIR}/ytdlmat/users:/app/users"
+            - "${DATA_DIR}/Youtube/audio:/app/audio"
+            - "${DATA_DIR}/Youtube/video:/app/video"
+            - "${DATA_DIR}/Youtube/subs:/app/subscriptions"
         ports:
             - 8998:17442
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

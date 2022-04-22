@@ -7,16 +7,15 @@ services:
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID="${PUID}"
+      - PGID="${PGID}"
+      - TZ="${TZ}"
     volumes:
-      - ${CFG_DIR}/freshrss:/config
+      - "${CFG_DIR}/freshrss:/config"
     ports:
       - 89:80
     restart: unless-stopped
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

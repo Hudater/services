@@ -7,15 +7,14 @@ services:
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - LOG_HTML=${LOG_HTML:-false}
-      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=${TZ}
+      - LOG_LEVEL="${LOG_LEVEL:-info}"
+      - LOG_HTML="${LOG_HTML:-false}"
+      - CAPTCHA_SOLVER="${CAPTCHA_SOLVER:-none}"
+      - TZ="${TZ}"
     ports:
       - "${PORT:-8191}:8191"
     restart: unless-stopped
 
 networks:
   proxy:    # rename this to your custom docker network.
-    driver: bridge
     external: true

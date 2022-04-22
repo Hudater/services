@@ -1,2 +1,2 @@
-mkdir -p ${CFG_DIR}/pdf
+mkdir -p "${CFG_DIR}"/pdf
 docker-compose up -d
