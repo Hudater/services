@@ -16,6 +16,8 @@ services:
         #      - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24 # doesn't work with this option enabled
     volumes:
       - ${CFG_DIR}/wgcf:/etc/wireguard
+    labels:
+      traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
     ports:
       - "51820:51820/udp" #wg traffic port; match with WG_PORT
       - "51821:51821/tcp" #webgui port

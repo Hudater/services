@@ -1,3 +1,5 @@
+### Run script at your own risk. This is only tested in my personal environment. Please read script before running it on your system
+
 #!/bin/sh
 #checking if adguard dir exists in .config
 if [ -d "/home/$USER/.config/adguard" ]; then

@@ -1,3 +1,5 @@
+### Run script at your own risk. This is only tested in my personal environment. Please read script before running it on your system
+
 #!/bin/sh
 echo "Uninstalling Adguard if installed via my script\n"
 sudo /home/$USER/.config/adguard/AdGuardHome/AdGuardHome -s uninstall

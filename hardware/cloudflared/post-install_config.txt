@@ -1,0 +1,6 @@
+After installing cloudflared, follow this guide and create tunnel via GUI if you value sanity:
+  IBRACORP: `https://youtu.be/RUJy9fjoiy4`
+
+Videos explaining the CLI methods:
+  IBRACORP: `https://youtu.be/RQ-6dActAr8`
+  Raid Owl: `https://youtu.be/hrwoKO7LMzk`
