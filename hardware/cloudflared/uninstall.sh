@@ -28,7 +28,7 @@ case $userInput in
         echo "Invalid input. Exiting with code 1"
         exit 1
         ;;
-    ;;
+    esac
 
   N|n)
     echo "Your tunnel is untouched. Exiting..."
@@ -43,3 +43,4 @@ esac
 
 echo "Uninstalling cloudflared bianry"
 sudo dpkg -r cloudflared
+exit 0;

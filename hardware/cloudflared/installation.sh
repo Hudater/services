@@ -15,7 +15,6 @@ fi
 # echo "Finding out cpu architecture and downloading relevant package"
 
 cpuArch=$(uname -m)
-# echo "$cpuArch"
 
 # assigning wget with options and url to var
 mkdir -p /root/.cloudflared
@@ -26,13 +25,13 @@ downloader="wget --no-check-certificate --content-disposition -P /root/.cloudfla
 # https://gist.github.com/jwebcat/5122366
 case $cpuArch in
 
-  amd64)
+  amd64 | x86_64)
     ${downloader}cloudflared-linux-amd64.deb
     ;;
 
-  # x86_64)
-  #   ${downloader}cloudflared-linux-amd64.deb
-  #   ;;
+  x86)
+    ${downloader}cloudflared-linux-386.deb
+    ;;
 
   aarch64 | arm64 | armv8)
     ${downloader}cloudflared-linux-arm64.deb
@@ -43,6 +42,7 @@ case $cpuArch in
   #   ;;
 
   armv6l | armv6 | arm)
+    case $armChoice in
     ${downloader}cloudflared-linux-arm.deb
     ;;
 esac
@@ -50,3 +50,7 @@ esac
 # Installing package
 echo "\nInstalling Cloudflared\n"
 sudo dpkg -i /root/.cloudflared/cloudflared-linux-*
+
+
+printf "If this installation method failed for you, clean the files and build from source. For pi-zero, a build script is in the repo"
+exit 0;
