@@ -28,6 +28,7 @@ if [[ $(uname -m) = "armv6l" || $(uname -m) = "armv6" || $(uname -m) = "arm" ]];
     make cloudflared
     go install github.com/cloudflare/cloudflared/cmd/cloudflared
     mv /root/cloudflared/cloudflared /usr/bin/cloudflared
+    exit 0;
   }
 
   #checking if golang is already installed
@@ -44,11 +45,10 @@ if [[ $(uname -m) = "armv6l" || $(uname -m) = "armv6" || $(uname -m) = "arm" ]];
       echo "Latest version of go is installed. Building cloudflared now"
       if [ $(which cloudflared) ]; then
         echo "Cloudflare is already installed"
-        exit
+        exit 0;
       else
         cfTunnelInstall
       fi
-      exit 0;
     else
       echo "Current Go installation is outtaded. Remove the old version and re-run script"
       exit 1;
@@ -59,14 +59,10 @@ if [[ $(uname -m) = "armv6l" || $(uname -m) = "armv6" || $(uname -m) = "arm" ]];
     echo "Building cloudflare tunnel package now!"
     if [ $(which cloudflared) ]; then
       echo "Cloudflare is already installed"
-      exit
+      exit 0;
     else
       cfTunnelInstall
     fi
-    if [ $(which cloudflared) ]; then
-        cfTunnelInstall
-    fi
-    exit 0;
   fi
 
 else
