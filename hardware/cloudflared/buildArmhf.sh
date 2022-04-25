@@ -43,6 +43,9 @@ if [[ $(uname -m) = "armv6l" || $(uname -m) = "armv6" || $(uname -m) = "arm" ]];
     if [[ "$goLatestVer" = "$installedVer" ]]; then
       echo "Latest version of go is installed. Building cloudflared now"
       if [ $(which cloudflared) ]; then
+        echo "Cloudflare is already installed"
+        exit
+      else
         cfTunnelInstall
       fi
       exit 0;
@@ -54,6 +57,12 @@ if [[ $(uname -m) = "armv6l" || $(uname -m) = "armv6" || $(uname -m) = "arm" ]];
     echo "Installing Golang!"
     goInstallFn
     echo "Building cloudflare tunnel package now!"
+    if [ $(which cloudflared) ]; then
+      echo "Cloudflare is already installed"
+      exit
+    else
+      cfTunnelInstall
+    fi
     if [ $(which cloudflared) ]; then
         cfTunnelInstall
     fi
