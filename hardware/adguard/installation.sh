@@ -105,3 +105,4 @@ tar -C /home/$USER/.config/adguard -zxvf /home/$USER/.config/adguard/AdGuardHome
 
 echo "\nInstalling Adguard\n"
 sudo /home/$USER/.config/adguard/AdGuardHome/AdGuardHome -s install
+unset doit distro package_manager cpuArch

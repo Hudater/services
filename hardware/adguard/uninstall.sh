@@ -10,17 +10,20 @@ case $userInput in
   M|m)
     echo "Moving adguard to adgaurd-backup"
     mv /home/$USER/.config/adguard /home/$USER/.config/adguard-backup
-    exit 0
+    unset userInput
+    exit 0;
     ;;
 
   D|d)
     echo "Removing Adguard dir from .config"
     sudo rm -rf /home/$USER/.config/adguard
-    exit 0
+    unset userInput
+    exit 0;
     ;;
 
   *)
     echo "Invalid input. Exiting with code 1"
-    exit 1
+    unset userInput
+    exit 1;
     ;;
 esac

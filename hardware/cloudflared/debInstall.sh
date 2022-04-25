@@ -2,14 +2,14 @@
 
 #!/bin/bash
 if (( $EUID != 0 )); then
-  echo "This script must be run as root"
+  printf "This script must be run as root"
   exit 1
 fi
 
 
 
 if [ $(which cloudflared) ]; then
-  echo "Cloudflare is already installed"
+  printf "Cloudflare is already installed"
   exit 0;
 else
 
@@ -17,7 +17,7 @@ else
 
   #checking if cloudflared dir exists in root's home dir
   if [ -d "/root/.cloudflared" ]; then
-    echo "Moving /root/.cloudflared to /root/.cloudflared-BAK\n"
+    printf "Moving /root/.cloudflared to /root/.cloudflared-BAK\n"
     mv /root/.cloudflared /root/.cloudflared-BAK
   fi
 
@@ -52,8 +52,10 @@ else
   # Installing package
   printf "\nInstalling Cloudflared\n"
   sudo dpkg -i /root/.cloudflared/cloudflared-linux-*
+  rm /root/.cloudflared/cloudflared-linux-*
 
 
   printf "\nIf this installation method failed for you, clean the files and build from source. For pi-zero, a build script is in the repo\n"
+  unset cpuArch downloader
   exit 0;
 fi

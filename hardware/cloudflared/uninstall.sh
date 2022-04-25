@@ -15,6 +15,7 @@ case $userInput in
     cloudflared tunnel delete $userInput
     printf "\nUninstalling cloudflared binary!\n"
     dpkg -r cloudflared
+    mv /root/.cloudflared /root/.cloudflared-BAK
     exit 0;
     ;;
 
@@ -22,6 +23,7 @@ case $userInput in
     printf "\nYour tunnel is untouched.\n"
     printf "\nUninstalling cloudflared binary!\n"
     dpkg -r cloudflared
+    mv /root/.cloudflared /root/.cloudflared-BAK
     exit 0;
     ;;
 
