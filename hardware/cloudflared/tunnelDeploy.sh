@@ -6,7 +6,7 @@ if (( $EUID != 0 )); then
   exit 1;
 fi
 
-printf "WARNING: Must have already logged in your cloudflare account beofre running script\n"
+printf "WARNING: Must have already logged in your cloudflare account in browser beofre running script\n"
 printf "If logged in, Enter Y/y to continue else any other key to exit\n"
 read contLogin
 case $contLogin in
@@ -18,17 +18,26 @@ case $contLogin in
       read tunName
       cloudflared tunnel create $tunName
 
-      read -s -n 1 -p "Copy tunnel UUID and press enter to open config file"
-      # printf "Enter name for your tunnel: "
-      # read tunName
-      # echo $tunName
+      wget -O /root/.cloudflared/config.yml https://raw.githubusercontent.com/Hudater/services/main/hardware/cloudflared/config.yml
+      read -s -n 1 -p "Copy tunnel UUID and press ENTER to open config file in nano"
+      nano /root/.cloudflared/config.yml
+
+      printf "Enter your desired hostname (ex: home.example.com): "
+      read hostName
+      cloudflared tunnel route dns $tunName $hostName
+
+      cloudflared service install
+      systemctl enable --now cloudflared.service
+
+      unset contLogin tunName hostName
+      exit 0;
     else
-      printf "Cloudflared is not installed. Try: https://github.com/Hudater/services/blob/main/hardware/cloudflared/debInstall.sh"
+      printf "Cloudflared is not installed. Try: https://github.com/Hudater/services/blob/main/hardware/cloudflared/debInstall.sh\n"
     fi
-      ;;
+    ;;
 
   *)
-    printf "Exiting script with code 1"
+    printf "Exiting script with code 1\n"
     unset contLogin
     exit 1;
     ;;
