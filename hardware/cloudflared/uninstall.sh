@@ -1,46 +1,32 @@
 ### Run script at your own risk. This is only tested in my personal environment. Please read script before running it on your system
+# Not a very neat and clean script please forgive the lack of the same
 
 #!/bin/sh
-echo "WARNING: Use this script if tunnel is installed via CLI\n"
-echo "Enter Y/y to delete tunnel or N/n to exit"
+printf "WARNING: Use this script if tunnel is installed via CLI\n"
+
+printf "Enter A/a to delete tunnel and binary or B/b to just uninstall binary. Anything else to exit\n"
 read userInput
 case $userInput in
-  Y|y)
-    tunnelList="cloudflared tunnel list"
-    echo "Your tunnels are: $(eval $tunnelList)"
-    echo "\nEnter your tunnel name to delete: "
+  A|a)
+    printf "\nYour tunnels are:\n $(cloudflared tunnel list)\n"
+    printf "\nEnter your tunnel name to delete: "
     read userInput
-    echo $userInput
+    printf $userInput
     cloudflared tunnel delete $userInput
-    echo "\nDo you want to DELETE CLOUDFLARED BINARY too: "
-    read binDelInput
-    case $binDelInput in
-      Y|y)
-        echo "Uninstalling cloudflared bianry"
-        sudo dpkg -r cloudflared
-        exit 0
-        ;;
-      N|n)
-        echo "Cloudflared binary is untouched, Exiting..."
-        exit 0
-        ;;
-      *)
-        echo "Invalid input. Exiting with code 1"
-        exit 1
-        ;;
-    esac
+    printf "\nUninstalling cloudflared binary!\n"
+    dpkg -r cloudflared
+    exit 0;
+    ;;
 
   N|n)
-    echo "Your tunnel is untouched. Exiting..."
-    exit 0
+    printf "\nYour tunnel is untouched.\n"
+    printf "\nUninstalling cloudflared binary!\n"
+    dpkg -r cloudflared
+    exit 0;
     ;;
 
   *)
-    echo "Invalid input. Exiting with code 1"
-    exit 1
+    printf "Invalid input. Exiting with code 1"
+    exit 1;
     ;;
 esac
-
-echo "Uninstalling cloudflared bianry"
-sudo dpkg -r cloudflared
-exit 0;

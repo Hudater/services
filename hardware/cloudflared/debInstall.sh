@@ -6,51 +6,54 @@ if (( $EUID != 0 )); then
   exit 1
 fi
 
-#checking if cloudflared dir exists in root's home dir
-if [ -d "/root/.cloudflared" ]; then
-  echo "Moving /root/.cloudflared to /root/.cloudflared-BAK\n"
-  mv /root/.cloudflared /root/.cloudflared-BAK
+
+
+if [ $(which cloudflared) ]; then
+  echo "Cloudflare is already installed"
+  exit 0;
+else
+
+  cpuArch=$(uname -m)
+
+  #checking if cloudflared dir exists in root's home dir
+  if [ -d "/root/.cloudflared" ]; then
+    echo "Moving /root/.cloudflared to /root/.cloudflared-BAK\n"
+    mv /root/.cloudflared /root/.cloudflared-BAK
+  fi
+
+  # directory setup
+  mkdir -p /root/.cloudflared
+  chmod -R 777 /root/.cloudflared
+  
+  # assigning wget with options and url to var
+  downloader="wget --no-check-certificate --content-disposition -P /root/.cloudflared/ https://github.com/cloudflare/cloudflared/releases/latest/download/"
+
+  # downloading relevant package based on architecture
+  # https://gist.github.com/jwebcat/5122366
+  case $cpuArch in
+
+    amd64 | x86_64)
+      ${downloader}cloudflared-linux-amd64.deb
+      ;;
+
+    x86)
+      ${downloader}cloudflared-linux-386.deb
+      ;;
+
+    aarch64 | arm64 | armv8)
+      ${downloader}cloudflared-linux-arm64.deb
+      ;;
+
+    armv6l | armv6 | arm)
+      ${downloader}cloudflared-linux-arm.deb
+      ;;
+  esac
+
+  # Installing package
+  printf "\nInstalling Cloudflared\n"
+  sudo dpkg -i /root/.cloudflared/cloudflared-linux-*
+
+
+  printf "\nIf this installation method failed for you, clean the files and build from source. For pi-zero, a build script is in the repo\n"
+  exit 0;
 fi
-
-# echo "Finding out cpu architecture and downloading relevant package"
-
-cpuArch=$(uname -m)
-
-# assigning wget with options and url to var
-mkdir -p /root/.cloudflared
-chmod -R 777 /root/.cloudflared
-downloader="wget --no-check-certificate --content-disposition -P /root/.cloudflared/ https://github.com/cloudflare/cloudflared/releases/latest/download/"
-
-# downloading relevant package based on architecture
-# https://gist.github.com/jwebcat/5122366
-case $cpuArch in
-
-  amd64 | x86_64)
-    ${downloader}cloudflared-linux-amd64.deb
-    ;;
-
-  x86)
-    ${downloader}cloudflared-linux-386.deb
-    ;;
-
-  aarch64 | arm64 | armv8)
-    ${downloader}cloudflared-linux-arm64.deb
-    ;;
-
-  # armv7)
-  #   ${downloader}AdGuardHome_linux_armv7.tar.gz
-  #   ;;
-
-  armv6l | armv6 | arm)
-    case $armChoice in
-    ${downloader}cloudflared-linux-arm.deb
-    ;;
-esac
-
-# Installing package
-echo "\nInstalling Cloudflared\n"
-sudo dpkg -i /root/.cloudflared/cloudflared-linux-*
-
-
-printf "If this installation method failed for you, clean the files and build from source. For pi-zero, a build script is in the repo"
-exit 0;
