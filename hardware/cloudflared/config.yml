@@ -1,0 +1,10 @@
+#example config by IBRACORP. Modified for a scirpt of mine
+#credit: https://docs.ibracorp.io/cloudflare-tunnel/#create-the-config.yaml
+tunnel: UUID
+credentials-file: /root/.cloudflared/UUID.json
+
+# forward all traffic to Reverse Proxy w/ SSL
+ingress:
+  - service: https://REVERSEPROXYIP:PORT #example https://192.168.29.12:443
+    originRequest:
+      originServerName: optional-subdomain.enter-your-domain.com #examples: example.com, home.example.com, *.example.com
