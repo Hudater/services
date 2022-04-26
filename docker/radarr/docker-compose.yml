@@ -7,13 +7,13 @@ services:
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - PUID="${PUID}"
-      - PGID="${PGID}"
-      - TZ="${TZ}"
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - "${CFG_DIR}/radarr:/config"
-      - "${BAK_CFG_DIR}/radarr:/config/Backups"
-      - "${DATA_DIR}:/data"
+      - ${CFG_DIR}/radarr:/config
+      - ${BAK_CFG_DIR}/radarr:/config/Backups
+      - ${DATA_DIR}:/data
         #      - "${DATA_DIR}"/Media/Movies:/data/Movies
     ports:
       - 7878:7878

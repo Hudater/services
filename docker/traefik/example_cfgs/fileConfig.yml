@@ -1,22 +1,40 @@
 http:
-
   ## EXTERNAL ROUTING EXAMPLE - Only use if you want to proxy something manually ##
   routers:
-    # # Homeassistant routing example - Remove if not used
-    # homeassistant:
-    #   entryPoints:
-    #     - https
-    #   rule: 'Host(`homeassistant.domain.com`)'
-    #   service: homeassistant
-    #   middlewares:
-    #     - "auth"  
+    adguard:
+      entryPoints:
+        - https
+      rule: 'Host(`adguard.EXAMPLE.COM`)'
+      service: adguard
+
+    olivetin:
+      entryPoints:
+        - https
+      rule: 'Host(`olivetin.EXAMPLE.COM`)'
+      service: olivetin
+
+    homer:
+      entryPoints:
+        - https
+      rule: 'Host(`homer.EXAMPLE.COM`)'
+      service: homer
+
   ## SERVICES EXAMPLE ##
   services:
-    # # Homeassistant service example - Remove if not used
-    # homeassistant:
-    #   loadBalancer:
-    #     servers:
-    #       - url: http://192.168.60.5:8123/
+    adguard:
+      loadBalancer:
+        servers:
+          - url: http://192.168.29.12:80/
+
+    olivetin:
+      loadBalancer:
+        servers:
+          - url: http://192.168.29.12:1337/
+
+    homer:
+      loadBalancer:
+        servers:
+          - url: http://192.168.29.10:8080/
 
   ## MIDDLEWARES ##
   middlewares:

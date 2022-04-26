@@ -49,11 +49,11 @@ entryPoints:
     http:
       tls:
         # Generate a wildcard domain certificate
-        certResolver: letsencrypt
+        # certResolver: letsencrypt
         domains:
-          - main: DOMAIN.com
+          - main: EXAMPLE.COM
             sans:
-              - '*.DOMAIN.com'
+              - '*.EXAMPLE.COM'
       middlewares:
         - securityHeaders@file
 
@@ -70,7 +70,7 @@ providers:
     watch: true
     network: proxy # Add Your Docker Network Name Here
     # Default host rule to containername.domain.example
-    defaultRule: "Host(`"{"{ index .Labels \"com.docker.compose.service\"}"}".DOMAIN.com`)"
+    defaultRule: "Host(`{{ index .Labels \"com.docker.compose.service\"}}.EXAMPLE.COM`)"
     swarmModeRefreshSeconds: 15s
     exposedByDefault: false
     #endpoint: "tcp://dockersocket:2375" # Uncomment if you are using docker socket proxy
@@ -84,27 +84,30 @@ api:
 log:
   level: DEBUG
 
-# Use letsencrypt to generate ssl serficiates
 certificatesResolvers:
-  # letsencrypt:
-  #   acme:
-  #     email: email@email.com
-  #     storage: /etc/traefik/acme.json
-  #     dnsChallenge:
-  #       provider: cloudflare
-  #       # Used to make sure the dns challenge is propagated to the rights dns servers
-  #       resolvers:
-  #         - "1.1.1.1:53"
-  #         - "1.0.0.1:53"
 
+# use this one for testing otherwise you will hit rate limits
   letsencrypt:
       acme:
-        email: email@email.com
+        email: myemail@gmail.com
         storage: /etc/traefik/acme.json
         caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
         dnsChallenge:
           provider: cloudflare
+          delayBeforeCheck: 5
           # Used to make sure the dns challenge is propagated to the rights dns servers
           resolvers:
             - "1.1.1.1:53"
             - "1.0.0.1:53"
+
+# Use letsencrypt to generate ssl serficiates
+#   letsencrypt:
+#     acme:
+#       email: myemail@gmail.com
+#       storage: /etc/traefik/acme.json
+#       dnsChallenge:
+#         provider: cloudflare
+#         # Used to make sure the dns challenge is propagated to the rights dns servers
+#         resolvers:
+#           - "1.1.1.1:53"
+#           - "1.0.0.1:53"
