@@ -6,6 +6,8 @@ services:
     container_name: uptime
     networks:
       - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
     volumes:
       - "${CFG_DIR}/uptime:/app/data"
     ports:

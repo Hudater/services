@@ -19,8 +19,10 @@
   `ALL ALL=NOPASSWD: /sbin/poweroff,/sbin/reboot,/sbin/shutdown`\
   Tip: Add this line after `%wheel ALL=(ALL) ALL` line
 
-
+*interface*
 ## Wake on LAN
+
+#### [Arch Wiki for WoL](https://wiki.archlinux.org/title/Wake-on-LAN)
 
 1. Install `wakeonlan` package on the server: `sudo apt install wakeonlan -y`
 
@@ -29,5 +31,20 @@
 3. Enable wol on OS level:
     - `ip a` to look at all network interfaces
     - `ethtool interface | grep Wake-on` to get current wake-on-lan status (replace interface with your etherner port id)
-    - `nmcli con show` to get connection name
-    - `nmcli c modify "wired1" 802-3-ethernet.wake-on-lan magic` to enable wol (replace wired1 with connection name from previous command)
+    - `vim /etc/systemd/system/wol@.service`
+    - ```
+      [Unit]
+      Description=Wake-on-LAN for %i
+      Requires=network.target
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/sbin/ethtool -s %i wol g
+      Type=oneshot
+
+      [Install]
+      WantedBy=multi-user.target
+       ````
+      ### Note: replace /ethtool binary location accordingly
+    - `sudo systemctl enable wol@interface --now` Replace interface with your interface name
+    - Reboot twice
