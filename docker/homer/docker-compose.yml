@@ -13,6 +13,7 @@ services:
       - /home/$USER/.config/homer:/www/assets
       - "${BAK_CFG_DIR}/homer/config.yml:/www/assets/config.yml"
       - "${BAK_CFG_DIR}/icons:/www/assets/manicons"
+      - "${BAK_CFG_DIR}/wallpapers:/www/assets/wallpapers"
     ports:
       - 8080:8080
     environment:

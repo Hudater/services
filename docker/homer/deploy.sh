@@ -14,7 +14,7 @@ sudo chmod -R 777 /home/$USER/Homer-Theme
 
 # deleting default config. DON'T DO THIS IF YOU DON'T WANT CUSTOM THEME
 sudo chmod -R 777 /home/$USER/.config/homer
-find /home/$USER/.config/homer/* ! -name 'manicons' ! -name 'config.yml' -type d,f -exec rm -rf "{}" +
+find /home/$USER/.config/homer/* ! -name 'manicons' ! -name 'wallpapers' ! -name 'config.yml' -type d,f -exec rm -rf "{}" +
 
 # moving custom theme files to homer dir
 mv /home/$USER/Homer-Theme/assets/config.yml /home/$USER/Homer-Theme/assets/og-config.yml
