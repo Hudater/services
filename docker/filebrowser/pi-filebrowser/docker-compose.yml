@@ -11,6 +11,8 @@ services:
     volumes:
       - /mnt/Pi_Storage:/data
       - "${CFG_DIR}/filebrowser:/config"
+    labels:
+      traefik.enable: true
     environment:
       - FB_BASEURL=/filebrowser
       - PUID="${PUID}"

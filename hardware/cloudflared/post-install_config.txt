@@ -1,3 +1,6 @@
+Execute tunnelDeploy.sh script to config via cli.
+
+
 After installing cloudflared, follow this guide and create tunnel via GUI if you value sanity:
   IBRACORP: `https://youtu.be/RUJy9fjoiy4`
 

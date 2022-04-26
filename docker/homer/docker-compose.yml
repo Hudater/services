@@ -10,7 +10,8 @@ services:
       - com.centurylinklabs.watchtower.monitor-only="true"
       - traefik.enable="true"   # Enable Traefik reverse proxy for the Traefik dashboard.
     volumes:
-      - "${BAK_CFG_DIR}/homer:/www/assets"
+      - /home/$USER/.config/homer:/www/assets
+      - "${BAK_CFG_DIR}/homer/config.yml:/www/assets/config.yml"
       - "${BAK_CFG_DIR}/icons:/www/assets/manicons"
     ports:
       - 8080:8080
