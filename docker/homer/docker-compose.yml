@@ -17,9 +17,9 @@ services:
     ports:
       - 8080:8080
     environment:
-      - UID="${PUID}"
-      - GID="${PGID}"
-      - TZ="${TZ}"
+      - UID=${PUID}
+      - GID=${PGID}
+      - TZ=${TZ}
     restart: unless-stopped
 
 networks:

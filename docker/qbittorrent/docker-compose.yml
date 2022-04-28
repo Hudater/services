@@ -9,10 +9,10 @@ services:
     ports:
       - "4000:8080"
     environment:
-      - PUID="${PUID}"
-      - PGID="${PGID}"
+      - PUID=${PUID}
+      - PGID=${PGID}
       - UMASK=002
-      - TZ="${TZ}"
+      - TZ=${TZ}
     volumes:
       - "${CFG_DIR}/qbittorrent:/config"
       - "${DATA_DIR}/Torrents:/data/Torrents"

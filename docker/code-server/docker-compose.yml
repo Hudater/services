@@ -7,9 +7,9 @@ services:
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - PUID="${PUID}"
-      - PGID="${PGID}"
-      - TZ="${TZ}"
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
       - PASSWORD=q #optional
       # - HASHED_PASSWORD= #optional
       - SUDO_PASSWORD=q #optional

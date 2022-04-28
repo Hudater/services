@@ -15,9 +15,9 @@ services:
       traefik.enable: true
     environment:
       - FB_BASEURL=/filebrowser
-      - PUID="${PUID}"
-      - PGID="${PGID}"
-      - TZ="${TZ}"
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     restart: unless-stopped
 
 networks:

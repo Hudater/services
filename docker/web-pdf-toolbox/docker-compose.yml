@@ -7,7 +7,7 @@ services:
     networks:
       - proxy # rename this to your custom docker network 
     environment:
-      - TZ="${TZ}"
+      - TZ=${TZ}
     ports:
       - 25568:80
     volumes:

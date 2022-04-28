@@ -13,9 +13,9 @@ services:
       - "${CFG_DIR}/filebrowser:/config"
     environment:
       - FB_BASEURL=/filebrowser
-      - PUID="${PUID}"
-      - PGID="${PGID}"
-      - TZ="${TZ}"
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     restart: unless-stopped
 
 networks:
