@@ -13,7 +13,6 @@ services:
       - 443:443
       - 8081:8080
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro # ro = read-only access to the docker.sock
       - "${BAK_CFG_DIR}/traefik/:/etc/traefik/"
     labels:
       traefik.http.routers.api.rule: Host(`traefik.${CF_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
@@ -24,8 +23,22 @@ services:
       CF_DNS_API_TOKEN: "${CF_DNS_API_TOKEN}"
       CF_API_EMAIL: "${CF_API_EMAIL}"
     restart: unless-stopped
+    depends_on:
+      - dockersocket
+
+  dockersocket:
+    container_name: dockersocket
+    image: tecnativa/docker-socket-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - proxy
+    environment:
+      CONTAINERS: 1
+      POST: 0
+    privileged: true
+    restart: unless-stopped
 
 networks:
   proxy:    # rename this to your custom docker network.
     external: true
-     restart: unless-stopped
