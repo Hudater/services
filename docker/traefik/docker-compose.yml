@@ -28,3 +28,4 @@ services:
 networks:
   proxy:    # rename this to your custom docker network.
     external: true
+     restart: unless-stopped
