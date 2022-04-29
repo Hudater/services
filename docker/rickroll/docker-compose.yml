@@ -1,0 +1,19 @@
+version: "2.4"
+services:
+  rickroll:
+    image: modem7/docker-rickroll:latest
+    container_name: rickroll
+    networks:
+      - proxy # rename this to your custom docker network
+    labels:
+      com.centurylinklabs.watchtower.monitor-only: true
+      #traefik.http.routers.api.rule: Host(`${CF_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
+      #traefik.http.routers.api.entryPoints: https    # Set the Traefik entry point.
+      # traefik.http.routers.api.service: api@internal    # Enable Traefik API.
+      traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
+    ports:
+      - 89:80
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
