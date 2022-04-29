@@ -1,0 +1,13 @@
+---
+# List of users
+users:
+  userName:
+    displayname: "Full Name"
+    # Use this command to generate password
+    # docker run --rm authelia/authelia:latest authelia hash-password 'authelia'
+    # Password is Authelia
+    password: "$argon2id$v=19$m=65536,t=1,p=8$cUI4a0E3L1laYnRDUXl3Lw$ZsdsrdadaoVIaVj8NltA8x4qVOzT+/r5GF62/bT8OuAs"
+    email: email@gmail.com
+    groups:
+      - admins
+      - dev

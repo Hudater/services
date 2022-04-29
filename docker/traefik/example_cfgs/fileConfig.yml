@@ -1,25 +1,23 @@
 http:
-  ## EXTERNAL ROUTING EXAMPLE - Only use if you want to proxy something manually ##
   routers:
     adguard:
       entryPoints:
         - https
-      rule: 'Host(`adguard.EXAMPLE.COM`)'
+      rule: 'Host(`adguard.DOMAIN.com`)'
       service: adguard
 
     olivetin:
       entryPoints:
         - https
-      rule: 'Host(`olivetin.EXAMPLE.COM`)'
+      rule: 'Host(`olivetin.DOMAIN.com`)'
       service: olivetin
 
     homer:
       entryPoints:
         - https
-      rule: 'Host(`homer.EXAMPLE.COM`)'
+      rule: 'Host(`homer.DOMAIN.com`)'
       service: homer
 
-  ## SERVICES EXAMPLE ##
   services:
     adguard:
       loadBalancer:
@@ -38,27 +36,27 @@ http:
 
   ## MIDDLEWARES ##
   middlewares:
-    # Authelia guard
-    # auth:
-      # forwardauth:
-      #   address: http://auth:9091/api/verify?rd=https://auth.domain.com/ # replace auth with your authelia container name
-      #   trustForwardHeader: true
-      #   authResponseHeaders:
-      #     - Remote-User
-      #     - Remote-Groups
-      #     - Remote-Name
-          # - Remote-Email
+
+    auth:
+      forwardauth:
+        address: "http://authelia:9091/api/verify?rd=https://authelia.DOMAIN.com/" #chagne authelia:port to containerName:port
+        trustForwardHeader: true
+        authResponseHeaders:
+          - "Remote-User"
+          - "Remote-Groups"
+          - "Remote-Name"
+          - "Remote-Email"
   
     # Authelia basic auth guard
-    # auth-basic:
-    #   forwardauth:
-    #     address: http://auth:9091/api/verify?auth=basic # replace auth with your authelia container name
-    #     trustForwardHeader: true
-    #     authResponseHeaders:
-    #       - Remote-User
-    #       - Remote-Groups
-    #       - Remote-Name
-    #       - Remote-Email
+    auth-basic:
+      forwardauth:
+        address: "http://authelia:9091/api/verify?auth=basic"
+        trustForwardHeader: true
+        authResponseHeaders:
+          - "Remote-User"
+          - "Remote-Groups"
+          - "Remote-Name"
+          - "Remote-Email"
 
     # Security headers
     securityHeaders:
@@ -81,7 +79,6 @@ http:
         stsSeconds: 63072000
         stsPreload: true
 
-# Only use secure ciphers - https://ssl-config.mozilla.org/#server=traefik&version=2.6.0&config=intermediate&guideline=5.6
 tls:
   options:
     default:
