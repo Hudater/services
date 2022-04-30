@@ -2,7 +2,7 @@
 version: "2.4"
 services:
   rickroll:
-    image: modem7/docker-rickroll:iptest
+    image: modem7/docker-rickroll:latest
     container_name: rickroll
     networks:
       - proxy # rename this to your custom docker network
@@ -10,7 +10,7 @@ services:
       com.centurylinklabs.watchtower.monitor-only: true
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
     ports:
-      - 6519:8080
+      - 89:80
 
 networks:
   proxy:    # rename this to your custom docker network.
