@@ -2,7 +2,7 @@
 version: "2.4"
 services:
   rickroll:
-    image: modem7/docker-rickroll:iptest
+    image: modem7/docker-rickroll:onclick
     container_name: rickroll
     networks:
       - proxy # rename this to your custom docker network
