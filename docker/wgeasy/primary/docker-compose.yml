@@ -3,9 +3,9 @@
 ---
 version: "3.8"
 services:
-  wg-easy:
+  wgpri:
     image: weejewel/wg-easy:latest
-    container_name: wg-pri
+    container_name: wgpri
     networks:
       - proxy # rename this to your custom docker network
     environment:
@@ -18,6 +18,8 @@ services:
       - ${CFG_DIR}/wgcf:/etc/wireguard
     labels:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
+      traefik.http.services.wgpri.loadbalancer.server.port: 51821
+      # traefik.http.routers.api.rule: Host(`wgpri.${CF_DOMAIN}`)
     ports:
       - "51820:51820/udp" #wg traffic port; match with WG_PORT
       - "51821:51821/tcp" #webgui port

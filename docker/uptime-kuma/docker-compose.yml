@@ -1,7 +1,7 @@
 ---
 version: '3.3'
 services:
-  uptime-kuma:
+  uptime:
     image: louislam/uptime-kuma:latest
     container_name: uptime
     networks:

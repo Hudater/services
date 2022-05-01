@@ -1,21 +1,20 @@
 ---
 version: '3'
 services:
-  fbmain:
+  fbshare:
     image: filebrowser/filebrowser:latest
-    container_name: fbmain
+    container_name: fbshare
     user: ${PUID}:${PGID}
     ports:
-      - 420:80
+      - 4290:80
     networks:
       - proxy # rename this to your custom docker network
     volumes:
-      - /storage:/srv
-      - ${BAK_CFG_DIR}/filebrowser/fbmain/filebrowser.db:/database.db
+      - ${DATA_DIR}:/srv
+      - ${BAK_CFG_DIR}/filebrowser/fbshare/filebrowser.db:/database.db
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    command: --noauth #disables auth, don't use this if not using third party auth like authelia
 
 networks:
   proxy:    # rename this to your custom docker network.

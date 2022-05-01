@@ -1,9 +1,9 @@
 ---
 version: "2.1"
 services:
-  scrutiny:
+  scrumain:
     image: linuxserver/scrutiny:latest
-    container_name: scrutiny
+    container_name: scrumain
     networks:
       - proxy # rename this to your custom docker network
     cap_add:

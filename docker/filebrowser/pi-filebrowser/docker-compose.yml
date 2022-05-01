@@ -1,24 +1,23 @@
 ---
-version: "3"
+version: '3'
 services:
-  filebrowser:
-    container_name: fbrow
-    image: hurlenko/filebrowser:latest
+  fbpi:
+    image: filebrowser/filebrowser:latest
+    container_name: fbpi
+    user: ${PUID}:${PGID}
+    ports:
+      - 420:80
     networks:
       - proxy # rename this to your custom docker network
-    ports:
-      - 420:8080
-    volumes:
-      - /mnt/Pi_Storage:/data
-      - "${CFG_DIR}/filebrowser:/config"
     labels:
       traefik.enable: true
-    environment:
-      - FB_BASEURL=/filebrowser
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+    volumes:
+      - /mnt/Pi_Storage/:/srv
+      - ${BAK_CFG_DIR}/filebrowser/fbpi/filebrowser.db:/database.db
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    command: --noauth #disables auth, don't use this if not using third party auth like authelia
 
 networks:
   proxy:    # rename this to your custom docker network.

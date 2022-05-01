@@ -3,9 +3,9 @@
 ---
 version: "3"
 services:
-  wg-easy:
+  wgec:
     image: weejewel/wg-easy:latest
-    container_name: wg-sec
+    container_name: wgsec
     networks:
       - proxy # rename this to your custom docker network
     environment:
