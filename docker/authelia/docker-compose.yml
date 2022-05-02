@@ -6,7 +6,6 @@ services:
     container_name: authelia
     volumes:
       - "${BAK_CFG_DIR}/authelia/:/config"
-      - "${CFG_DIR}/authelia/:/dbroot"
     networks:
       - proxy
     labels:
@@ -19,7 +18,48 @@ services:
       - TZ=${TZ}
     healthcheck:
       disable: true
+    depends_on:
+      - redis_authelia
+      - mariadb_authelia
+
+## Database section
+  redis_authelia:
+    container_name: redis_authelia
+    image: redis:latest
+    command: >
+          --requirepass "${REDIS_AUTHELIA_PASS}"
+    expose:
+      - 6379
+    volumes:
+      - "${DB_CFG_DIR}/redis_authelia:/bitnami/"
+    environment:
+      ALLOW_EMPTY_PASSWORD: "no"
+      REDIS_PASSWORD: "${REDIS_AUTHELIA_PASS}"
+    networks:
+      - proxy
+      - dbs
+    restart: unless-stopped
+
+  mariadb_authelia:
+    container_name: mariadb_authelia
+    image: linuxserver/mariadb:latest
+    expose:
+      - 3306
+    volumes:
+      - "${DB_CFG_DIR}/mariadb_authelia:/config"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_AUTHELIA_ROOT_PASS}"
+      MYSQL_ROOT_USER: root
+      MYSQL_DATABASE: authelia
+      MYSQL_USER: authelia
+      MYSQL_PASSWORD: "${MYSQL_AUTHELIA_USER_PASS}"
+    networks:
+      - proxy
+      - dbs
+    restart: unless-stopped
 
 networks:
   proxy:
+    external: true
+  dbs:
     external: true
