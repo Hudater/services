@@ -1,6 +1,7 @@
-# https://docs.ibracorp.io/authelia/
-# https://techno-tim.github.io/posts/authelia-traefik/
 ---
+## Use this website to generate secrets (256 bit minimum)
+## https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx
+
 server:
   host: 0.0.0.0
   port: 9091
@@ -11,23 +12,32 @@ log:
 theme: dark
 
 # This secret can also be set using the env variables AUTHELIA_JWT_SECRET_FILE
-jwt_secret: jwt-secret
+jwt_secret: "JWT-Secret-gen-1"
 default_redirection_url: https://DOMAIN.com
 
 totp:
   disable: false
   issuer: authelia.com
-  algorithm: sha1
-  digits: 6
+  algorithm: sha1 #sha 256 doesn't work with authy
+  digits: 8
   period: 30
   skew: 1
   secret_size: 32
 
-# duo_api:
-#  hostname: api-123456789.example.com
-#  integration_key: ABCDEF
-#  # This secret can also be set using the env variables AUTHELIA_DUO_API_SECRET_KEY_FILE
-#  secret_key: 1234567890abcdefghifjkl
+duo_api:
+  hostname: api-hostname.duosecurity.com # from your duo dashboard
+  integration_key: integ-key-from-duo-dash
+  secret_key: secret-key-from-duo-dash
+  disable: false
+  enable_self_enrollment: false
+
+ntp:
+  address: "time.cloudflare.com:123"
+  version: 4
+  max_desync: 3s
+  disable_startup_check: false
+  disable_failure: false
+
 
 authentication_backend:
   file:
@@ -37,45 +47,72 @@ authentication_backend:
       iterations: 1
       salt_length: 16
       parallelism: 8
-      memory: 64
+      memory: 1024
 
 access_control:
   default_policy: deny
   rules:
-  - domain: "authelia.DOMAIN.com" # skip authelia or you'll be stuck in a loop
+
+  ## Bypass rules for domains
+  - domain:
+      - "authelia.DOMAIN.com" #otherwise you will be in loop
+      - "subdomain.DOMAIN.com"
     policy: bypass
-    ## catch-all
+
+  ## Bypass api / triggers
+  - domain: "*.DOMAIN.com"
+    resources:
+      - "^/api([/?].*)?$"
+      - "^/identity.*$"
+      - "^/triggers.*$"
+      - "^/meshagents.*$"
+      - "^/meshsettings.*$"
+      - "^/agent.*$"
+      - "^/control.*$"
+      - "^/meshrelay.*$"
+      - "^/wl.*$"
+    policy: bypass
+
+  ## Catch-all
   - domain: "*.DOMAIN.com"
     subject:
     - "group:admins"
-    policy: one_factor
+    policy: two_factor
 
 session:
   name: authelia_session
-  # This secret can also be set using the env variables AUTHELIA_SESSION_SECRET_FILE
-  secret: your-secret
-  expiration: 3600  # 1 hour
-  inactivity: 300  # 5 minutes
-  remember_me_duration: 1M
-  domain: DOMAIN.com  # Should match whatever your root protected domain is
+  domain: DOMAIN.com
+  same_site: lax
+  secret: "second-secret-key-from-site"
+  expiration: 1h
+  inactivity: 5m
+  remember_me_duration: 2M
+  redis:
+    host: redis_authelia
+    port: 6379
+    password: redis-password-from-docker-compose
+    database_index: 0 #change if using multiple services off single db
+    maximum_active_connections: 10
+    minimum_idle_connections: 0
 
 regulation:
   max_retries: 3
-  find_time: 120m
-  ban_time: 360m
+  find_time: 10m
+  ban_time: 12h
 
 storage:
-  encryption_key: "randomly-generated-key-about-64-characters-long"
-  local:
-    path: /dbroot/db.sqlite3
+  encryption_key: "third-secret-key-from-site"
+  mysql:
+    host: mariadb_authelia
+    port: 3306
+    database: authelia
+    username: authelia
+    password: "mariadb-user-pass-from-docker-compose"
 
 notifier:
-  # smtp:
-  #   username: test
-  #   # This secret can also be set using the env variables AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE
-  #   password: password
-  #   host: mail.example.com
-  #   port: 25
-  #   sender: admin@example.com
-  filesystem:
-    filename: /dbroot/notification.txt
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: email@gmail.com
+    password: password-from-google-account-dashboard
+    sender: authelia@DOMAIN.com
