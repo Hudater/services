@@ -1,16 +1,21 @@
 ---
-version: "2.4"
+version: "2.1"
 services:
-  rickroll:
-    image: modem7/docker-rickroll:onclick
-    container_name: rickroll
+  apprise-api:
+    image: linuxserver/apprise-api:latest
+    container_name: apprise-api
     networks:
       - proxy # rename this to your custom docker network
     labels:
-      com.centurylinklabs.watchtower.monitor-only: true
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - "${BAK_CFG_DIR}/apprise:/config"
     ports:
-      - 6519:8080
+      - 8800:8000
     restart: unless-stopped
 
 networks:
