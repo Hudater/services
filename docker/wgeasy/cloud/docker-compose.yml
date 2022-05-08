@@ -3,21 +3,21 @@
 ---
 version: "3"
 services:
-  wgsec:
+  wgcloud:
     image: weejewel/wg-easy:latest
-    container_name: wgsec
+    container_name: wgcloud
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - WG_HOST=${WG_SEC_DD}
-      - PASSWORD=${WG_SEC_PASS}
-      - WG_PORT=${WG_SEC_PORT}
-      - WG_DEFAULT_DNS=${LOCAL_DNS}
+      - WG_HOST=${WG_CL_ZUR}
+      - PASSWORD=${WG_CL_PASS}
+      - WG_PORT=${WG_PRI_PORT}
+      - WG_DEFAULT_DNS=1.1.1.1
         #      - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24 # doesn't work with this option enabled
     volumes:
       - ${CFG_DIR}/wgdd:/etc/wireguard
     ports:
-      - "51822:51820/udp" #wg traffic port; match with WG_PORT
+      - "51820:51820/udp" #wg traffic port; match with WG_PORT
       - "51821:51821/tcp" #webgui port
     restart: unless-stopped
     cap_add:
