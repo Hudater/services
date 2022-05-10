@@ -16,7 +16,7 @@ services:
       - "${BAK_CFG_DIR}/traefik-cloud/:/etc/traefik/"
     labels:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
-      traefik.http.routers.api.rule: Host(`traefik.${CF_TK_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
+      traefik.http.routers.api.rule: Host(`traefik.przr.${CF_TK_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
       traefik.http.routers.api.entryPoints: https    # Set the Traefik entry point.
       traefik.http.routers.api.service: api@internal    # Enable Traefik API.
     environment:
