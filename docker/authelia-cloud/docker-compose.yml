@@ -5,7 +5,7 @@ services:
     image: authelia/authelia:latest
     container_name: authelia
     volumes:
-      - "${BAK_CFG_DIR}/authelia/:/config"
+      - "${BAK_CFG_DIR}/authelia-cloud/:/config"
     networks:
       - proxy
     labels:
