@@ -1,0 +1,29 @@
+---
+version: "3.1"
+services:
+  librespeed:
+    image: linuxserver/librespeed:latest
+    container_name: librespeed
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      # - PASSWORD=PASSWORD
+      # - CUSTOM_RESULTS=false #optional
+      # - DB_TYPE=sqlite #optional
+      # - DB_NAME=DB_NAME #optional
+      # - DB_HOSTNAME=DB_HOSTNAME #optional
+      # - DB_USERNAME=DB_USERNAME #optional
+      # - DB_PASSWORD=DB_PASSWORD #optional
+      # - DB_PORT=DB_PORT #optional
+    volumes:
+      - "${CFG_DIR}/librespeed:/config"
+    ports:
+      - 3006:80
+    labels:
+      traefik.enable: true
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
