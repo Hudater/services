@@ -11,6 +11,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gilbn/theme.park:prowlarr
+      - TP_THEME=organizr
     volumes:
       - "${CFG_DIR}/prowlarr:/config"
       - "${BAK_CFG_DIR}/prowlarr:/config/Backups"

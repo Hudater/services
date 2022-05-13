@@ -10,6 +10,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gilbn/theme.park:sonarr
+      - TP_THEME=organizr
     volumes:
       - ${CFG_DIR}/sonarr:/config
       - ${BAK_CFG_DIR}/sonarr:/config/Backups
