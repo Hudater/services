@@ -1,0 +1,23 @@
+---
+version: '3'
+services:
+  fbcloud:
+    image: filebrowser/filebrowser:latest
+    container_name: fbcloud
+    user: ${PUID}:${PGID}
+    ports:
+      - 420:80
+    networks:
+      - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
+    volumes:
+      - /:/srv
+      - ${BAK_CFG_DIR}/filebrowser/fbcloud/filebrowser.db:/database.db
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
