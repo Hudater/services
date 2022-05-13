@@ -4,10 +4,14 @@ services:
   librespeed:
     image: linuxserver/librespeed:latest
     container_name: librespeed
+    networks:
+      - proxy
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gilbn/theme.park:librespeed
+      -  TP_THEME=dark
       # - PASSWORD=PASSWORD
       # - CUSTOM_RESULTS=false #optional
       # - DB_TYPE=sqlite #optional
