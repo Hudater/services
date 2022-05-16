@@ -4,8 +4,6 @@ services:
   traefik:
     container_name: traefik
     image: traefik:latest
-    networks:
-      - proxy # rename this to your custom docker network
     security_opt:
       - no-new-privileges:true
     ports:
@@ -14,6 +12,8 @@ services:
       - 8080:8080
     volumes:
       - "${BAK_CFG_DIR}/traefik/:/etc/traefik/"
+    networks:
+      - proxy # rename this to your custom docker network
     labels:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
       traefik.http.routers.api.rule: Host(`traefik.${CF_DOMAIN}`)    # Define the subdomain for the traefik dashboard.

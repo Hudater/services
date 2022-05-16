@@ -1,0 +1,21 @@
+---
+version: '3'
+services:
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ}
+    volumes:
+      - "${CFG_DIR}/jellyseerr:/app/config"
+      - "${BAK_CFG_DIR}/jellyseerr/settings.json:/app/config/settings.json"
+    ports:
+      - 5055:5055
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true

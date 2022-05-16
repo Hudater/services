@@ -1,0 +1,24 @@
+---
+version: "2.1"
+services:
+  snapdrop:
+    image: linuxserver/snapdrop:latest
+    container_name: snapdrop
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - "${CFG_DIR}/snapdrop:/config"
+    ports:
+      - 86:80
+        #      - 463:443
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
