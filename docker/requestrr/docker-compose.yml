@@ -1,0 +1,23 @@
+---
+version: "2.1"
+services:
+  requestrr:
+    image: linuxserver/requestrr:latest
+    container_name: requestrr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - "${CFG_DIR}/requestrr:/config"
+      - "${BAK_CFG_DIR}/requestrr/settings.json:/config/settings.json"
+      - "${BAK_CFG_DIR}/requestrr/notifications.json:/config/notifications.json"
+    ports:
+      - 4545:4545
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
