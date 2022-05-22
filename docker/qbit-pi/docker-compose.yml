@@ -1,0 +1,23 @@
+---
+version: "3.7"
+services:
+  qbittorrent:
+    container_name: qbit
+    image: hotio/qbittorrent:release-4.3.9
+    networks:
+      - proxy # rename this to your custom docker network
+    ports:
+      - "4000:8080"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - UMASK=002
+      - TZ=${TZ}
+    volumes:
+      - "${CFG_DIR}/qbittorrent:/config"
+      - /mnt/Pi_Storage/Media/Tor:/data/Torrents
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
