@@ -1,0 +1,25 @@
+---
+version: '3.5'
+services:
+  dashdot:
+    image: mauricenino/dashdot:latest
+    container_name: dashdot
+    ports:
+      - '3002:3001'
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+    environment:
+      DASHDOT_ENABLE_CPU_TEMPS: "true"
+    volumes:
+      - /etc/os-release:/etc/os-release:ro
+      - type: bind
+        source: ${DEFAULT_INTERFACE_PATH}
+        target: /mnt/eth0
+    privileged: true
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true

@@ -19,7 +19,8 @@ services:
     labels:
       traefik.enable: true
     volumes:
-      - ${CFG_DIR}/scrutiny:/config
+      - "${BAK_CFG_DIR}/scrutiny/scrutiny.yaml:/config/scrutiny.yaml"
+      - "${CFG_DIR}/scrutiny:/config"
       - /run/udev:/run/udev:ro
     ports:
       - 8780:8080
