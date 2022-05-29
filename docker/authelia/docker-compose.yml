@@ -31,7 +31,6 @@ services:
     expose:
       - 6379
     volumes:
-    # TODO: fix the /bitnami
       - "${DB_CFG_DIR}/redis_authelia:/data/"
     environment:
       ALLOW_EMPTY_PASSWORD: "no"

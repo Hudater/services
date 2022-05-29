@@ -5,7 +5,7 @@ services:
     image: b4bz/homer:latest
     container_name: homer
     networks:
-      - proxy # rename this to your custom docker network
+      - proxy
     labels:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
       com.centurylinklabs.watchtower.monitor-only: true

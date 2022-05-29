@@ -1,0 +1,63 @@
+---
+version: "2.1"
+services:
+  snipe-it:
+    image: linuxserver/snipe-it:latest
+    container_name: snipe-it
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      APP_URL: http://192.168.29.10:8082
+      MYSQL_PORT_3306_TCP_ADDR: mariadb_snipeit
+      MYSQL_PORT_3306_TCP_PORT: 3306
+      MYSQL_DATABASE: snipeit
+      MYSQL_USER: snipeit
+      MYSQL_PASSWORD: "${MYSQL_SNIPEIT_USER_PASS}"
+      MAIL_PORT_587_TCP_ADDR: "${EMAIL_HOST}"
+      MAIL_PORT_587_TCP_PORT: "${EMAIL_PORT}"
+      MAIL_ENV_FROM_ADDR: "${EMAIL_USERNAME}"
+      MAIL_ENV_FROM_NAME: "${SNIPE_FROM_NAME}"
+      MAIL_ENV_ENCRYPTION: tls
+      MAIL_ENV_USERNAME: "${EMAIL_USERNAME}"
+      MAIL_ENV_PASSWORD: "${SNIPE_MAIL_PASSWORD}"
+    volumes:
+      - "${CFG_DIR}/snipeit/:/config"
+    ports:
+      - 8082:80
+    networks:
+      - proxy
+      - dbs
+    labels:
+      traefik.enable: true
+    depends_on:
+      - mariadb_snipeit
+    restart: unless-stopped
+
+  mariadb_snipeit:
+    image: linuxserver/mariadb:latest
+    container_name: mariadb_snipeit
+    expose:
+      - 3306
+    volumes:
+    - "${DB_CFG_DIR}/mariadb_snipeit:/config"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: "${MYSQL_SNIPEIT_ROOT_PASS}"
+      MYSQL_DATABASE: snipeit
+      MYSQL_USER: snipeit
+      MYSQL_PASSWORD: "${MYSQL_SNIPEIT_USER_PASS}"
+    # ports:
+    #   - 3306:3306
+    networks:
+      - proxy
+      - dbs
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
+  dbs:
+    external: true
