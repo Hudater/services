@@ -8,11 +8,15 @@ services:
       - proxy # rename this to your custom docker network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
     environment:
-      - TZ=${TZ}
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_DEBUG=true
-      - WATCHTOWER_POLL_INTERVAL=86400
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_INCLUDE_RESTARTING: "true"
+      WATCHTOWER_ROLLING_RESTART: "true"
+      WATCHTOWER_SCHEDULE: 0 0 3 * * * #at 3 AM everyday
+      WATCHTOWER_NOTIFICATION_URL: ${WATCHTOWER_URL}
+      WATCHTOWER_DEBUG: "true"
+      WATCHTOWER_POLL_INTERVAL: "86400"
     restart: unless-stopped
 
 networks:
