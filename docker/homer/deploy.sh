@@ -6,7 +6,7 @@ touch "${BAK_CFG_DIR}"/homer/config.yml
 mkdir -p "${BAK_CFG_DIR}"/homer/manicons
 
 # deploying container
-docker-compose up -d
+docker compose up -d
 
 # cloning custom theme for homer
 git clone https://github.com/WalkxCode/Homer-Theme.git /home/$USER/Homer-Theme
