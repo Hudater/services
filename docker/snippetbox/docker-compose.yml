@@ -1,0 +1,18 @@
+version: '3'
+services:
+  snippetbox:
+    image: pawelmalak/snippet-box:dev
+    container_name: snippetbox
+    volumes:
+      - "${CFG_DIR}/snippetbox:/app/data"
+    ports:
+      - 5000:5000
+    labels:
+      traefik.enable: true
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
