@@ -1,0 +1,23 @@
+version: "3"
+services:
+  fenrus:
+    image: revenz/fenrus:latest
+    container_name: fenrus
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - "${BAK_CFG_DIR}/fenrus/cfg:/app/data"
+      - "${BAK_CFG_DIR}/fenrus/images:/app/wwwroot/images"
+    ports:
+      - 3000:3000
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
