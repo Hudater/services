@@ -19,16 +19,16 @@ actions:
     - name: computers
       choices:
         - title: Acer
-          value: putin@acer.home.theitmob.com
+          value: putin@acer.lan
 
         - title: Main PC
-          value: putin@pc.home.theitmob.com
+          value: putin@pc.lan
 
         - title: Pi4
-          value: putin@pi.home.theitmob.com
+          value: putin@pi.lan
 
         - title: Pi Zero
-          value: putin@pero.home.theitmob.com
+          value: putin@pero.lan
 
 - title: Poweroff Computers
   icon: "&#9211;"
@@ -37,16 +37,16 @@ actions:
     - name: computers
       choices:
         - title: Acer
-          value: putin@acer.home.theitmob.com
+          value: putin@acer.lan
 
         - title: Main PC
-          value: putin@pc.home.theitmob.com
+          value: putin@pc.lan
 
         - title: Pi4
-          value: putin@pi.home.theitmob.com
+          value: putin@pi.lan
 
         - title: Pi Zero
-          value: putin@pero.home.theitmob.com
+          value: putin@pero.lan
 
 - title: Boot Computers
   icon: "&#129406;"
@@ -62,7 +62,7 @@ actions:
 
 - title: Monitor Functions
   icon: "&#128437;"
-  shell: ssh putin@pc.home.theitmob.com 'xset -display :0 dpms force "{{ function }}"'
+  shell: ssh putin@pc.lan 'xset -display :0 dpms force "{{ function }}"'
   arguments:
     - name: function
       choices:
