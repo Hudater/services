@@ -1,0 +1,22 @@
+version: "3"
+services:
+  openspeedtest: #change me
+    image: openspeedtest/latest:latest #change me
+    container_name: openspeedtest #change me
+    restart: unless-stopped
+    volumes:
+      - "${CFG_DIR}/openspeedtest:/config" #change the left side
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 3000:3000 #change the left side
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
