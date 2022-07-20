@@ -15,6 +15,9 @@ services:
       - "${CFG_DIR}/syncthing:/config"
       - /home/$USER:/home_dir
       - /:/root_dir
+    labels:
+      traefik.enable: true
+      traefik.http.services.portainer.loadbalancer.server.port: 8384
     ports:
       - 8384:8384
       - 22000:22000/tcp

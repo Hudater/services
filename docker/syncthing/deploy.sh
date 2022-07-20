@@ -1,2 +1,2 @@
 mkdir -p "${CFG_DIR}"/syncthing
-docker-compose up -d
+docker compose up -d

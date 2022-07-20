@@ -1,3 +1,4 @@
+## credit: https://www.reddit.com/user/carzian/
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.poolmanager import PoolManager
 import ssl
