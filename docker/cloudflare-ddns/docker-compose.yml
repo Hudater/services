@@ -8,9 +8,10 @@ services:
       - proxy # rename this to your custom docker network
     restart: always
     environment:
-      - API_KEY="${CF_DDNS_API}"
-      - ZONE="${CF_DOMAIN}"
-      - PROXIED=true
+      - API_KEY=$CF_DDNS_API
+      - ZONE=$CF_CLOUD_DOMAIN
+      - SUBDOMAIN=$CF_DDNS_HOME
+      - PROXIED=false
 
 networks:
   proxy:    # rename this to your custom docker network.

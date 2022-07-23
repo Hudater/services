@@ -19,9 +19,9 @@ services:
     ports:
       - "51820:51820/udp" #wg traffic port; match with WG_PORT
       - "51821:51821/tcp" #webgui port
-    labels:
-      traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
-      traefik.http.services.wgpri.loadbalancer.server.port: 51821
+    # labels:
+    #   traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
+    #   traefik.http.services.wgpri.loadbalancer.server.port: 51821
     restart: unless-stopped
     cap_add:
       - NET_ADMIN

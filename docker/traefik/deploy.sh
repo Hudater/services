@@ -1,2 +1,2 @@
 mkdir -p "${BAK_CFG_DIR}"/traefik
-docker-compose up -d
+docker compose up -d

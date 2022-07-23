@@ -1,2 +1,2 @@
-mkdir -p "${CFG_DIR}"/wgdd
-docker-compose up -d
+mkdir -p "${CFG_DIR}"/wgsec
+docker compose up -d

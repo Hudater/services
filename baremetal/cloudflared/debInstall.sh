@@ -6,8 +6,6 @@ if (( $EUID != 0 )); then
   exit 1
 fi
 
-
-
 if [ $(which cloudflared) ]; then
   printf "Cloudflare is already installed"
   exit 0;
@@ -53,7 +51,6 @@ else
   printf "\nInstalling Cloudflared\n"
   sudo dpkg -i /root/.cloudflared/cloudflared-linux-*
   rm /root/.cloudflared/cloudflared-linux-*
-
 
   printf "\nIf this installation method failed for you, clean the files and build from source. For pi-zero, a build script is in the repo\n"
   unset cpuArch downloader

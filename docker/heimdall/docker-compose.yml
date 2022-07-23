@@ -14,7 +14,6 @@ services:
       - "${CFG_DIR}/heimdall:/config"
     ports:
       - 82:80
-      # - 444:443
     labels:
       traefik.enable: true
     restart: unless-stopped

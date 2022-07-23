@@ -9,17 +9,16 @@ services:
     networks:
       - proxy # rename this to your custom docker network
     environment:
-      - WG_HOST=${WG_PRI_DD}
+      - WG_HOST=${WG_PRI_DOMAIN}
       - PASSWORD=${WG_PRI_PASS}
       - WG_PORT=${WG_PRI_PORT}
       - WG_DEFAULT_DNS=${LOCAL_DNS}
         #      - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24 # doesn't work with this option enabled
     volumes:
-      - ${CFG_DIR}/wgcf:/etc/wireguard
+      - ${CFG_DIR}/wgpri:/etc/wireguard
     labels:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
       traefik.http.services.wgpri.loadbalancer.server.port: 51821
-      # traefik.http.routers.api.rule: Host(`wgpri.${CF_DOMAIN}`)
     ports:
       - "51820:51820/udp" #wg traffic port; match with WG_PORT
       - "51821:51821/tcp" #webgui port
