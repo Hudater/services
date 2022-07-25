@@ -7,6 +7,8 @@ services:
     restart: unless-stopped
     volumes:
       - "${BAK_CFG_DIR}/homarr:/app/data/configs"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - '7575:7575'
     networks:
