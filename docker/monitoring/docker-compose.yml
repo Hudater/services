@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+          - proxy
+    labels:
+      traefik.enable: true
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - "${BAK_CFG_DIR}/prometheus:/etc/prometheus"
+      - prometheus-data:/prometheus
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    networks:
+          - proxy
+
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  grafana-data:
+    driver: local
+  prometheus-data:
+    driver: local
