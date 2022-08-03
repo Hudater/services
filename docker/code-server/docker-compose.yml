@@ -1,25 +1,27 @@
 ---
 version: "2.1"
 services:
-  code-server:
-    image: linuxserver/code-server:latest
-    container_name: code-sv
-    networks:
-      - proxy # rename this to your custom docker network
+  code:
+    image: linuxserver/openvscode-server:latest
+    container_name: code
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - PASSWORD=q #optional
-      # - HASHED_PASSWORD= #optional
-      - SUDO_PASSWORD=q #optional
+      # - CONNECTION_TOKEN= #optional
+      # - CONNECTION_SECRET= #optional
+      # - SUDO_PASSWORD=password #optional
       # - SUDO_PASSWORD_HASH= #optional
-      # - PROXY_DOMAIN=code-server.my.domain #optional
     volumes:
-      - "${CFG_DIR}/code:/config"
+      - "${CFG_DIR}/codeserver:/config"
+      - "/home/$USER/.ssh:/config/.ssh"
     ports:
-      - 8443:8443
+      - 3030:3000
     restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
 
 networks:
   proxy:    # rename this to your custom docker network.

@@ -52,7 +52,6 @@ authentication_backend:
 access_control:
   default_policy: deny
   rules:
-
   ## Bypass rules for domains
   - domain:
       - "authelia.DOMAIN.com" #otherwise you will be in loop
@@ -71,6 +70,14 @@ access_control:
       - "^/control.*$"
       - "^/meshrelay.*$"
       - "^/wl.*$"
+    policy: bypass
+
+  ## Allow free access from local network
+  - domain: "*.DOMAIN.com"
+    networks:
+    - "10.0.0.0/8"
+    - "172.16.0.0/12"
+    - "192.168.0.0/16"
     policy: bypass
 
   ## Catch-all

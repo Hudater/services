@@ -1,6 +1,8 @@
 version: '3'
 
 services:
+
+# grafana service
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana
@@ -14,6 +16,7 @@ services:
     labels:
       traefik.enable: true
 
+# prometheus service
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -28,6 +31,36 @@ services:
     networks:
           - proxy
 
+# node exporter service
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+    networks:
+          - proxy
+
+# cadvisor by google for docker
+  cadvisor:
+      image: gcr.io/cadvisor/cadvisor:latest
+      container_name: cadvisor
+      # ports:
+      #   - "8080:8080"
+      volumes:
+        - /:/rootfs:ro
+        - /var/run:/var/run:ro
+        - /sys:/sys:ro
+        - /var/lib/docker/:/var/lib/docker:ro
+        - /dev/disk/:/dev/disk:ro
+      devices:
+        - /dev/kmsg
+      restart: unless-stopped
+      networks:
+          - proxy
 
 networks:
   proxy:

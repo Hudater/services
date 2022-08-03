@@ -1,2 +1,2 @@
-mkdir -p "${CFG_DIR}"/code
-docker-compose up -d
+mkdir -p "${CFG_DIR}"/codeserver
+docker compose up -d

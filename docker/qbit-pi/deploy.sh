@@ -1,2 +1,3 @@
 mkdir -p "${CFG_DIR}"/qbittorrent
-docker-compose up -d
+mkdir -p /mnt/Pi_Storage/Media/Tor
+docker compose up -d
