@@ -11,11 +11,15 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - <PATH_TO_CONFIG>:/config
-      - <PATH_TO_LIBRARY>:/library
-      - <PATH_TO_ENCODE_CACHE>:/tmp/unmanic
+      - ${CFG_DIR}/unmanic:/config
+      - /lab/acerroot/mnt/merger/Media/Movies:/library/Movies
+      - /lab/acerroot/mnt/merger/Media/Shows:/library/Shows
+      - /storage/unmanic:/tmp/unmanic
     restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
 
 networks:
   proxy:    # rename this to your custom docker network.

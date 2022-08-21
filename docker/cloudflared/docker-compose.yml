@@ -1,3 +1,4 @@
+---
 services:
   cloudflared:
     image: erisamoe/cloudflared:latest
