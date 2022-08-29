@@ -2,7 +2,7 @@
 version: "2.1"
 services:
   scrumain:
-    image: linuxserver/scrutiny:latest
+    image: linuxserver/scrutiny:version-8e34ef8d
     container_name: scrumain
     networks:
       - proxy # rename this to your custom docker network

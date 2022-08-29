@@ -16,10 +16,15 @@ services:
       - ${CFG_DIR}/unmanic:/config
       - /lab/acerroot/mnt/merger/Media/Movies:/library/Movies
       - /lab/acerroot/mnt/merger/Media/Shows:/library/Shows
-      - /storage/unmanic:/tmp/unmanic
+      - /storage/unmanic/cache:/tmp/unmanic
+      # - /storage/unmanic/Library:/library
     restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_MODULE
 
 networks:
   proxy:    # rename this to your custom docker network.
