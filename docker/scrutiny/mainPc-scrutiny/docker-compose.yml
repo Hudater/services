@@ -23,7 +23,7 @@ services:
     ports:
       - 8780:8080
     devices:
-      - /dev/nvme0:/dev/nvme0
+      - /dev/sda:/dev/sda
     restart: unless-stopped
 
 networks:

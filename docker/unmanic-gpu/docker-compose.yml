@@ -1,11 +1,11 @@
 ---
 version: '2.4'
 services:
-  unmanic:
-    container_name: unmanic
+  unmanic-gpu:
+    container_name: unmanic-gpu
     image: josh5/unmanic:latest
     ports:
-      - 8888:8888
+      - 8889:8888
     networks:
       - proxy
     environment:
@@ -13,12 +13,12 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${CFG_DIR}/unmanic:/config
-      - /drives/nvme/Unmanic/cache:/tmp/unmanic
+      - ${CFG_DIR}/unmanic-gpu:/config
+      - /drives/nvme/Unmanic/cache-gpu:/tmp/unmanic
       - /mnt/merger:/library
     restart: unless-stopped
-    # devices:
-    #   - /dev/dri:/dev/dri
+    devices:
+      - /dev/dri:/dev/dri
     cap_add:
       - NET_ADMIN
       - SYS_ADMIN
