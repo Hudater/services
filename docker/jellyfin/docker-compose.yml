@@ -6,6 +6,9 @@ services:
     container_name: jellyfin
     networks:
       - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
+      traefik.http.services.jellyfin.loadbalancer.server.port: 8096
     group_add:
       - "109" #adding group `render` so that VAAPI can use the almighrty radeon r5
       #remeber to change the group id which is present in /etc/group

@@ -9,6 +9,8 @@ services:
       - 4290:80
     networks:
       - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
     volumes:
       - ${DATA_DIR}:/srv
       - ${BAK_CFG_DIR}/filebrowser/fbshare/filebrowser.db:/database.db

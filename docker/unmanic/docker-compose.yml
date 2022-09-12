@@ -8,6 +8,8 @@ services:
       - 8888:8888
     networks:
       - proxy
+    labels:
+      traefik.enable: true
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -17,8 +19,6 @@ services:
       - /drives/nvme/Unmanic/cache:/tmp/unmanic
       - /mnt/merger:/library
     restart: unless-stopped
-    # devices:
-    #   - /dev/dri:/dev/dri
     cap_add:
       - NET_ADMIN
       - SYS_ADMIN

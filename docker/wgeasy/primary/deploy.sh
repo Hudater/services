@@ -1,2 +1,2 @@
-mkdir -p "${CFG_DIR}"/wgpri
+# mkdir -p "${CFG_DIR}"/wgpri
 docker compose up -d

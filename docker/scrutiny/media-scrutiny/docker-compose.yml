@@ -1,11 +1,13 @@
 ---
 version: "2.1"
 services:
-  scruacer:
+  scrumd:
     image: linuxserver/scrutiny:version-8e34ef8d
-    container_name: scruacer
+    container_name: scrumd
     networks:
       - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
     cap_add:
       - SYS_RAWIO
       - SYS_ADMIN #optional

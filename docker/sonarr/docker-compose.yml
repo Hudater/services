@@ -6,6 +6,8 @@ services:
     container_name: sonarr
     networks:
       - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

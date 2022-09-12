@@ -1,17 +1,19 @@
 ---
 version: '3'
 services:
-  fbacer:
+  fbmd:
     image: filebrowser/filebrowser:latest
-    container_name: fbacer
+    container_name: fbmd
     user: ${PUID}:${PGID}
     ports:
       - 420:80
     networks:
       - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
     volumes:
       - ${DATA_DIR}:/srv
-      - ${BAK_CFG_DIR}/filebrowser/fbacer/filebrowser.db:/database.db
+      - ${BAK_CFG_DIR}/filebrowser/fbmd/filebrowser.db:/database.db
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

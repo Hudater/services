@@ -5,18 +5,20 @@ services:
     image: linuxserver/budge:latest
     container_name: budge
     volumes:
-      - "${CFG_DIR}/budge:/config" #change the left side
+      - "${CFG_DIR}/budge:/config"
+      - "${BAK_CFG_DIR}/budge/budge.db:/config/budge.db"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     ports:
-      - 8880:80 #change the left side
+      - 8880:80
       - 8843:443
     networks:
       - proxy
     labels:
       traefik.enable: true
+      # traefik.http.services.budge.loadbalancer.server.port: 8880
     restart: unless-stopped
 
 networks:

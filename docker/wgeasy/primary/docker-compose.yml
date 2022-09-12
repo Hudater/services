@@ -15,9 +15,9 @@ services:
       - WG_DEFAULT_DNS=${LOCAL_DNS}
         #      - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24 # doesn't work with this option enabled
     volumes:
-      - ${CFG_DIR}/wgpri:/etc/wireguard
+      - ${BAK_CFG_DIR}/wgpri:/etc/wireguard
     labels:
-      traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
+      traefik.enable: true
       traefik.http.services.wgpri.loadbalancer.server.port: 51821
     ports:
       - "51820:51820/udp" #wg traffic port; match with WG_PORT

@@ -1,16 +1,22 @@
+---
 version: '2.1'
 services:
   hammond:
     image: akhilrex/hammond:latest
     container_name: hammond
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
       - "${CFG_DIR}/hammond/config:/config"
       - "${CFG_DIR}/hammond/assets:/assets"
+      - "${BAK_CFG_DIR}/hammond:/config/backups"
     ports:
       - 3300:3000
     restart: unless-stopped
     networks:
-          - proxy
+      - proxy
     labels:
       traefik.enable: true
 

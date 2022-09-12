@@ -11,7 +11,7 @@ services:
     volumes:
       - "${CFG_DIR}/snapdrop:/config"
     ports:
-      - 86:3000
+      - 86:80
         #      - 463:443
     networks:
       - proxy

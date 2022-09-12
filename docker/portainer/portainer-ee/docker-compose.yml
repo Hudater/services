@@ -1,0 +1,28 @@
+---
+version: '3'
+services:
+  portainer:
+    image: portainer/portainer-ee:latest
+    container_name: portainer
+    networks:
+      - proxy # rename this to your custom docker network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 8000:8000
+      - 9000:9000
+    volumes:
+      - portainer_data:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      traefik.enable: true
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
+
+volumes:
+  portainer_data:
+
+networks:
+  proxy:
+    external: true

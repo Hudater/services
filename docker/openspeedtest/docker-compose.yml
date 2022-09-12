@@ -1,6 +1,6 @@
 version: "3"
 services:
-  openspeedtest: #change me
+  speed: #change me
     image: openspeedtest/latest:latest #change me
     container_name: openspeedtest #change me
     restart: unless-stopped
@@ -11,7 +11,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     ports:
-      - 3000:3000 #change the left side
+      - 3330:3000 #change the left side
     networks:
       - proxy
     labels:
