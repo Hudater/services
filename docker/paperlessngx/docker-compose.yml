@@ -1,0 +1,49 @@
+# ---
+# version: "3"
+# services:
+#   paperless:
+#     image: linuxserver/paperless-ngx:latest
+#     container_name: paperless
+#     restart: unless-stopped
+#     volumes:
+#       - "${CFG_DIR}/paperless/cfg:/config"
+#       - "${CFG_DIR}/paperless/data:/data"
+#     environment:
+#       - PUID=${PUID}
+#       - PGID=${PGID}
+#       - TZ=${TZ}
+#       - REDIS_URL= redis_paperless
+#     ports:
+#       - 8200:8000
+#     networks:
+#       - proxy
+#     labels:
+#       traefik.enable: true
+#     depends_on:
+#       - redis_paperless
+
+# ## Database section
+#   redis_paperless:
+#     container_name: redis_paperless
+#     image: redis:latest
+#     command: >
+#           --requirepass "${REDIS_AUTHELIA_PASS}"
+#     expose:
+#       - 6379
+#     volumes:
+#       - "${DB_CFG_DIR}/redis_paperless:/data/"
+#     environment:
+#       ALLOW_EMPTY_PASSWORD: "no"
+#       REDIS_PASSWORD: "${REDIS_AUTHELIA_PASS}"
+#     networks:
+#       - proxy
+#       - dbs
+#     restart: unless-stopped
+
+# networks:
+#   proxy:
+#     external: true
+#   dbs:
+#     external: true
+
+# TODO Use official image; lsio img is deprecated

@@ -1,9 +1,9 @@
 ---
 version: '3'
 services:
-  fbmain:
+  fbarch:
     image: filebrowser/filebrowser:latest
-    container_name: fbmain
+    container_name: fbarch
     user: ${PUID}:${PGID}
     ports:
       - 420:80
@@ -11,7 +11,7 @@ services:
       - proxy # rename this to your custom docker network
     volumes:
       - /storage:/srv
-      - ${BAK_CFG_DIR}/filebrowser/fbmain/filebrowser.db:/database.db
+      - ${BAK_CFG_DIR}/filebrowser/fbarch/filebrowser.db:/database.db
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

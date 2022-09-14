@@ -1,0 +1,28 @@
+---
+version: "3"
+services:
+  ariang:
+    image: hurlenko/aria2-ariang:latest
+    container_name: ariang
+    ports:
+      - 6888:8080
+    volumes:
+      - "${DATA_DIR}/AriaNG:/aria2/data"
+      - "${BAK_CFG_DIR}/ariang:/aria2/conf"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      # - RPC_SECRET=secret
+      - ARIA2RPCPORT=6888
+    restart: always
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      # traefik.basic.frontend.rule: Host:aria2.example.com
+      # traefik.basic.portL: 4040
+
+networks:
+  proxy:
+    external: true

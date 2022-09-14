@@ -1,0 +1,24 @@
+---
+version: "3"
+services:
+  serviceName:
+    image: MAINTAINER/IMAGE:latest #
+    container_name: myContainer #
+    restart: unless-stopped
+    volumes:
+      - "${CFG_DIR}/containerCfgDir:/config" #
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 80:80 #
+    networks:
+      - proxy #
+    labels:
+      traefik.enable: true
+      traefik.http.services.portainer.loadbalancer.server.port: portNumber #
+
+networks:
+  proxy: #
+    external: true

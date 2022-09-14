@@ -1,0 +1,24 @@
+---
+version: "3"
+services:
+  handbrake:
+    image: jlesage/handbrake:latest
+    container_name: handbrake
+    restart: unless-stopped
+    volumes:
+      - "${CFG_DIR}/handbrake:/config:rw"
+      - "${DATA_DIR}:/storage"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 5800:5800
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+
+networks:
+  proxy:
+    external: true
