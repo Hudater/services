@@ -3,7 +3,7 @@ version: "3.7"
 services:
   qbit:
     container_name: qbit
-    image: hotio/qbittorrent:release-4.3.9
+    image: hotio/qbittorrent:latest
     networks:
       - proxy # rename this to your custom docker network
     labels:
