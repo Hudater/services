@@ -16,7 +16,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - JELLYFIN_PublishedServerUrl=192.168.29.11 #optional
+      - JELLYFIN_PublishedServerUrl=media.lan #optional
     volumes:
       - "${CFG_DIR}/jellyfin:/config"
       - "${DATA_DIR}:/data"
