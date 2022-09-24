@@ -10,6 +10,8 @@ services:
       traefik.enable: true
     volumes:
       - "${CFG_DIR}/uptime:/app/data"
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - 3001:3001
     restart: unless-stopped
