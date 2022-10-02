@@ -2,7 +2,7 @@
 version: "2.1"
 services:
   sonarr:
-    image: linuxserver/sonarr:latest
+    image: linuxserver/sonarr:v4
     container_name: sonarr
     networks:
       - proxy # rename this to your custom docker network
