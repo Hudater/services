@@ -11,7 +11,7 @@ import json
 ## CHANGE HERE ##
 # ip address of AdGuard Home
 # "http(s)://<adguardHomeIp:<port>"
-host = "http://192.168.29.12:80" 
+host = "http://10.0.0.1:8080"
 # user name
 userName = "USERNAME_HERE"
 # password
