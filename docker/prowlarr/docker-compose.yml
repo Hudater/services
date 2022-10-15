@@ -1,10 +1,11 @@
 ---
-version: "3"
+version: "2.1"
 services:
   prowlarr:
     image: linuxserver/prowlarr:develop
     container_name: prowlarr
-    network_mode: "container:gluetun"
+    networks:
+      - proxy
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -14,4 +15,12 @@ services:
     volumes:
       - "${CFG_DIR}/prowlarr:/config"
       - "${BAK_CFG_DIR}/prowlarr:/config/Backups"
+    ports:
+      - 9696:9696
     restart: unless-stopped
+    labels:
+      traefik.enable: true
+
+networks:
+  proxy:
+    external: true

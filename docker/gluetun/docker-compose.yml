@@ -5,6 +5,7 @@ services:
     image: qmcgaw/gluetun:latest
     container_name: gluetun
     restart: unless-stopped
+    hostname: gluetun
     cap_add:
       - NET_ADMIN
     volumes:
@@ -15,6 +16,8 @@ services:
       - TZ=${TZ}
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard
+      - HTTPPROXY=on
+      - HTTPPROXY_LOG=on
       # For Wireguard
       - VPN_ENDPOINT_IP=${VPN_ENDPOINT_IP}
       - VPN_ENDPOINT_PORT=${VPN_ENDPOINT_PORT}
@@ -23,13 +26,10 @@ services:
       - WIREGUARD_PRESHARED_KEY=${WIREGUARD_PRESHARED_KEY}
       - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
     ports:
-      - 9696:9696/tcp
+      - 8999:8888/tcp # HTTP proxy
     networks:
-      # proxy:
-      glue:
+      proxy:
 
 networks:
-  # proxy:
-  #   external: true
-  glue:
+  proxy:
     external: true

@@ -4,10 +4,9 @@ services:
   sonarr:
     image: linuxserver/sonarr:v4
     container_name: sonarr
+    hostname: sonarr
     networks:
       proxy:
-      glue:
-          ipv4_address: 172.20.0.22
     labels:
       traefik.enable: true
     environment:
@@ -26,6 +25,4 @@ services:
 
 networks:
   proxy:
-    external: true
-  glue:
     external: true
