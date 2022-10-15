@@ -15,6 +15,8 @@ services:
     networks:
       - proxy
     restart: unless-stopped
+    labels:
+      traefik.enable: true
 
 networks:
   proxy:    # rename this to your custom docker network.

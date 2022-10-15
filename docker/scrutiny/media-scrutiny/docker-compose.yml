@@ -27,6 +27,7 @@ services:
     devices:
       - /dev/sda:/dev/sda
       - /dev/sdb:/dev/sdb
+      - /dev/sdc:/dev/sdc
       - /dev/nvme0:/dev/nvme0
     restart: unless-stopped
 

@@ -1,0 +1,26 @@
+---
+version: "3"
+services:
+  doplarr:
+    image: linuxserver/doplarr:latest
+    container_name: doplarr
+    restart: unless-stopped
+    volumes:
+      - "${CFG_DIR}/doplarr:/config"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      DISCORD__TOKEN: ${DOPLARR_DISCORD_TOKEN}
+      RADARR__API: ${RADARR_API}
+      RADARR__URL: http://media.lan:7878
+      SONARR__API: ${SONARR_API}
+      SONARR__URL: http://media.lan:8989
+      DISCORD__MAX_RESULTS: 25
+      DISCORD__REQUESTED_MSG_STYLE: :plain
+      SONARR__QUALITY_PROFILE: 00-720-1080
+      RADARR__QUALITY_PROFILE: 00-720-1080
+      SONARR__ROOTFOLDER: /data/Media/Shows
+      RADARR__ROOTFOLDER: /data/Media/Movies
+      PARTIAL_SEASONS: true
+      LOG_LEVEL: :info
