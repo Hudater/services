@@ -1,36 +1,37 @@
----
-version: "2.1"
-services:
-  scrumd:
-    image: linuxserver/scrutiny:version-8e34ef8d
-    container_name: scrumd
-    networks:
-      - proxy # rename this to your custom docker network
-    labels:
-      traefik.enable: true
-    cap_add:
-      - SYS_RAWIO
-      - SYS_ADMIN #optional
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - SCRUTINY_API_ENDPOINT=http://localhost:8080
-      - SCRUTINY_WEB=true
-      - SCRUTINY_COLLECTOR=true
-    volumes:
-      - "${BAK_CFG_DIR}/scrutiny/scrutiny.yaml:/config/scrutiny.yaml"
-      - "${CFG_DIR}/scrutiny:/config"
-      - /run/udev:/run/udev:ro
-    ports:
-      - 8780:8080
-    devices:
-      - /dev/sda:/dev/sda
-      - /dev/sdb:/dev/sdb
-      - /dev/sdc:/dev/sdc
-      - /dev/nvme0:/dev/nvme0
-    restart: unless-stopped
+# ---
+# version: "2.1"
+# services:
+#   scrumd:
+#     image: linuxserver/scrutiny:version-8e34ef8d
+#     container_name: scrumd
+#     networks:
+#       - proxy # rename this to your custom docker network
+#     labels:
+#       traefik.enable: true
+#     cap_add:
+#       - SYS_RAWIO
+#       - SYS_ADMIN #optional
+#     environment:
+#       - PUID=${PUID}
+#       - PGID=${PGID}
+#       - TZ=${TZ}
+#       - SCRUTINY_API_ENDPOINT=http://localhost:8080
+#       - SCRUTINY_WEB=true
+#       - SCRUTINY_COLLECTOR=true
+#     volumes:
+#       - "${BAK_CFG_DIR}/scrutiny/scrutiny.yaml:/config/scrutiny.yaml"
+#       - "${CFG_DIR}/scrutiny:/config"
+#       - /run/udev:/run/udev:ro
+#     ports:
+#       - 8780:8080
+#     devices:
+#       - /dev/sda:/dev/sda
+#       - /dev/sdb:/dev/sdb
+#       - /dev/sdc:/dev/sdc
+#       - /dev/nvme0:/dev/nvme0
+#     restart: unless-stopped
 
-networks:
-  proxy:    # rename this to your custom docker network.
-    external: true
+# networks:
+#   proxy:    # rename this to your custom docker network.
+#     external: true
+# TODO: switch to official image later
