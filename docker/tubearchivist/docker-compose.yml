@@ -1,0 +1,76 @@
+---
+version: '3.3'
+services:
+  tube:
+    container_name: tubearchivist
+    restart: unless-stopped
+    image: bbilly1/tubearchivist:latest
+    ports:
+      - 8668:8000
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+    volumes:
+      - "${DATA_DIR}/Youtube:/youtube"
+      - "${CFG_DIR}/tubearchivist/cache:/cache"
+    environment:
+      - ES_URL=http://archivist-es:9200     # needs protocol e.g. http and port
+      - REDIS_HOST=archivist-redis          # don't add protocol
+      - HOST_UID=${PUID}
+      - HOST_GID=${PGID}
+      # - TA_HOST=tube.theitmob.com media.lan 10.2.0.11         # set your host name
+      - TA_HOST=${TA_HOST}         # set your host name
+      - TA_USERNAME=${TA_USERNAME}           # your initial TA credentials
+      - TA_PASSWORD=${TA_PASSWORD}              # your initial TA credentials
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}         # set password for Elasticsearch
+      - TZ=${TZ}
+    depends_on:
+      - archivist-es
+      - archivist-redis
+
+  archivist-redis:
+    image: redislabs/rejson:latest                 # for arm64 use bbilly1/rejson
+    container_name: archivist-redis
+    restart: unless-stopped
+    networks:
+      - proxy
+      - dbs
+    expose:
+      - "6379"
+    volumes:
+      - "${DB_CFG_DIR}/redis_tube:/data"
+    depends_on:
+      - archivist-es
+
+  archivist-es:
+    image: bbilly1/tubearchivist-es:latest         # only for amd64, or use official es 8.4.3
+    container_name: archivist-es
+    restart: unless-stopped
+    networks:
+      - proxy
+      - dbs
+    environment:
+      - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"       # matching Elasticsearch password
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "xpack.security.enabled=true"
+      - "discovery.type=single-node"
+      - "path.repo=/usr/share/elasticsearch/data/snapshot"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      # - "${DB_CFG_DIR}/es_tube:/usr/share/elasticsearch/data" # check for permission error when using bind mount, see readme
+      - es:/usr/share/elasticsearch/data    # check for permission error when using bind mount, see readme
+    expose:
+      - "9200"
+
+volumes:
+  es:
+
+networks:
+  proxy:
+    external: true
+  dbs:
+    external: true

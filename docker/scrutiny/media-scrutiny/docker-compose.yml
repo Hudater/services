@@ -1,37 +1,100 @@
-# ---
-# version: "2.1"
+# version: '2.4'
 # services:
-#   scrumd:
-#     image: linuxserver/scrutiny:version-8e34ef8d
-#     container_name: scrumd
+#   scrudb:
+#     image: influxdb:2.2
+#     container_name: scrudb
+#     hostname: scrudb
+#     ports:
+#       - '8086:8086'
 #     networks:
-#       - proxy # rename this to your custom docker network
+#       - proxy
+#       - dbs
+#     volumes:
+#       - "${DB_CFG_DIR}/scrudb:/var/lib/influxdb2"
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+#       interval: 5s
+#       timeout: 10s
+#       retries: 20
+
+#   scrutiny:
+#     image: 'ghcr.io/analogj/scrutiny:master-web'
+#     container_name: scrutiny
+#     hostname: scrutiny
+#     ports:
+#       - '8780:8080'
+#     networks:
+#       - proxy
 #     labels:
 #       traefik.enable: true
+#     volumes:
+#       - "${CFG_DIR}/scrutiny:/opt/scrutiny/config"
+#     environment:
+#       SCRUTINY_WEB_INFLUXDB_HOST: 'scrudb'
+#     depends_on:
+#       scrudb:
+#         condition: service_healthy
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost:8780/api/health"]
+#       interval: 5s
+#       timeout: 10s
+#       retries: 20
+#       start_period: 10s
+
+#   scrucollector:
+#     image: 'ghcr.io/analogj/scrutiny:master-collector'
+#     container_name: scrucollector
+#     hostname: scrucollector
 #     cap_add:
 #       - SYS_RAWIO
-#       - SYS_ADMIN #optional
-#     environment:
-#       - PUID=${PUID}
-#       - PGID=${PGID}
-#       - TZ=${TZ}
-#       - SCRUTINY_API_ENDPOINT=http://localhost:8080
-#       - SCRUTINY_WEB=true
-#       - SCRUTINY_COLLECTOR=true
 #     volumes:
-#       - "${BAK_CFG_DIR}/scrutiny/scrutiny.yaml:/config/scrutiny.yaml"
-#       - "${CFG_DIR}/scrutiny:/config"
-#       - /run/udev:/run/udev:ro
-#     ports:
-#       - 8780:8080
+#       - '/run/udev:/run/udev:ro'
+#     networks:
+#       - proxy
+#     environment:
+#       COLLECTOR_API_ENDPOINT: 'http://scrutiny:8780'
+#     depends_on:
+#       scrutiny:
+#         condition: service_healthy
 #     devices:
-#       - /dev/sda:/dev/sda
-#       - /dev/sdb:/dev/sdb
-#       - /dev/sdc:/dev/sdc
-#       - /dev/nvme0:/dev/nvme0
-#     restart: unless-stopped
+#       - "/dev/sda"
+#       - "/dev/sdb"
+#       - "/dev/sdc"
+#       - "/dev/nvme0n1"
 
 # networks:
-#   proxy:    # rename this to your custom docker network.
+#   proxy:
 #     external: true
-# TODO: switch to official image later
+#   dbs:
+#     external: true
+
+
+#FIXME Testing others compose file
+version: "2.3"
+
+services:
+  web:
+    image: linuxserver/scrutiny:latest
+    ports:
+      - "7278:8080"
+    volumes:
+      - ./config:/config
+    environment:
+      - SCRUTINY_WEB=true
+      - PUID=3000
+      - PGID=3000
+    restart: unless-stopped
+
+  collector:
+    image: linuxserver/scrutiny:latest
+    privileged: true
+    volumes:
+      - /dev/disk:/dev/disk
+      - /run/udev:/run/udev:ro
+      - ./config:/config
+    environment:
+      - SCRUTINY_COLLECTOR=true
+      - SCRUTINY_API_ENDPOINT=http://web:8080
+      - PUID=3000
+      - PGID=3000
+    restart: unless-stopped

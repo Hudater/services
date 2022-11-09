@@ -5,7 +5,7 @@ services:
     container_name: qbit
     image: hotio/qbittorrent:latest
     networks:
-      - proxy # rename this to your custom docker network
+      - proxy
     labels:
       traefik.enable: true
     ports:
@@ -22,5 +22,5 @@ services:
     restart: unless-stopped
 
 networks:
-  proxy:    # rename this to your custom docker network.
+  proxy:
     external: true
