@@ -7,7 +7,9 @@ services:
     restart: unless-stopped
     volumes:
       - "${BAK_CFG_DIR}/homepage:/app/config"
+      - "${BAK_CFG_DIR}/wallpapers:/app/public/wallpapers"
       - /var/run/docker.sock:/var/run/docker.sock
+      - "${DATA_DIR}:/mnt/merger"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
