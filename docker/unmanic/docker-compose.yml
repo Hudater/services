@@ -17,7 +17,7 @@ services:
     volumes:
       - ${CFG_DIR}/unmanic:/config
       - /drives/nvme/Unmanic/cache:/tmp/unmanic
-      - /mnt/merger:/library
+      - ${DATA_DIR}::/library
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
