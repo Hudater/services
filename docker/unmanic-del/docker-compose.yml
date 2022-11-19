@@ -1,0 +1,29 @@
+---
+version: '2.4'
+services:
+  undel:
+    container_name: undel
+    image: josh5/unmanic:latest
+    ports:
+      - 8889:8888
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CFG_DIR}/undel:/config
+      - /drives/nvme/Unmanic/del-cache:/tmp/unmanic
+      - ${DATA_DIR}:/library
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_MODULE
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
