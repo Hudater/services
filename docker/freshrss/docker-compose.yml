@@ -1,6 +1,16 @@
 ---
 version: "2.1"
 services:
+
+  full-text-rss:
+      container_name: full-test-rss
+      ports:
+        - '50000:80'
+      networks:
+        - proxy
+      restart: always
+      image: 'heussd/fivefilters-full-text-rss:latest'
+
   freshrss:
     image: linuxserver/freshrss:latest
     container_name: freshrss
