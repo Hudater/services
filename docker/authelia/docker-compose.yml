@@ -15,44 +15,62 @@ services:
       - 9091
     restart: unless-stopped
     environment:
-      - TZ=${TZ}
+      TZ: ${TZ}
     healthcheck:
       disable: true
     depends_on:
-      - redis_authelia
-      - mariadb_authelia
+      - authelia_redis
+      # - authelia_mariadb
+      - authelia_postgres
 
 ## Database section
-  redis_authelia:
-    container_name: redis_authelia
+  authelia_redis:
+    container_name: authelia_redis
     image: redis:latest
     command: >
-          --requirepass "${REDIS_AUTHELIA_PASS}"
+          --requirepass "${AUTHELIA_REDIS_PASS}"
     expose:
       - 6379
     volumes:
-      - "${DB_CFG_DIR}/redis_authelia:/data/"
+      - "${DB_CFG_DIR}/authelia_redis:/data/"
     environment:
       ALLOW_EMPTY_PASSWORD: "no"
-      REDIS_PASSWORD: "${REDIS_AUTHELIA_PASS}"
+      REDIS_PASSWORD: "${AUTHELIA_REDIS_PASS}"
+      TZ: ${TZ}
     networks:
       - proxy
       - dbs
     restart: unless-stopped
 
-  mariadb_authelia:
-    container_name: mariadb_authelia
-    image: linuxserver/mariadb:latest
+  # authelia_mariadb:
+  #   container_name: authelia_mariadb
+  #   image: linuxserver/mariadb:latest
+  #   expose:
+  #     - 3306
+  #   volumes:
+  #     - "${DB_CFG_DIR}/authelia_mariadb:/config"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: "${AUTHELIA_MYSQL_ROOT_PASS}"
+  #     MYSQL_ROOT_USER: root
+  #     MYSQL_DATABASE: authelia
+  #     MYSQL_USER: authelia
+  #     MYSQL_PASSWORD: "${AUTHELIA_MYSQL_USER_PASS}"
+  #   networks:
+  #     - proxy
+  #     - dbs
+  #   restart: unless-stopped
+
+  authelia_postgres:
+    container_name: authelia_postgres
+    image: postgres:latest
     expose:
-      - 3306
+      - 5432
     volumes:
-      - "${DB_CFG_DIR}/mariadb_authelia:/config"
+      - "${DB_CFG_DIR}/authelia_postgres:/var/lib/postgresql/data"
     environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL_AUTHELIA_ROOT_PASS}"
-      MYSQL_ROOT_USER: root
-      MYSQL_DATABASE: authelia
-      MYSQL_USER: authelia
-      MYSQL_PASSWORD: "${MYSQL_AUTHELIA_USER_PASS}"
+      POSTGRES_USER: authelia
+      POSTGRES_PASSWORD: "${AUTHELIA_MYSQL_USER_PASS}"
+      POSTGRES_DB: authelia
     networks:
       - proxy
       - dbs

@@ -1,0 +1,39 @@
+---
+version: '3.3'
+services:
+  firefly:
+    image: fireflyiii/core:latest
+    container_name: firefly
+    restart: unless-stopped
+    volumes:
+      - "${BAK_CFG_DIR}/fireflyiii/upload:/var/www/html/storage/upload"
+    ports:
+      - 8698:8080
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+    env_file: "${BAK_CFG_DIR}/fireflyiii/.env"
+    depends_on:
+      - firefly_db
+
+  firefly_db:
+    image: mariadb
+    hostname: fireflyiiidb
+    restart: unless-stopped
+    networks:
+      - proxy
+      - dbs
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=firefly
+      - MYSQL_PASSWORD="${FIREFLY_DB_PASS}"
+      - MYSQL_DATABASE=firefly
+    volumes:
+      - "${DB_CFG_DIR}/fireflyiii/fireflyiii_mariadb:/var/lib/mysql"
+
+networks:
+  proxy:
+    external: true
+  dbs:
+    external: true
