@@ -12,11 +12,12 @@ services:
       - "${CFG_DIR}/snapdrop:/config"
     ports:
       - 86:80
-        #      - 463:443
+      - 463:443
     networks:
       - proxy
     labels:
       traefik.enable: true
+      traefik.http.services.snapdrop.loadbalancer.server.port: 463
     restart: unless-stopped
 
 networks:

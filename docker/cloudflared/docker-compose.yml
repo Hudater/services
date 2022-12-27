@@ -5,8 +5,8 @@ services:
     restart: unless-stopped
     container_name: cloudflared
     command: tunnel run traefikHome
-    depends_on:
-      - mycontainer
+      #    depends_on:
+      #- mycontainer
     volumes:
       - "${BAK_CFG_DIR}/cloudflared:/etc/cloudflared"
     networks:
