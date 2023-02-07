@@ -4,6 +4,7 @@ services:
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
+    hostname: watchtower #fix this with var to change hostname for each computer (used in notifications)
     networks:
       - proxy # rename this to your custom docker network
     volumes:

@@ -12,7 +12,7 @@ services:
     labels:
       traefik.enable: true
     volumes:
-      - ${DATA_DIR}:/srv
+      - /mnt:/srv
       - ${BAK_CFG_DIR}/filebrowser/fbmd/filebrowser.db:/database.db
     restart: unless-stopped
     security_opt:

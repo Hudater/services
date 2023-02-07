@@ -1,7 +1,7 @@
 ---
 version: '3'
 services:
-  fbshare:
+  share:
     image: filebrowser/filebrowser:latest
     container_name: fbshare
     user: ${PUID}:${PGID}
