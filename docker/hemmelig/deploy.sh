@@ -1,4 +1,4 @@
 #!/bin/sh
-mkdir -p ${CFG_DIR}/containerCfgDir #
-mkdir -p ${CFG_DIR}/containerCfgDir/{multiple,subdirs} #
+mkdir -p ${BAK_CFG_DIR}/hemmelig/files
+mkdir -p ${BAK_CFG_DIR}/hemmelig/db
 docker compose up -d

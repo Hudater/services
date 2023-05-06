@@ -6,18 +6,35 @@ services:
         container_name: hemmelig
         hostname: hemmelig
         restart: unless-stopped
+        init: true
         volumes:
-        - "${CFG_DIR}/hemmelig:/config" #
+            - "${BAK_CFG_DIR}/hemmelig/files:/var/tmp/hemmelig/upload/files"
+            - "${BAK_CFG_DIR}/hemmelig/db:/home/node/hemmelig/database/"
         environment:
-        - PUID=${PUID}
-        - PGID=${PGID}
-        - TZ=${TZ}
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - TZ=${TZ}
+            - SECRET_LOCAL_HOSTNAME=0.0.0.0 # The local hostname for the fastify instance
+            - SECRET_PORT=3000 # The port number for the fastify instance
+            - SECRET_HOST=hemmelig.${CF_DOMAIN} # Used for i.e. set cors/cookies to your domain name
+            - SECRET_ROOT_USER=groot # User as the root admin user
+            - SECRET_ROOT_PASSWORD=iamroot # The admin user password (change this after signed in)
+            - SECRET_ROOT_EMAIL=groot@hemmelig.app # The email for the admin user
+            - SECRET_FILE_SIZE=4 # Set the total allowed upload file size in mb
+            - SECRET_FORCED_LANGUAGE=en # Set the default language for the application
+            - SECRET_JWT_SECRET=!changeme! # Override this for the secret signin JWT tokens for log in
+            - SECRET_MAX_TEXT_SIZE=256 # The max text size for the secret. Is set in kb. i.e. 256 for 256kb
         ports:
-        - '3000:3000'
+            - '3000:3000'
         networks:
-        - proxy
+            - proxy
         labels:
             traefik.enable: true
+        stop_grace_period: 1m
+        healthcheck:
+            test: 'wget -O /dev/null localhost:3000 || exit 1'
+            timeout: 5s
+            retries: 1
 
 networks:
     proxy:
