@@ -12,7 +12,8 @@ services:
       - WG_HOST=${WG_PRI_DOMAIN}
       - PASSWORD=${WG_PRI_PASS}
       - WG_PORT=${WG_PRI_PORT}
-      - WG_DEFAULT_DNS=${LOCAL_DNS}
+      - WG_DEFAULT_DNS=1.1.1.1
+      # - WG_DEFAULT_DNS=${LOCAL_DNS}
         #      - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24 # doesn't work with this option enabled
     volumes:
       - ${BAK_CFG_DIR}/wgpri:/etc/wireguard
