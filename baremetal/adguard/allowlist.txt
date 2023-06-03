@@ -1,4 +1,5 @@
-||s.youtube.com/^
+||*.s.youtube.com/^
+||*.video-stats.l.google.com/^
 ||ravenminer.com^
 ||stratum.ravenminer.com^
 ||whattomine.com/^
