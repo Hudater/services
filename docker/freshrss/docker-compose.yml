@@ -9,6 +9,7 @@ services:
     networks:
       - proxy
     restart: always
+    #TODO volume removal: `/var/www/html/cache`
     image: 'heussd/fivefilters-full-text-rss:latest'
 
   freshrss:

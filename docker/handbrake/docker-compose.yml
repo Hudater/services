@@ -8,6 +8,8 @@ services:
     volumes:
       - "${CFG_DIR}/handbrake:/config:rw"
       - "${DATA_DIR}:/storage"
+      - "${CFG_DIR}/handbrake_trash:/trash:rw"
+      #TODO volume removal: `/watch` `/output`
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

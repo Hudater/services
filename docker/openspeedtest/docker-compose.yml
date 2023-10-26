@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - "${CFG_DIR}/openspeedtest:/config" #change the left side
+      #TODO volume removal: `/var/log/letsencrypt`
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
