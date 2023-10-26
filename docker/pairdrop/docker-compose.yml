@@ -1,23 +1,23 @@
 ---
 version: "2.1"
 services:
-  snapdrop:
-    image: linuxserver/snapdrop:latest
-    container_name: snapdrop
+  pairdrop:
+    image: linuxserver/pairdrop:latest
+    container_name: pairdrop
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-    volumes:
-      - "${CFG_DIR}/snapdrop:/config"
+      - RATE_LIMIT=false #optional
+      - WS_FALLBACK=false #optional
+      - RTC_CONFIG= #optional
+      - DEBUG_MODE=false #optional
     ports:
-      - 86:80
-      - 463:443
+      - 86:3000
     networks:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.services.snapdrop.loadbalancer.server.port: 463
     restart: unless-stopped
 
 networks:

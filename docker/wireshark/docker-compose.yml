@@ -1,0 +1,31 @@
+---
+version: "3"
+services:
+  wireshark:
+    image: lscr.io/linuxserver/wireshark:latest
+    container_name: wireshark
+    hostname: wireshark
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    security_opt:
+      - seccomp:unconfined #optional
+        #    network_mode: host
+    volumes:
+      - "${CFG_DIR}/wireshark:/config"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 3010:3000
+        #      - 3011:3001
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+        #      traefik.http.services.portainer.loadbalancer.server.port: 3010
+
+networks:
+  proxy:
+    external: true

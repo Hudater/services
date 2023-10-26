@@ -1,0 +1,22 @@
+---
+version: "2.1"
+services:
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    networks:
+      - proxy # rename this to your custom docker network
+    environment:
+      - PUID=${PUID} #optional
+      - PGID=${PGID} #optional
+      - TZ=${TZ}
+      - SUBDOMAINS=${DD_PRI}
+      - TOKEN=${DD_TOKEN}
+      - LOG_FILE=true #optional
+    volumes:
+      - "${CFG_DIR}/duckdns:/config" #optional
+    restart: unless-stopped
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true

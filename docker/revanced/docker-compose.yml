@@ -1,0 +1,18 @@
+---
+version: '3.9'
+services:
+  revanced:
+    image: nikhilbadyal/docker-py-revanced:latest
+    container_name: revanced
+    hostname: revanced
+    restart: unless-stopped
+    env_file:
+      - ${BAK_CFG_DIR}/revanced/.env
+    volumes:
+      - "${BAK_CFG_DIR}/revanced:/app"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    # volumes:
+      # - .:/app:z
