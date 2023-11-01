@@ -13,17 +13,12 @@ services:
       - 8000:8000
       - 9000:9000
     volumes:
-      - portainer_data:/data
-      #TODO: remove volume and move to normal directory
-      # - "${BAK_CFG_DIR}/portainer_data:/data"
+      - "${CFG_DIR}/portainer_ee:/data"
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       traefik.enable: true
       traefik.http.services.portainer.loadbalancer.server.port: 9000
-
-volumes:
-  portainer_data:
 
 networks:
   proxy:
