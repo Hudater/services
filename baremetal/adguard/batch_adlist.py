@@ -18,8 +18,11 @@ userName = "ADGUARD_USERNAME"
 # password
 password = "ADGUARD_PASSWORD"
 
-# block list 
-# taken from Wally3K's Firebog https://firebog.net/
+### Blacklist: https://v.firebog.net/hosts/lists.php?type=tick
+### Whitelist:
+#            1) https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
+#            2) https://raw.githubusercontent.com/Hudater/services/main/baremetal/adguard/allowlist.txt
+
 urls = [
 "https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt",
 "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts",

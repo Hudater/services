@@ -1,0 +1,28 @@
+---
+version: "3"
+services:
+  pdf:
+    image: frooodle/s-pdf:latest
+    container_name: pdf
+    hostname: stirlingPdf
+    ports:
+      - '8980:8080'
+    restart: unless-stopped
+    # volumes:
+      # - "${CFG_DIR}/containerCfgDir:/config"
+      # - /location/of/trainingData:/usr/share/tesseract-ocr/4.00/tessdata #Required for extra OCR languages
+      # - /location/of/extraConfigs:/configs
+#      - /location/of/customFiles:/customFiles
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_ENABLE_SECURITY=false
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+
+networks:
+  proxy:
+    external: true
