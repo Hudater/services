@@ -9,11 +9,11 @@ services:
     env_file:
       - ${BAK_CFG_DIR}/revanced/.env
     volumes:
-      - "${BAK_CFG_DIR}/revanced:/app"
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - "${BAK_CFG_DIR}/revanced:/app:z"
+    # environment:
+    #   - PUID=${PUID}
+    #   - PGID=${PGID}
+    #   - TZ=${TZ}
     # volumes:
       # - .:/app:z
     networks:
