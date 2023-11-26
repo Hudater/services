@@ -24,7 +24,10 @@
 5) ```bash
     /opt/scrutiny/bin/scrutiny-collector-metrics-freebsd-amd64 run --api-endpoint "http://media.lan:8780"
     ```
-6) ```bash title="In OPNsense System: Settings: Cron
+6) ```
+    https://docs.opnsense.org/development/backend/configd.html
+    ```
+7) ```bash title="In OPNsense System: Settings: Cron
     Minute: */15
     Hour: *
     Day of the Month: *
