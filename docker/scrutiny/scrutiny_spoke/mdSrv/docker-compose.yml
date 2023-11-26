@@ -1,0 +1,25 @@
+---
+version: "3.4"
+
+services:
+  collector:
+    image: 'ghcr.io/analogj/scrutiny:master-collector'
+    container_name: scrutiny_mdsrv
+    cap_add:
+      - SYS_RAWIO
+    volumes:
+      - '/run/udev:/run/udev:ro'
+    environment:
+      COLLECTOR_API_ENDPOINT: ${SCRU_API_ENDPOINT}
+    devices:
+      - "/dev/sda"
+      - "/dev/sdb"
+      - "/dev/sdc"
+      - "/dev/sdd"
+      - "/dev/nvme0n1"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

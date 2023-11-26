@@ -1,6 +1,5 @@
+---
 version: "3.8"
-
-name: immich
 
 services:
   immich-server:
@@ -12,27 +11,19 @@ services:
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - ${BAK_CFG_DIR}/immich/.env
+    networks:
+      - proxy
     depends_on:
       - redis
       - database
       - typesense
     restart: always
-    networks:
-      - proxy
-    # labels:
-    #   traefik.enable: "true"
-    #   traefik.http.services.media-immich-api.loadbalancer.server.port: "3001"
-    #   traefik.http.routers.media-immich-api.rule: "Host(`immich.${CF_DOMAIN}`) && Pathprefix(`/api`)"
-    #   traefik.http.routers.media-immich-api.middlewares: service-immich-api-strip
-    #   traefik.http.middlewares.service-immich-api-strip.stripprefix.prefixes: "/api"
-    #   traefik.http.routers.media-immich-api.tls: true
-    #   # traefik.http.routers.media-immich-api.tls.certresolver: letsencrypt
-    #   # traefik.http.routers.media-immich-api.tls.domains[0].main: "*.domain.tld"
-    #   traefik.http.routers.media-immich-api.entrypoints: https
 
   immich-microservices:
     container_name: immich_microservices
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    env_file:
+      - ${BAK_CFG_DIR}/immich/.env
     extends:
       file: hwaccel.yml
       service: hwaccel
@@ -40,47 +31,39 @@ services:
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - ${BAK_CFG_DIR}/immich/.env
+    networks:
+      - proxy
     depends_on:
       - redis
       - database
       - typesense
     restart: always
-    networks:
-      - proxy
 
   immich-machine-learning:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
-    volumes:
-      - ${CFG_DIR}/immich/immich_model-cache:/cache
     env_file:
       - ${BAK_CFG_DIR}/immich/.env
-    restart: always
+    volumes:
+      - ${CFG_DIR}/immich/immich_model-cache:/cache
     networks:
       - proxy
+    restart: always
 
   immich-web:
     container_name: immich_web
     image: ghcr.io/immich-app/immich-web:${IMMICH_VERSION:-release}
     env_file:
       - ${BAK_CFG_DIR}/immich/.env
-    restart: always
     networks:
       - proxy
-    # labels:
-    #   traefik.enable: "true"
-    #   traefik.http.services.media-immich.loadbalancer.server.port: "3000"
-    #   traefik.http.routers.media-immich.rule: "Host(`immich.${CF_DOMAIN}`)"
-    #   traefik.http.routers.media-immich.tls: true
-    #   # traefik.http.routers.media-immich.tls.certresolver: letsencrypt
-    #   # traefik.http.routers.media-immich.tls.domains[0].main: "*.domain.tld"
-    #   traefik.http.routers.media-immich.entrypoints: https
+    restart: always
 
   typesense:
     container_name: immich_typesense
     image: typesense/typesense:0.24.1@sha256:9bcff2b829f12074426ca044b56160ca9d777a0c488303469143dd9f8259d4dd
+    env_file:
+      - ${BAK_CFG_DIR}/immich/.env
     environment:
       - TYPESENSE_API_KEY=${TYPESENSE_API_KEY}
       - TYPESENSE_DATA_DIR=/data
@@ -88,22 +71,26 @@ services:
       - GLOG_minloglevel=1
     volumes:
       - ${CFG_DIR}/immich/immich_typesense:/data
-    restart: always
     networks:
       - proxy
+    restart: always
 
   redis:
     container_name: immich_redis
-    image: redis:6.2-alpine@sha256:3995fe6ea6a619313e31046bd3c8643f9e70f8f2b294ff82659d409b47d06abb
-    restart: always
+    image: redis:6.2-alpine@sha256:70a7a5b641117670beae0d80658430853896b5ef269ccf00d1827427e3263fa3
+    env_file:
+      - ${BAK_CFG_DIR}/immich/.env
     networks:
       - proxy
+    restart: always
 
   database:
     container_name: immich_postgres
-    image: postgres:14-alpine@sha256:874f566dd512d79cf74f59754833e869ae76ece96716d153b0fa3e64aec88d92
+    image: postgres:14-alpine@sha256:28407a9961e76f2d285dc6991e8e48893503cc3836a4755bbc2d40bcc272a441
     env_file:
       - ${BAK_CFG_DIR}/immich/.env
+    networks:
+      - proxy
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
@@ -111,12 +98,16 @@ services:
     volumes:
       - ${DB_CFG_DIR}/immich_postgres:/var/lib/postgresql/data
     restart: always
-    networks:
-      - proxy
 
   immich:
-    container_name: immich_proxy
+    container_name: immich
     image: ghcr.io/immich-app/immich-proxy:${IMMICH_VERSION:-release}
+    env_file:
+      - ${BAK_CFG_DIR}/immich/.env
+    environment:
+      # Make sure these values get passed through from the env file
+      - IMMICH_SERVER_URL
+      - IMMICH_WEB_URL
     ports:
       - 2283:8080
     depends_on:
@@ -127,11 +118,6 @@ services:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.immich-immich.rule: Host(`immich.${CF_DOMAIN}`) && Pathprefix(`/api`)"
-      # traefik.http.services.media-immich-api.loadbalancer.server.port: "3001"
-      # traefik.http.routers.media-immich-api.rule: "Host(`immich.${CF_DOMAIN}`) && Pathprefix(`/api`)"
-      # traefik.http.routers.https-immich-immich.middlewares: service-immich-api-strip
-      # traefik.http.middlewares.https-immich-immich.stripprefix.prefixes: "/api"
 
 networks:
   proxy:
