@@ -1,7 +1,7 @@
 ---
 version: '3'
 services:
-  traefik:
+  traefik: #NOTE: this name is what traefik uses as subdomain automatically
     container_name: traefik
     image: traefik:latest
     security_opt:
@@ -14,6 +14,9 @@ services:
       - "${BAK_CFG_DIR}/traefik/:/etc/traefik/"
     networks:
       - proxy # rename this to your custom docker network
+    #extra_hosts for nextcloud-aio
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     labels:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
       traefik.http.routers.api.rule: Host(`traefik.${CF_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
