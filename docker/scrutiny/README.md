@@ -6,33 +6,38 @@
 ## Hub is to be run at the server while spoke/s is/are deployed on other machines
 
 ## Firewall disk
-[Pfsense/OPNsense official guide](https://github.com/AnalogJ/scrutiny/blob/master/docs/INSTALL_PFSENSE.md){:target="_blank" rel="noopener noreferrer"}
-
+[Pfsense official guide](https://github.com/AnalogJ/scrutiny/blob/master/docs/INSTALL_PFSENSE.md){:target="_blank" rel="noopener noreferrer"}
+[OPNsense guide](https://fingerlessgloves.me/2021/04/14/scrutiny-on-opnsense-smart-monitoring/){:target="_blank" rel="noopener noreferrer"}
 
 1) ```bash
     pkg install smartmontools
     ```
 2) ```bash
-    mkdir -p /opt/scrutiny/bin
+    mkdir -p /conf/scrutiny/
     ```
 3) ```bash
-    fetch -o /opt/scrutiny/bin https://github.com/AnalogJ/scrutiny/releases/latest/download/scrutiny-collector-metrics-freebsd-amd64
+    fetch -o /conf/scrutiny/ https://github.com/AnalogJ/scrutiny/releases/latest/download/scrutiny-collector-metrics-freebsd-amd64
     ```
 4) ```bash
-    chmod +x /opt/scrutiny/bin/scrutiny-collector-metrics-freebsd-amd64
+    chmod +x /conf/scrutiny/scrutiny-collector-metrics-freebsd-amd64
     ```
-5) ```bash
-    /opt/scrutiny/bin/scrutiny-collector-metrics-freebsd-amd64 run --api-endpoint "http://media.lan:8780"
+5) ```bash title="vim /usr/local/opnsense/service/conf/actions.d/actions_scrutinyCollector.conf"
+    [scrutinyCollector]
+    command:/conf/scrutiny/scrutiny-collector-metrics-freebsd-amd64 run --config /conf/scrutiny/collector.yaml --api-endpoint http://media.lan:8780
+    type:script_output
+    message:Running Scrutiny Collector
+    description:Scrutiny Collector
     ```
-6) ```
-    https://docs.opnsense.org/development/backend/configd.html
+7) ```bash
+    service configd restart
     ```
-7) ```bash title="In OPNsense System: Settings: Cron
-    Minute: */15
-    Hour: *
+8) ```bash title="In OPNsense System: Settings: Cron"
+    Enabled: tick
+    Minute: 1
+    Hour: 0
     Day of the Month: *
     Month of the Year: *
     Day of the Week: *
-    User: root
-    Command: /opt/scrutiny/bin/scrutiny-collector-metrics-freebsd-amd64 run --api-endpoint "http://media.lan:8780" >/dev/null 2>&1
+    Command: Scrutiny Collector
+    Description: Scutiny collector for SMART data
     ```
