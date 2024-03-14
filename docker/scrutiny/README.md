@@ -28,6 +28,12 @@
     message:Running Scrutiny Collector
     description:Scrutiny Collector
     ```
+6) ```bash title="vim /conf/scrutiny/collector.yaml"
+    version: 1
+    
+    host:
+        id: "OPNsense"
+    ```
 7) ```bash
     service configd restart
     ```

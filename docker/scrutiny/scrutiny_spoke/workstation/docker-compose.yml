@@ -11,6 +11,7 @@ services:
       - '/run/udev:/run/udev:ro'
     environment:
       COLLECTOR_API_ENDPOINT: ${SCRU_API_ENDPOINT}
+      COLLECTOR_HOST_ID: "Workstation"
     devices:
       - "/dev/sda"
     networks:

@@ -5,12 +5,15 @@ services:
   collector:
     image: 'ghcr.io/analogj/scrutiny:master-collector'
     container_name: scrutiny_mdsrv
+    privileged: true #Required for NVME drives
     cap_add:
       - SYS_RAWIO
+      - SYS_ADMIN #Required for NVME drives
     volumes:
       - '/run/udev:/run/udev:ro'
     environment:
       COLLECTOR_API_ENDPOINT: ${SCRU_API_ENDPOINT}
+      COLLECTOR_HOST_ID: "Media Server"
     devices:
       - "/dev/sda"
       - "/dev/sdb"
