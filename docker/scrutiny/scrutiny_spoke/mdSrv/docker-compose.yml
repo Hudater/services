@@ -1,6 +1,4 @@
 ---
-version: "3.4"
-
 services:
   collector:
     image: 'ghcr.io/analogj/scrutiny:master-collector'

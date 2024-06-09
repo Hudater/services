@@ -1,5 +1,4 @@
 ---
-version: '2.4'
 services:
   unmanic:
     container_name: unmanic
@@ -16,7 +15,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CFG_DIR}/unmanic:/config
-      - /drives/nvme/Unmanic/cache:/tmp/unmanic
+      #- /drives/nvme/Unmanic/cache:/tmp/unmanic
+      - /mnt/storage/Unmanic:/tmp/unmanic
       - ${DATA_DIR}:/library
     restart: unless-stopped
     cap_add:

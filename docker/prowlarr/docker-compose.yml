@@ -1,8 +1,7 @@
 ---
-version: "2.1"
 services:
   prowlarr:
-    image: linuxserver/prowlarr:develop
+    image: linuxserver/prowlarr:latest
     container_name: prowlarr
     networks:
       - proxy

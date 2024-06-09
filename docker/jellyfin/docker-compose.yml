@@ -1,5 +1,4 @@
 ---
-version: "2.1"
 services:
   jellyfin:
     image: linuxserver/jellyfin:latest
@@ -10,7 +9,8 @@ services:
       traefik.enable: true
       traefik.http.services.jellyfin.loadbalancer.server.port: 8096
     group_add:
-      - "109" #adding group `render` so that VAAPI can use the almighrty radeon r5
+      #      - ${renderGid}
+      - "989" #adding group `render` so that VAAPI can use the almighrty radeon r5
       #remeber to change the group id which is present in /etc/group
     environment:
       - PUID=${PUID}
@@ -26,7 +26,7 @@ services:
       - 1900:1900/udp #optional
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128 #optional
-      - /dev/dri/card0:/dev/dri/card0
+      - /dev/dri/card1:/dev/dri/card1
     restart: unless-stopped
 
 networks:

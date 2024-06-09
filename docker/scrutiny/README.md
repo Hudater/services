@@ -5,6 +5,8 @@
 
 ## Hub is to be run at the server while spoke/s is/are deployed on other machines
 
+# NOTE: Open this README as raw md file ,not rendered, to view the file locations
+
 ## Firewall disk
 [Pfsense official guide](https://github.com/AnalogJ/scrutiny/blob/master/docs/INSTALL_PFSENSE.md){:target="_blank" rel="noopener noreferrer"}
 [OPNsense guide](https://fingerlessgloves.me/2021/04/14/scrutiny-on-opnsense-smart-monitoring/){:target="_blank" rel="noopener noreferrer"}

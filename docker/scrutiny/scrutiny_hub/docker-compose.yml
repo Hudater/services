@@ -1,6 +1,4 @@
 ---
-version: "3.4"
-
 services:
 #scrutiny database
   influxdb:
@@ -38,6 +36,7 @@ services:
       - SCRUTINY_WEB_INFLUXDB_ORG=homelab
       - SCRUTINY_WEB_INFLUXDB_BUCKET=scrutiny
       # Optional but highly recommended to notify you in case of a problem
+      # I'm handling notifications in config file
       # - SCRUTINY_WEB_NOTIFY_URLS=${SCRU_NOTI}
     depends_on:
       - influxdb
