@@ -20,6 +20,8 @@ services:
       - "/dev/nvme0n1"
     networks:
       - proxy
+    restart: unless-stopped
+
 
 networks:
   proxy:

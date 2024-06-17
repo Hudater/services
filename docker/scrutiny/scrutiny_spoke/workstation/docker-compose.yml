@@ -1,6 +1,4 @@
 ---
-version: "3.4"
-
 services:
   collector:
     image: 'ghcr.io/analogj/scrutiny:master-collector'
@@ -16,6 +14,7 @@ services:
       - "/dev/sda"
     networks:
       - proxy
+    restart: unless-stopped
 
 networks:
   proxy:

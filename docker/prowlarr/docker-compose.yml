@@ -20,6 +20,51 @@ services:
     labels:
       traefik.enable: true
 
+#Gluetun for VPN
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    restart: unless-stopped
+    hostname: gluetun
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - "${BAK_CFG_DIR}/gluetun/Gluetun.conf:/gluetun/config.conf:ro"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+      - HTTPPROXY=on
+      - HTTPPROXY_LOG=on
+      # For Wireguard
+      - VPN_ENDPOINT_IP=${VPN_ENDPOINT_IP}
+      - VPN_ENDPOINT_PORT=${VPN_ENDPOINT_PORT}
+      - WIREGUARD_PUBLIC_KEY=${WIREGUARD_PUBLIC_KEY}
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_PRESHARED_KEY=${WIREGUARD_PRESHARED_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+    ports:
+      - 8999:8888/tcp # HTTP proxy
+    networks:
+      proxy:
+
+#Flaresolerr fro cloudflare
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    networks:
+      - proxy # rename this to your custom docker network
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    ports:
+      - "${PORT:-8191}:8191"
+    restart: unless-stopped
+
 networks:
   proxy:
     external: true

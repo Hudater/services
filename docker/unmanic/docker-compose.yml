@@ -16,13 +16,16 @@ services:
     volumes:
       - ${CFG_DIR}/unmanic:/config
       #- /drives/nvme/Unmanic/cache:/tmp/unmanic
-      - /mnt/storage/Unmanic:/tmp/unmanic
+      - /var/tmp/unmanic:/tmp/unmanic
+      #- /mnt/storage/Unmanic:/tmp/unmanic
       - ${DATA_DIR}:/library
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_MODULE
+    devices:
+        - /dev/dri:/dev/dri
 
 networks:
   proxy:    # rename this to your custom docker network.
