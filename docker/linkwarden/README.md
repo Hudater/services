@@ -1,1 +1,1 @@
-# <serviceName>: used to 
+# Linkwarden: used to save bookmarks

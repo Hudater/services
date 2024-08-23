@@ -1,0 +1,72 @@
+---
+services:
+  tdarr:
+    container_name: tdarr
+    image: ghcr.io/haveagitgat/tdarr:latest
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - 8265:8265 # webUI port
+      - 8266:8266 # server port
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - UMASK_SET=002
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - webUIPort=8265
+      - internalNode=true
+      - inContainer=true
+      - ffmpegVersion=6
+      - nodeName=MyInternalNode
+      # - NVIDIA_DRIVER_CAPABILITIES=all
+      # - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ${CFG_DIR}/tdarr/server:/app/server
+      - ${CFG_DIR}/tdarr/configs:/app/configs
+      - ${CFG_DIR}/tdarr/logs:/app/logs
+      - ${DATA_DIR}:/media
+      - /var/tmp/tdarr:/temp
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      # traefik.http.services.portainer.loadbalancer.server.port: portNumber #
+    devices:
+      - /dev/dri:/dev/dri
+
+# node example
+  tdarr-node:
+    container_name: tdarr-node
+    image: ghcr.io/haveagitgat/tdarr_node:latest
+    restart: unless-stopped
+    network_mode: service:tdarr
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - UMASK_SET=002
+      - nodeName=MyExternalNode
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - inContainer=true
+      - ffmpegVersion=6
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      # traefik.http.services.portainer.loadbalancer.server.port: portNumber #
+    volumes:
+      - ${CFG_DIR}/tdarr/configs:/app/configs
+      - ${CFG_DIR}/tdarr/logs:/app/logs
+      - ${DATA_DIR}:/media
+      - /var/tmp/tdarr:/temp
+    devices:
+      - /dev/dri:/dev/dri
+
+networks:
+  proxy:
+    external: true

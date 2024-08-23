@@ -1,5 +1,4 @@
 ---
-version: "3"
 services:
   pdf:
     image: frooodle/s-pdf:latest

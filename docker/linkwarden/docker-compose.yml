@@ -1,24 +1,44 @@
 ---
 services:
-  serviceName:
-    image: MAINTAINER/IMAGE:latest
-    container_name: myContainer #
-    hostname: myContainer #
+  linkwarden:
+    image: ghcr.io/linkwarden/linkwarden:latest
+    container_name: linkwarden
+    hostname: linkwarden
     restart: unless-stopped
     volumes:
-      - "${CFG_DIR}/containerCfgDir:/config" #
+      - "${CFG_DIR}/linkwarden:/data/data"
+    depends_on:
+      - postgres
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - DATABASE_URL=postgresql://postgres:${LINKWARDEN_POSTGRES_PASSWORD}@postgres:5432/postgres
+      - NEXTAUTH_SECRET=${LINKWARDEN_NEXTAUTH_SECRET}
+      - POSTGRES_PASSWORD=${LINKWARDEN_POSTGRES_PASSWORD}
+      # - NEXTAUTH_URL=http://localhost:3000/api/v1/auth #https://docs.linkwarden.app/self-hosting/installation
+      # - PUID=${PUID}
+      # - PGID=${PGID}
+      # - TZ=${TZ}
     ports:
-      - 80:80 #
+      - 3000:3000
     networks:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.services.portainer.loadbalancer.server.port: portNumber #
+
+  postgres:
+    container_name: linkwarden_postgres
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      - NEXTAUTH_SECRET=${LINKWARDEN_NEXTAUTH_SECRET}
+      - POSTGRES_PASSWORD=${LINKWARDEN_POSTGRES_PASSWORD}
+    volumes:
+      - "$DB_CFG_DIR/linkwarden_postgres:/var/lib/postgresql/data"
+    networks:
+      - proxy
+      - dbs
 
 networks:
   proxy:
+    external: true
+  dbs:
     external: true
