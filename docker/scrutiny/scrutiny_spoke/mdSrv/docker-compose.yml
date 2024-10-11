@@ -10,14 +10,14 @@ services:
     volumes:
       - '/run/udev:/run/udev:ro'
     environment:
-      COLLECTOR_API_ENDPOINT: http://10.2.0.11:8780
-      #      COLLECTOR_API_ENDPOINT: ${SCRU_API_ENDPOINT}
+      COLLECTOR_API_ENDPOINT: ${SCRU_API_ENDPOINT}
       COLLECTOR_HOST_ID: "Media Server"
     devices:
       - "/dev/sda"
       - "/dev/sdb"
       - "/dev/sdc"
       - "/dev/sdd"
+      - "/dev/sde"
       - "/dev/nvme0n1"
     networks:
       - proxy
