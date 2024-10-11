@@ -2,7 +2,7 @@
 services:
   qbit:
     container_name: qbit
-    image: hotio/qbittorrent:latest
+    image: hotio/qbittorrent:legacy
     networks:
       - proxy
     labels:
