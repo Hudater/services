@@ -1,0 +1,35 @@
+---
+services:
+  adminer:
+      image: shyim/adminerevo:latest
+      container_name: adminerevo
+      restart: always
+      environment:
+        - ADMINER_DEFAULT_SERVER=adminer_db
+        - ADMINER_DESIGN= "nette"
+      depends_on:
+        - adminer_db
+      ports:
+        # - 8986:8080
+        - 8080:8080
+      networks:
+        - proxy
+        - dbs
+      labels:
+        traefik.enable: true
+
+  adminer_db:
+      image: mysql:8.0
+      container_name: adminer_db
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: example
+      networks:
+        - proxy
+        - dbs
+
+networks:
+  proxy:
+    external: true
+  dbs:
+    external: true
