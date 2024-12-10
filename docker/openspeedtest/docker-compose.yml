@@ -1,4 +1,3 @@
-version: "3"
 services:
   speed: #change me
     image: openspeedtest/latest:latest #change me
