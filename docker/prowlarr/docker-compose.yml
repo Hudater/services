@@ -28,6 +28,8 @@ services:
     hostname: gluetun
     cap_add:
       - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
     volumes:
       - "${BAK_CFG_DIR}/gluetun/Gluetun.conf:/gluetun/config.conf:ro"
     environment:
