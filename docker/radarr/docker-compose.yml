@@ -11,8 +11,9 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - TP_COMMUNITY_THEME = true
       - DOCKER_MODS=ghcr.io/gilbn/theme.park:radarr
-      - TP_THEME=organizr
+      - TP_THEME=catppuccin-mocha
     volumes:
       - ${CFG_DIR}/radarr:/config
       - ${BAK_CFG_DIR}/radarr:/config/Backups

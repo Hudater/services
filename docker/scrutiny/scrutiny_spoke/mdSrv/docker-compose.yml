@@ -13,12 +13,9 @@ services:
       COLLECTOR_API_ENDPOINT: ${SCRU_API_ENDPOINT}
       COLLECTOR_HOST_ID: "Media Server"
     devices:
-      - "/dev/sda"
       - "/dev/sdb"
       - "/dev/sdc"
       - "/dev/sdd"
-      - "/dev/sde"
-      - "/dev/nvme0n1"
     networks:
       - proxy
     restart: unless-stopped

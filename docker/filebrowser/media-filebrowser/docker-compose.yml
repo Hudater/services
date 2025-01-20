@@ -1,5 +1,4 @@
 ---
-version: '3'
 services:
   fbmd:
     image: filebrowser/filebrowser:latest

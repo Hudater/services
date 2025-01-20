@@ -6,7 +6,7 @@ services:
     hostname: wallos
     restart: unless-stopped
     volumes:
-      - '${CFG_DIR}/wallos/db:/var/www/html/db'
+      - '${DB_CFG_DIR}/wallos/db:/var/www/html/db'
       - '${CFG_DIR}/wallos/logos:/var/www/html/images/uploads/logos'
     environment:
       - PUID=${PUID}

@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     volumes:
       - "${CFG_DIR}/pinchflat:/config"
-      - "${DATA_DIR}/Youtube:/downloads"
+      - "${DATA_DIR}/Media/Youtube:/downloads"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

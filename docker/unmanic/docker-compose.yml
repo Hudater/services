@@ -22,8 +22,8 @@ services:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_MODULE
-    devices:
-        - /dev/dri:/dev/dri
+        #    devices:
+        #        - /dev/dri:/dev/dri
 
 networks:
   proxy:    # rename this to your custom docker network.
