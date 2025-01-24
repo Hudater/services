@@ -1,19 +1,20 @@
 ---
-version: "3.1"
 services:
   syncthing:
-    image: linuxserver/syncthing:latest
-    container_name: sync
-    hostname: syncthing #optional
-    networks:
-      - proxy # rename this to your custom docker network
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - HOSTNAME=${HOSTNAME}
+    image: linuxserver/syncthing:latest
+    container_name: "sync-${HOSTNAME}"
+    hostname: "sync-${HOSTNAME}" #optional
+    networks:
+      - proxy # rename this to your custom docker network
     volumes:
       - "${CFG_DIR}/syncthing:/config"
       - /home/$USER:/home_dir
+      - /mnt:/mnt_dir
       - /:/root_dir
     labels:
       traefik.enable: true
