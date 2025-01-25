@@ -24,7 +24,6 @@ services:
     restart: unless-stopped
     networks:
       - proxy
-      - dbs
 
 
   authentik-worker:
@@ -51,7 +50,6 @@ services:
     restart: unless-stopped
     networks:
       - proxy
-      - dbs
 
   authentik-redis:
     image: docker.io/library/redis:7.4.2
@@ -68,7 +66,6 @@ services:
     restart: unless-stopped
     networks:
       - proxy
-      - dbs
 
   authentik-db:
     image: docker.io/library/postgres:17.2
@@ -79,7 +76,7 @@ services:
       - POSTGRES_DB=${AUTHENTIK_PG_DB}
       - TZ=${TZ}
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -d "${AUTHENTIK_PG_DB}"" -U "${AUTHENTIK_PG_USER}"']
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_period: 30s
       interval: 10s
       timeout: 10s
@@ -89,10 +86,7 @@ services:
     restart: unless-stopped
     networks:
       - proxy
-      - dbs
 
 networks:
   proxy:
-    external: true
-  dbs:
     external: true
