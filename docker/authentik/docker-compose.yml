@@ -1,0 +1,98 @@
+---
+services:
+  authentik:
+    image: ghcr.io/goauthentik/server:2024.12.2
+    container_name: authentik-server
+    command: server
+    environment:
+      - AUTHENTIK_REDIS__HOST=authentik-redis
+      - AUTHENTIK_POSTGRESQL__HOST=authentik-db
+      - AUTHENTIK_POSTGRESQL__USER=${AUTHENTIK_PG_USER}
+      - AUTHENTIK_POSTGRESQL__NAME=${AUTHENTIK_PG_DB}
+      - AUTHENTIK_POSTGRESQL__PASSWORD=${AUTHENTIK_PG_PASSWORD}
+      - AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
+      - AUTHENTIK_ERROR_REPORTING__ENABLED=true
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.authentik.loadbalancer.server.port=9000
+    volumes:
+      - "${BAK_CFG_DIR}/authentik/authentik_server-media:/media"
+      - "${BAK_CFG_DIR}/authentik/authentik_server_custom-templates:/templates"
+    depends_on:
+      - authentik-db
+      - authentik-redis
+    restart: unless-stopped
+    networks:
+      - proxy
+      - dbs
+
+
+  authentik-worker:
+    image: ghcr.io/goauthentik/server:2024.12.2
+    container_name: authentik-worker
+    command: worker
+    environment:
+      - AUTHENTIK_REDIS__HOST=authentik-redis
+      - AUTHENTIK_POSTGRESQL__HOST=authentik-db
+      - AUTHENTIK_POSTGRESQL__USER=${AUTHENTIK_PG_USER}
+      - AUTHENTIK_POSTGRESQL__NAME=${AUTHENTIK_PG_DB}
+      - AUTHENTIK_POSTGRESQL__PASSWORD=${AUTHENTIK_PG_PASSWORD}
+      - AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
+      - AUTHENTIK_ERROR_REPORTING__ENABLED=true
+    user: root
+    volumes:
+      - /run/docker.sock:/run/docker.sock
+      - "${BAK_CFG_DIR}/authentik/authentik_worker-media:/media"
+      - "${BAK_CFG_DIR}/authentik/authentik_worker-certs:/certs"
+      - "${BAK_CFG_DIR}/authentik/authentik_worker_custom-templates:/templates"
+    depends_on:
+      - authentik-db
+      - authentik-redis
+    restart: unless-stopped
+    networks:
+      - proxy
+      - dbs
+
+  authentik-redis:
+    image: docker.io/library/redis:7.4.2
+    container_name: authentik-redis
+    command: --save 60 1 --loglevel warning
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    volumes:
+      - "${DB_CFG_DIR}/authentik_redis/:/data"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - dbs
+
+  authentik-db:
+    image: docker.io/library/postgres:17.2
+    container_name: authentik-db
+    environment:
+      - POSTGRES_USER=${AUTHENTIK_PG_USER}
+      - POSTGRES_PASSWORD=${AUTHENTIK_PG_PASSWORD}
+      - POSTGRES_DB=${AUTHENTIK_PG_DB}
+      - TZ=${TZ}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d "${AUTHENTIK_PG_DB}"" -U "${AUTHENTIK_PG_USER}"']
+      start_period: 30s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - "${DB_CFG_DIR}/authentik_postgres/:/var/lib/postgresql/data"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - dbs
+
+networks:
+  proxy:
+    external: true
+  dbs:
+    external: true
