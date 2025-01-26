@@ -1,0 +1,37 @@
+# Can't use wireguard with proxied option enabled since they only support selected few ports to be proxied
+# Backup VPN on Pi-Zero
+---
+services:
+  wgeasy:
+    environment:
+      - HOSTNAME=${HOSTNAME}
+      - WG_HOST=${CF_DOMAIN}
+      # - PASSWORD=${WG_CL_PASS} ## running behind authentik so don't need password
+      - WG_PORT=${WG_PRI_PORT}
+      - WG_DEFAULT_DNS=1.1.1.1
+        #      - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24 # doesn't work with this option enabled
+    image: ghcr.io/wg-easy/wg-easy:latest
+    container_name: "wg-${HOSTNAME}" #
+    hostname: "wg-${HOSTNAME}" #
+    networks:
+      - proxy # rename this to your custom docker network
+    volumes:
+      - ${BAK_CFG_DIR}/wgeasy:/etc/wireguard
+    ports:
+      - "51820:51820/udp" #wg traffic port; match with WG_PORT
+      - "51821:51821/tcp" #webgui port
+    labels:
+      traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
+      traefik.http.services.wgeasy.loadbalancer.server.port: 51821
+      traefik.http.routers.wgeasy.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
