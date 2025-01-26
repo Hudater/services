@@ -10,6 +10,7 @@ services:
       - 9999:8080
     labels:
       traefik.enable: true
+      traefik.http.routers.dozzle.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
     networks:
       - proxy
     restart: unless-stopped
