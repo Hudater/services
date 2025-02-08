@@ -23,7 +23,7 @@ services:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
       traefik.http.routers.api.rule: Host(`traefik.${CF_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
       traefik.http.routers.api.entryPoints: https    # Set the Traefik entry point.
-      # traefik.http.routers.api.service: api@internal    # Enable Traefik API.
+      traefik.http.routers.api.service: api@internal    # Enable Traefik API.
       # traefik.http.routers.traefik.middlewares: 
       traefik.http.routers.traefik.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
     restart: unless-stopped

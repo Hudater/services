@@ -1,0 +1,74 @@
+---
+services:
+  zitadel:
+    restart: "unless-stopped"
+    container_name: zitadel
+    networks:
+      - "zitadel"
+      - "proxy"
+    image: "ghcr.io/zitadel/zitadel:stable"
+    volumes:
+      - "${BAK_CFG_DIR}/zitadel/config.yaml:/zitadel-config.yaml:ro"
+      - "${BAK_CFG_DIR}/zitadel/secrets.yaml:/zitadel-secrets.yaml:ro"
+      - "${BAK_CFG_DIR}/zitadel/init-steps.yaml:/zitadel-init-steps.yaml:ro"
+      - "zitadel-certs:/crdb-certs:ro"
+    command: 'start-from-init --config /zitadel-config.yaml --config /zitadel-secrets.yaml --steps /zitadel-init-steps.yaml --masterkey "${ZITADEL_MASTERKEY}" --tlsMode external'
+    depends_on:
+      certs:
+        condition: "service_completed_successfully"
+    environment:
+      ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME: "${ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME}"
+      ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD: "${ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD}"
+      ZITADEL_MASTERKEY: "${ZITADEL_MASTERKEY}" # run tr -dc A-Za-z0-9 </dev/urandom | head -c 32
+    ports:
+      - "8180:8080"
+    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.zitadel.rule=Host(`zitadel.${CF_DOMAIN}`)"
+      - "traefik.http.services.zitadel.loadbalancer.server.scheme=h2c"
+      - "traefik.http.services.zitadel.loadbalancer.passHostHeader=true"
+
+  certs:
+    image: "cockroachdb/cockroach:latest"
+    container_name: zitadel_certs
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      [
+        "cp /certs/* /zitadel-certs/ && cockroach cert create-client --overwrite --certs-dir /zitadel-certs/ --ca-key /zitadel-certs/ca.key zitadel_user && chown 1000:1000 /zitadel-certs/*",
+      ]
+    volumes:
+      - "certs:/certs:ro"
+      - "zitadel-certs:/zitadel-certs:rw"
+    depends_on:
+      zitadel-cockroach-db:
+        condition: "service_healthy"
+
+  zitadel-cockroach-db:
+    restart: "always"
+    container_name: zitadel_cockroach_db
+    networks:
+      - "zitadel"
+    image: "cockroachdb/cockroach:latest"
+    command: "start-single-node --advertise-addr zitadel-cockroach-db"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health?ready=1"]
+      interval: "10s"
+      timeout: "30s"
+      retries: 5
+      start_period: "20s"
+    ports:
+      - "9090:8080"
+      - "26257:26257"
+    volumes:
+      - "certs:/cockroach/certs:rw"
+      - "${DB_CFG_DIR}/zitadel_cockroach:/cockroach/cockroach-data:rw"
+
+volumes:
+  certs:
+  zitadel-certs:
+
+networks:
+  zitadel:
+  proxy:
+    external: true
