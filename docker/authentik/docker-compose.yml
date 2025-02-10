@@ -1,7 +1,7 @@
 ---
 services:
   authentik:
-    image: ghcr.io/goauthentik/server:2024.12.2
+    image: ghcr.io/goauthentik/server:latest
     container_name: authentik-server
     command: server
     environment:
@@ -15,6 +15,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.authentik.loadbalancer.server.port=9000
+      - traefik.http.routers.authentik.rule=Host(`authentik.${CF_DOMAIN}`) || HostRegexp(`{subdomain:[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?}.${CF_DOMAIN}`) && PathPrefix(`/outpost.goauthentik.io/`)
     volumes:
       - "${BAK_CFG_DIR}/authentik/authentik_server-media:/media"
       - "${BAK_CFG_DIR}/authentik/authentik_server_custom-templates:/templates"
@@ -25,9 +26,8 @@ services:
     networks:
       - proxy
 
-
   authentik-worker:
-    image: ghcr.io/goauthentik/server:2024.12.2
+    image: ghcr.io/goauthentik/server:latest
     container_name: authentik-worker
     command: worker
     environment:
@@ -52,7 +52,7 @@ services:
       - proxy
 
   authentik-redis:
-    image: docker.io/library/redis:7.4.2
+    image: docker.io/library/redis:latest
     container_name: authentik-redis
     command: --save 60 1 --loglevel warning
     healthcheck:
@@ -68,7 +68,7 @@ services:
       - proxy
 
   authentik-db:
-    image: docker.io/library/postgres:17.2
+    image: docker.io/library/postgres:latest
     container_name: authentik-db
     environment:
       - POSTGRES_USER=${AUTHENTIK_PG_USER}
