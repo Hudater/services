@@ -16,6 +16,7 @@ services:
       - proxy
     labels:
       traefik.enable: true
+      traefik.http.routers.speed.middlewares: middlewares-authentik@file
 
 networks:
   proxy:    # rename this to your custom docker network.
