@@ -5,8 +5,6 @@ services:
     container_name: homer
     networks:
       - proxy
-    labels:
-      traefik.enable: true
     volumes:
       - /home/$USER/.config/homer:/www/assets
       - "${BAK_CFG_DIR}/homer/config.yml:/www/assets/config.yml"
@@ -19,6 +17,10 @@ services:
       - GID=${PGID}
       - TZ=${TZ}
     restart: unless-stopped
+    labels:
+      traefik.enable: true
+      # traefik.http.services.it-tools.loadbalancer.server.port: portNumber #
+      traefik.http.routers.homer.middlewares: middlewares-authentik@file 
 
 networks:
   proxy:    # rename this to your custom docker network.
