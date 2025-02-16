@@ -4,7 +4,6 @@ services:
     restart: "unless-stopped"
     container_name: zitadel
     networks:
-      - "zitadel"
       - "proxy"
     image: "ghcr.io/zitadel/zitadel:stable"
     volumes:
@@ -22,7 +21,6 @@ services:
       ZITADEL_MASTERKEY: "${ZITADEL_MASTERKEY}" # run tr -dc A-Za-z0-9 </dev/urandom | head -c 32
     ports:
       - "8180:8080"
-    
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.zitadel.rule=Host(`zitadel.${CF_DOMAIN}`)"
@@ -31,6 +29,8 @@ services:
 
   certs:
     image: "cockroachdb/cockroach:latest"
+    networks:
+      - "proxy"
     container_name: zitadel_certs
     entrypoint: ["/bin/bash", "-c"]
     command:
@@ -48,7 +48,7 @@ services:
     restart: "always"
     container_name: zitadel_cockroach_db
     networks:
-      - "zitadel"
+      - "proxy"
     image: "cockroachdb/cockroach:latest"
     command: "start-single-node --advertise-addr zitadel-cockroach-db"
     healthcheck:
@@ -69,6 +69,5 @@ volumes:
   zitadel-certs:
 
 networks:
-  zitadel:
   proxy:
     external: true

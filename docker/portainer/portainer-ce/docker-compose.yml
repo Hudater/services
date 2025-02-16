@@ -1,5 +1,4 @@
 ---
-version: '3'
 services:
   portainer:
     image: portainer/portainer-ce:latest
@@ -13,15 +12,13 @@ services:
       - 8000:8000
       - 9000:9000
     volumes:
-      - portainer_data:/data
+      - "${CFG_DIR}/portainer_ce:/data"
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       traefik.enable: true
       traefik.http.services.portainer.loadbalancer.server.port: 9000
-
-volumes:
-  portainer_data:
+      traefik.http.routers.portainer.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
 
 networks:
   proxy:
