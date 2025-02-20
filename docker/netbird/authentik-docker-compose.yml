@@ -13,11 +13,11 @@ services:
       - AUTH_AUDIENCE=${NETBIRD_AUTH_CLIENT_ID_SHELL_ENV}
       - AUTH_CLIENT_ID=${NETBIRD_AUTH_CLIENT_ID_SHELL_ENV}
       - AUTH_CLIENT_SECRET=
-      - AUTH_AUTHORITY=https://zitadel.${CF_DOMAIN}
+      - AUTH_AUTHORITY=https://authentik.${CF_DOMAIN}/application/o/netbird/
       - USE_AUTH0=false
       - AUTH_SUPPORTED_SCOPES=openid profile email offline_access api
-      - AUTH_REDIRECT_URI=/auth
-      - AUTH_SILENT_REDIRECT_URI=/silent-auth
+      - AUTH_REDIRECT_URI=
+      - AUTH_SILENT_REDIRECT_URI=
       - NETBIRD_TOKEN_SOURCE=accessToken
       # SSL
       - NGINX_SSL_PORT=443
@@ -53,7 +53,7 @@ services:
     #   - 443:80
   #      # port and command for Let's Encrypt validation
   #      - 443:443
-  #    command: ["--letsencrypt-domain", "netbird.${CF_DOMAIN}", "--log-file", "console"]
+  #    command: ["--letsencrypt-domain", "", "--log-file", "console"]
     logging:
       driver: "json-file"
       options:
@@ -106,7 +106,7 @@ services:
     # ports:
     #   - 443:443 #API port
   #    # command for Let's Encrypt validation without dashboard container
-    # command: ["--letsencrypt-domain", "netbird.${CF_DOMAIN}", "--log-file", "console"]
+  #    command: ["--letsencrypt-domain", "", "--log-file", "console"]
     command: [
       "--port", "443",
       "--log-file", "console",
@@ -138,13 +138,13 @@ services:
     - traefik.http.routers.netbird-management.service=netbird-management
     - traefik.http.services.netbird-management.loadbalancer.server.port=443
     - traefik.http.services.netbird-management.loadbalancer.server.scheme=h2c
-
+      
   # Coturn
   coturn:
     image: coturn/coturn:latest
     restart: unless-stopped
     container_name: netbird-coturn
-    domainname: netbird.${CF_DOMAIN} # only needed when TLS is enabled
+    #domainname: netbird.${CF_DOMAIN} # only needed when TLS is enabled
     volumes:
       - "${BAK_CFG_DIR}/netbird/turnserver.conf:/etc/turnserver.conf:ro"
     #      - ./privkey.pem:/etc/coturn/private/privkey.pem:ro
@@ -157,7 +157,6 @@ services:
       options:
         max-size: "500m"
         max-file: "2"
-
 volumes:
   netbird-mgmt:
   netbird-signal:
