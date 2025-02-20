@@ -1,0 +1,61 @@
+---
+services:
+  hoarder:
+    environment:
+      - MEILI_ADDR=http://meilisearch:7700
+      - BROWSER_WEB_URL=http://chrome:9222
+      # - OPENAI_API_KEY=...
+
+      # You almost never want to change the value of the DATA_DIR variable.
+      # If you want to mount a custom directory, change the volume mapping above instead.
+      - DATA_DIR=/data # DON'T CHANGE THIS
+    image: ghcr.io/hoarder-app/hoarder:release
+    container_name: hoarder
+    hostname: "hoarder-${HOSTNAME}" #
+    restart: unless-stopped
+    env_file:
+      - "${BAK_CFG_DIR}/hoarder/.env"
+    volumes:
+      - "${BAK_CFG_DIR}/hoarder/data:/data" #
+    ports:
+      - 3000:3000
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.hoarder.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+
+  chrome:
+    image: gcr.io/zenika-hub/alpine-chrome:latest
+    restart: unless-stopped
+    container_name: hoarder-chrome
+    networks:
+      - proxy
+    command:
+      - --no-sandbox
+      - --disable-gpu
+      - --disable-dev-shm-usage
+      - --remote-debugging-address=0.0.0.0
+      - --remote-debugging-port=9222
+      - --hide-scrollbars
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    restart: unless-stopped
+    container_name: hoarder-meilisearch
+    networks:
+      - proxy
+    env_file:
+      - "${BAK_CFG_DIR}/hoarder/.env"
+    environment:
+      MEILI_NO_ANALYTICS: "true"
+    volumes:
+      - meilisearch:/meili_data
+
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  meilisearch:
