@@ -1,25 +1,25 @@
 ---
 services:
-  qbit:
-    container_name: qbit
-    image: hotio/qbittorrent:legacy
-    networks:
-      - proxy
-    labels:
-      traefik.enable: true
-    ports:
-      - 4000:8080
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - UMASK=002
-      - TZ=${TZ}
-    volumes:
-      - "${CFG_DIR}/qbittorrent:/config"
-      - "${DATA_DIR}/Torrents:/data/Torrents"
-      - "${DATA_DIR}/Del:/Del"
-    restart: unless-stopped
+    qbit:
+        container_name: qbit
+        image: hotio/qbittorrent:release
+        networks:
+            - proxy
+        labels:
+            traefik.enable: true
+        ports:
+            - 4000:8080
+        environment:
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - UMASK=002
+            - TZ=${TZ}
+        volumes:
+            - "${CFG_DIR}/qbittorrent:/config"
+            - "${DATA_DIR}/Torrents:/data/Torrents"
+            - "${DATA_DIR}/Del:/Del"
+        restart: unless-stopped
 
 networks:
-  proxy:
-    external: true
+    proxy:
+        external: true
