@@ -35,12 +35,8 @@ services:
       - proxy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.netbird-dashboard.entrypoints=https,http
       - traefik.http.routers.netbird-dashboard.rule=Host(`netbird.${CF_DOMAIN}`)
-      - traefik.http.routers.netbird-dashboard.tls=true
-      - traefik.http.routers.netbird-dashboard.service=netbird@docker
-      - traefik.http.services.netbird.loadbalancer.server.port=80
-      - traefik.docker.network=proxy
+      - traefik.http.services.netbird-dashboard.loadbalancer.server.port=80
 
   # Signal
   signal:
@@ -62,14 +58,11 @@ services:
     networks:
       - proxy
     labels:
-    - traefik.enable=true
-    - traefik.http.routers.netbird-signal.entrypoints=https,http
-    - traefik.http.routers.netbird-signal.rule=Host(`netbird.${CF_DOMAIN}`) && PathPrefix(`/signalexchange.SignalExchange/`)
-    - traefik.http.routers.netbird-signal.tls=true
-    - traefik.http.routers.netbird-signal.service=signal@docker
-    - traefik.http.services.signal.loadbalancer.server.port=80
-    - traefik.http.services.signal.loadbalancer.server.scheme=h2c
-    - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.http.routers.netbird-signal.rule=Host(`netbird.${CF_DOMAIN}`) && PathPrefix(`/signalexchange.SignalExchange/`)
+      - traefik.http.services.netbird-signal.loadbalancer.server.port=80
+      - traefik.http.services.netbird-signal.loadbalancer.server.scheme=h2c
+
 
   # Relay
   relay:
@@ -91,6 +84,11 @@ services:
         max-file: "2"
     networks:
       - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.netbird-relay.rule=Host(`netbird.${CF_DOMAIN}`) && PathPrefix(`/relay`)
+      - traefik.http.services.netbird-relay.loadbalancer.server.port=33080
+
 
   # Management
   management:
@@ -126,19 +124,15 @@ services:
     networks:
       - proxy
     labels:
-    - traefik.enable=true
-    - traefik.http.routers.netbird-api.entrypoints=https,http
-    - traefik.http.routers.netbird-api.rule=Host(`netbird.${CF_DOMAIN}`) && PathPrefix(`/api`)
-    - traefik.http.routers.netbird-api.tls=true
-    - traefik.http.routers.netbird-api.service=api
-    - traefik.http.services.api.loadbalancer.server.port=443
-    - traefik.http.routers.netbird-management.entrypoints=https,http
-    - traefik.http.routers.netbird-management.rule=Host(`netbird.${CF_DOMAIN}`) && PathPrefix(`/management.ManagementService/`)
-    - traefik.http.routers.netbird-management.tls=true
-    - traefik.http.routers.netbird-management.service=netbird-management
-    - traefik.http.services.netbird-management.loadbalancer.server.port=443
-    - traefik.http.services.netbird-management.loadbalancer.server.scheme=h2c
-      
+      - traefik.enable=true
+      - traefik.http.routers.netbird-api.rule=Host(`netbird.${CF_DOMAIN}`) && PathPrefix(`/api`)
+      - traefik.http.routers.netbird-api.service=netbird-api
+      - traefik.http.services.netbird-api.loadbalancer.server.port=443
+      - traefik.http.routers.netbird-management.rule=Host(`netbird.${CF_DOMAIN}`) && PathPrefix(`/management.ManagementService/`)
+      - traefik.http.routers.netbird-management.service=netbird-management
+      - traefik.http.services.netbird-management.loadbalancer.server.port=443
+      - traefik.http.services.netbird-management.loadbalancer.server.scheme=h2c
+
   # Coturn
   coturn:
     image: coturn/coturn:latest
@@ -157,6 +151,7 @@ services:
       options:
         max-size: "500m"
         max-file: "2"
+
 volumes:
   netbird-mgmt:
   netbird-signal:
