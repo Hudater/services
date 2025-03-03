@@ -1,9 +1,9 @@
 ---
 services:
   pdf:
-    image: frooodle/s-pdf:latest
+    image: ghcr.io/stirling-tools/stirling-pdf:latest-fat
     container_name: pdf
-    hostname: stirlingPdf
+    hostname: stirling-pdf
     ports:
       - '8980:8080'
     restart: unless-stopped
@@ -21,6 +21,7 @@ services:
       - proxy
     labels:
       traefik.enable: true
+      traefik.http.routers.pdf.middlewares: middlewares-authentik@file
 
 networks:
   proxy:
