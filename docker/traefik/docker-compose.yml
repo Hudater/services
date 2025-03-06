@@ -11,14 +11,17 @@ services:
       - 8080:8080
     volumes:
       - "${BAK_CFG_DIR}/traefik/:/etc/traefik/"
+      - "${BAK_CFG_DIR}/traefik/logs:/var/log/traefik"
     networks:
       - proxy # rename this to your custom docker network
     #extra_hosts for nextcloud-aio
     # extra_hosts:
     #   - "host.docker.internal:host-gateway"
-    environment:
-      CF_DNS_API_TOKEN: "${CF_DNS_API_TOKEN}"
-      CF_API_EMAIL: "${CF_API_EMAIL}"
+    env_file:
+          - "${BAK_CFG_DIR}/traefik/.env"
+    # environment:
+    #   CF_DNS_API_TOKEN: "${CF_DNS_API_TOKEN}"
+    #   CF_API_EMAIL: "${CF_API_EMAIL}"
     labels:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
       traefik.http.routers.api.rule: Host(`traefik.${CF_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
@@ -46,3 +49,6 @@ services:
 networks:
   proxy:    # rename this to your custom docker network.
     external: true
+
+# volumes:
+#   traefik-logs:
