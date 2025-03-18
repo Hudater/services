@@ -4,8 +4,8 @@ services:
     container_name: openspeedtest #change me
     restart: unless-stopped
     volumes:
-      - "${CFG_DIR}/openspeedtest:/config" #change the left side
-      #TODO volume removal: `/var/log/letsencrypt`
+      - "${CFG_DIR}/openspeedtest/config:/config" #change the left side
+      - "${CFG_DIR}/openspeedtest/letsencrypt:/var/log/letsencrypt"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

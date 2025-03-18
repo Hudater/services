@@ -130,6 +130,7 @@ services:
     domainname: netbird.${CF_DOMAIN} # only needed when TLS is enabled
     volumes:
       - "${BAK_CFG_DIR}/netbird/turnserver.conf:/etc/turnserver.conf:ro"
+      - "${CFG_DIR}/netbird/coturn:/var/lib/coturn"
     network_mode: host
     command:
       - -c /etc/turnserver.conf
