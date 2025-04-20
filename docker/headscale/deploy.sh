@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
-CREATE_DIRS=( "${CFG_DIR}/headscale/conf" )
+CREATE_DIRS=( "${BAK_CFG_DIR}"/headscale/{scale,plane}/{conf,data} )
 mkdir -p "${CREATE_DIRS[@]}"
-# ls -alh "$BAK_CFG_DIR"/headscale/ "$DB_CFG_DIR"
 ls -alh "${CREATE_DIRS[@]}"
 docker compose -f "${COMPOSE_DIR}/headscale/docker-compose.yml" up -d --force-recreate
 

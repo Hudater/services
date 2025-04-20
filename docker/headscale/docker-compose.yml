@@ -1,52 +1,61 @@
----
 services:
-    headscale:
-        hostname: "headscale-${HOSTNAME}" #
-        image: headscale/headscale:0.25
-        container_name: headscale
-        restart: unless-stopped
-        env_file:
-            - "${BAK_CFG_DIR}/headscale/.env"
-        volumes:
-            - "${BAK_CFG_DIR}/headscale/conf:/etc/headscale" #
-            - headscale-data:/var/lib/headscale
-        entrypoint: headscale serve
-        networks:
-            - proxy
-        labels:
-            traefik.enable: "true"
-            traefik.docker.network: "proxy"
-            # Headscale Service Configuration
-            traefik.http.services.headscale.loadbalancer.server.port: 8080
-            traefik.http.routers.headscale.rule: Host(`headscale.${CF_DOMAIN}`)
-            traefik.http.routers.headscale.service: headscale
-            # CORS Middleware Configuration
-            traefik.http.middlewares.headscale-cors.headers.accessControlAllowMethods: "GET,POST,PUT,PATCH,DELETE,OPTIONS"
-            traefik.http.middlewares.headscale-cors.headers.accessControlAllowHeaders: "Authorization,Content-Type"
-            traefik.http.middlewares.headscale-cors.headers.accessControlAllowOriginList: "https://admin.${CF_DOMAIN}"
-            traefik.http.middlewares.headscale-cors.headers.accessControlMaxAge: 100
-            traefik.http.middlewares.headscale-cors.headers.addVaryHeader: true
-            # Attach Middleware to Router
-            traefik.http.routers.headscale.middlewares: headscale-cors
+  headplane:
+    image: ghcr.io/tale/headplane:0.5
+    container_name: headplane
+    restart: unless-stopped
+    # ports:
+    #   - '3000:3000'
+    volumes:
+      - "${BAK_CFG_DIR}/headscale/plane/conf/config.yaml:/etc/headplane/config.yaml"
+      # This should match headscale.config_path in your config.yaml
+      - "${BAK_CFG_DIR}/headscale/scale/conf/config.yaml:/etc/headscale/config.yaml"
+      # Headplane stores its data in this directory
+      - "${BAK_CFG_DIR}/headscale/plane/data:/var/lib/headplane"
+      # If you are using the Docker integration, mount the Docker socket
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    networks:
+      - proxy
+    # labels:
+    #   traefik.enable: "true"
+      # Headscale Admin Service Configuration
+      # traefik.http.services.headscale.loadbalancer.server.port: 80
+      # traefik.http.routers.headscale.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
 
-    headscale-admin:
-        image: goodieshq/headscale-admin:0.25
-        container_name: headscale-admin
-        restart: unless-stopped
-        networks:
-            - proxy
-        labels:
-            traefik.enable: "true"
-            traefik.docker.network: "proxy"
-            # Headscale Admin Service Configuration
-            traefik.http.services.headscale-admin.loadbalancer.server.port: 80
-            traefik.http.routers.headscale-admin.rule: Host(`admin.${CF_DOMAIN}`) && PathPrefix(`/admin`)
-            traefik.http.routers.headscale-admin.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
-
+  headscale:
+    image: ghcr.io/headscale/headscale:0.25
+    container_name: headscale
+    restart: unless-stopped
+    env_file:
+      - "${BAK_CFG_DIR}/headscale/.env" 
+    command: serve
+    # ports:
+    #   - '8080:8080'
+    volumes:
+      - "${BAK_CFG_DIR}/headscale/scale/data:/var/lib/headscale"
+      - "${BAK_CFG_DIR}/headscale/scale/conf:/etc/headscale"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      - proxy
+    # labels:
+      # traefik.enable: "true"
+      # Headscale Service Configuration
+      # traefik.http.services.headscale.loadbalancer.server.port: 8080
+      # traefik.http.routers.headscale.rule: Host(`headscale.${CF_DOMAIN}`)
+      # traefik.http.routers.headscale.service: headscale
+      # # CORS Middleware Configuration
+      # traefik.http.middlewares.headscale-cors.headers.accessControlAllowMethods: "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+      # traefik.http.middlewares.headscale-cors.headers.accessControlAllowHeaders: "Authorization,Content-Type"
+      # traefik.http.middlewares.headscale-cors.headers.accessControlAllowOriginList: "https://admin.${CF_DOMAIN}"
+      # traefik.http.middlewares.headscale-cors.headers.accessControlMaxAge: 100
+      # traefik.http.middlewares.headscale-cors.headers.addVaryHeader: true
+      # # Attach Middleware to Router
+      # traefik.http.routers.headscale.middlewares: headscale-cors
 
 networks:
     proxy:
         external: true
-
-volumes:
-    headscale-data:
