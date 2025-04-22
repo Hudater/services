@@ -1,0 +1,30 @@
+---
+services:
+    wedding-share:
+        image: cirx08/wedding_share:1.5.11.2
+        container_name: "wedding-share-${HOSTNAME}"
+        hostname: "wedding-share-${HOSTNAME}"
+        env_file:
+            - "${BAK_CFG_DIR}/wedding-share/.env"
+        restart: unless-stopped
+        volumes:
+            - "${CFG_DIR}/wedding-share/config:/app/config"
+            - "${BAK_CFG_DIR}/wedding-share/thumbnails:/app/wwwroot/thumbnails"
+            - "${BAK_CFG_DIR}/wedding-share/uploads:/app/wwwroot/uploads"
+            # https://github.com/Cirx08/WeddingShare/issues/83
+            # below bind is for custom logo and icon, read the linked issue to understand exact path needed in container
+            - "${BAK_CFG_DIR}/wedding-share/custom:/app/wwwroot/images/custom"
+        ports:
+            - 5000:5000
+        networks:
+            - proxy
+        labels:
+            traefik.enable: true
+            # traefik.http.routers.wedding-share.rule: Host(`${WEDDING_SHARE_URI}`)    # Define the subdomain for the traefik dashboard.
+            # traefik.http.services.wedding-share.loadbalancer.server.port: portNumber #
+            # traefik.http.routers.wedding-share.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+
+networks:
+    proxy:
+        external: true
