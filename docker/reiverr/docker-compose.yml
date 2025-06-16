@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   reiverr:
-    image: ghcr.io/aleksilassila/reiverr:latest
+    image: ghcr.io/aleksilassila/:latest
     container_name: reiverr
     hostname: reiverr
     restart: unless-stopped

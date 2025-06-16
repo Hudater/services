@@ -1,0 +1,17 @@
+# Configurations for hardware-accelerated machine learning
+
+# If using Unraid or another platform that doesn't allow multiple Compose files,
+# you can inline the config for a backend by copying its contents
+# into the immich-machine-learning service in the docker-compose.yml file.
+
+# See https://immich.app/docs/features/ml-hardware-acceleration for info on usage.
+
+services:
+  cpu: {}
+
+  rocm:
+    group_add:
+      - video
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/kfd:/dev/kfd
