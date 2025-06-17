@@ -1,0 +1,58 @@
+#### Demo config file for headscale stack
+http:
+  routers:
+    headscale:
+      rule: 'Host(`HEADSCALE.EXAMPLE.COM`)'
+      service: 'headscale'
+      middlewares:
+        - 'cors'
+
+    rewrite:
+      rule: 'Host(`HEADSCALE.EXAMPLE.COM`) && Path(`/`)'
+      service: 'headscale'
+      middlewares:
+        - 'rewrite'
+
+    headplane:
+      rule: 'Host(`HEADSCALE.EXAMPLE.COM`) && PathPrefix(`/admin`)'
+      service: 'headplane'
+      middlewares:
+        - 'middlewares-authentik'
+    
+    headscale-ui:
+      rule: 'Host(`HEADSCALE.EXAMPLE.COM`) && PathPrefix(`/web`)'
+      service: 'headscale-ui'
+      middlewares:
+        - 'middlewares-authentik'
+
+  services:
+    headscale:
+      loadBalancer:
+        servers:
+          - url: 'http://headscale:8080'
+
+    headplane:
+      loadBalancer:
+        servers:
+          - url: 'http://headplane:3000'
+
+    headscale-ui:
+      loadBalancer:
+        servers:
+          - url: 'http://headscale-ui:8080'
+
+  middlewares:
+    rewrite:
+      addPrefix:
+        prefix: '/admin'
+    cors:
+      headers:
+        accessControlAllowHeaders: '*'
+        accessControlAllowMethods:
+          - 'GET'
+          - 'POST'
+          - 'PUT'
+        accessControlAllowOriginList:
+          - 'https://HEADSCALE.EXAMPLE.COM'
+        accessControlMaxAge: 100
+        addVaryHeader: true
