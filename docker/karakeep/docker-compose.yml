@@ -1,6 +1,6 @@
 ---
 services:
-  hoarder:
+  karakeep:
     environment:
       - MEILI_ADDR=http://meilisearch:7700
       - BROWSER_WEB_URL=http://chrome:9222
@@ -9,26 +9,26 @@ services:
       # You almost never want to change the value of the DATA_DIR variable.
       # If you want to mount a custom directory, change the volume mapping above instead.
       - DATA_DIR=/data # DON'T CHANGE THIS
-    image: ghcr.io/hoarder-app/hoarder:release
-    container_name: hoarder
-    hostname: "hoarder-${HOSTNAME}" #
+    image: ghcr.io/karakeep-app/karakeep:release
+    container_name: karakeep
+    hostname: "karakeep-${HOSTNAME}" #
     restart: unless-stopped
     env_file:
-      - "${BAK_CFG_DIR}/hoarder/.env"
+      - "${BAK_CFG_DIR}/karakeep/.env"
     volumes:
-      - "${BAK_CFG_DIR}/hoarder/data:/data" #
+      - "${BAK_CFG_DIR}/karakeep/data:/data" #
     ports:
       - 3000:3000
     networks:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.hoarder.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.karakeep.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
 
   chrome:
     image: gcr.io/zenika-hub/alpine-chrome:latest
     restart: unless-stopped
-    container_name: hoarder-chrome
+    container_name: karakeep-chrome
     networks:
       - proxy
     command:
@@ -42,11 +42,11 @@ services:
   meilisearch:
     image: getmeili/meilisearch:latest
     restart: unless-stopped
-    container_name: hoarder-meilisearch
+    container_name: karakeep-meilisearch
     networks:
       - proxy
     env_file:
-      - "${BAK_CFG_DIR}/hoarder/.env"
+      - "${BAK_CFG_DIR}/karakeep/.env"
     environment:
       MEILI_NO_ANALYTICS: "true"
     volumes:
