@@ -1,0 +1,25 @@
+---
+services:
+    diun:
+        image: ghcr.io/crazy-max/diun:latest
+        container_name: "diun-${HOSTNAME}" #
+        hostname: "diun-${HOSTNAME}" #
+        command: serve
+        volumes:
+            - "${CFG_DIR}/diun:/data"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+        environment:
+            - TZ=${TZ}
+            - "DIUN_WATCH_WORKERS=20"
+            - "DIUN_WATCH_SCHEDULE=0 */6 * * *"
+            - "DIUN_WATCH_JITTER=30s"
+            - "DIUN_PROVIDERS_DOCKER=true"
+        labels:
+            - "diun.enable=true"
+        restart: always
+        networks:
+            - proxy
+
+networks:
+    proxy:
+        external: true
