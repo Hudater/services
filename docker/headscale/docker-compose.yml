@@ -36,7 +36,9 @@ services:
     env_file:
       - "${BAK_CFG_DIR}/headscale/.env"
     command: serve
-    # ports:
+    ports:
+      - "3478:3478/udp" # stun server
+      - "41641:41641/udp" # used by tailscale wireguard on the client so exposing it helps in direct connections
     #   - '8080:8080'
     volumes:
       - "${BAK_CFG_DIR}/headscale/scale/data:/var/lib/headscale"
@@ -52,8 +54,6 @@ services:
       - proxy
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
-      traefik.udp.services.headscale-udp-41641.loadbalancer.server.port: 41641
-      traefik.udp.services.headscale-udp-3478.loadbalancer.server.port: 3478
 
 networks:
     proxy:

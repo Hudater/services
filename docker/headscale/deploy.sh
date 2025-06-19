@@ -3,7 +3,9 @@ set -e
 CREATE_DIRS=( "${BAK_CFG_DIR}"/headscale/{scale,plane}/{conf,data} )
 mkdir -p "${CREATE_DIRS[@]}"
 ls -alh "${CREATE_DIRS[@]}"
+sudo systemctl stop tailscaled.service
 docker compose -f "${COMPOSE_DIR}/headscale/docker-compose.yml" up -d --force-recreate
+sudo systemctl enable --now tailscaled.service
 
 
 ### Credit: https://askubuntu.com/a/957278

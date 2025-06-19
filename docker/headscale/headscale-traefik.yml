@@ -56,3 +56,44 @@ http:
           - 'https://HEADSCALE.EXAMPLE.COM'
         accessControlMaxAge: 100
         addVaryHeader: true
+
+
+################# WARNING
+# Don't do it this stupid way, it is wg traffic so already encrypted
+# Just expose these ports directly through container and open ports for udp 3478 and 41641 on your firewall
+### Create entrypoint for these two in static traefik.yml config
+## Like this:
+# ```yml
+
+# ## derp for headscale start
+# # for derp server on headscale
+#   stun:
+#     address: ":3478/udp"
+# # maybe for headscale wg interface but not sure
+#   headscale-wg:
+#     address: ":41641/udp"
+# ## derp for headscale finish
+
+# ```
+udp:
+  routers:
+    stun:
+      entryPoints:
+        - stun
+      service: stun-service
+
+    headscale-wg:
+      entryPoints:
+        - headscale-wg
+      service: headscale-wg-service
+
+  services:
+    stun-service:
+      loadBalancer:
+        servers:
+          - address: "headscale:3478"
+
+    headscale-wg-service:
+      loadBalancer:
+        servers:
+          - address: "headscale:41641"
