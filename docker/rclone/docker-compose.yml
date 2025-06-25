@@ -1,0 +1,29 @@
+---
+services:
+    rclone:
+        # environment:
+        #     - PUID=${PUID}
+        #     - PGID=${PGID}
+        #     - TZ=${TZ}
+        #     - HOSTNAME=${HOSTNAME}
+        image: MAINTAINER/IMAGE:latest
+        container_name: "rclone-${HOSTNAME}" #
+        hostname: "rclone-${HOSTNAME}" #
+        env_file:
+            - "${BAK_CFG_DIR}/rclone/.env"
+        restart: unless-stopped
+        volumes:
+            - "${CFG_DIR}/rclone:/config" #
+        ports:
+            - 80:80 #
+        networks:
+            - proxy
+        labels:
+            traefik.enable: true
+            traefik.http.services.rclone.loadbalancer.server.port: portNumber #
+            traefik.http.routers.rclone.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+
+networks:
+    proxy:
+        external: true
