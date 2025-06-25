@@ -87,7 +87,7 @@ services:
       sleep 1
       ; done
       && traefik-certs-dumper file --version v3 --watch
-      --source /data/acme.json --domain-subdir --crt-name=fullchain --crt-ext=.pem --key-name=privkey --key-ext=.pem --dest /output'
+      --source /data/acme.json --domain-subdir --crt-name=fullchain --crt-ext=.pem --key-name=privkey --key-ext=.pem --dest /output --post-hook "chown -R $PUID:$PGID /output"'
     volumes:
       - "${BAK_CFG_DIR}/traefik:/data:ro"
       - "${BAK_CFG_DIR}/headscale/scale/certs:/output"
