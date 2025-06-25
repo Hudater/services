@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-CREATE_DIRS=( "${BAK_CFG_DIR}"/headscale/{scale,plane}/{conf,data} )
+CREATE_DIRS=( "${BAK_CFG_DIR}"/headscale/{scale,plane}/{conf,data} "${BAK_CFG_DIR}"/headscale/scale/certs )
 mkdir -p "${CREATE_DIRS[@]}"
 ls -alh "${CREATE_DIRS[@]}"
 sudo systemctl stop tailscaled.service
