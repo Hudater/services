@@ -33,14 +33,14 @@ services:
     image: ghcr.io/juanfont/headscale:latest
     container_name: headscale
     restart: unless-stopped
-    depends_on:
-      - certs-dumper
+    # depends_on:
+    #   - certs-dumper
     env_file:
       - "${BAK_CFG_DIR}/headscale/.env"
     command: serve
     ports:
       - "3478:3478/udp" # stun server
-      - "50443:50443" # grpc
+      # - "50443:50443" # grpc
       #- "41641:41641/udp" # used by tailscale wireguard on the client so exposing it helps in direct connections
     #   - '8080:8080'
     volumes:
@@ -59,38 +59,39 @@ services:
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
 
-  certs-dumper:
-    image: ldez/traefik-certs-dumper:latest
-    restart: unless-stopped
-    container_name: headscale-certs-dumper
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    # entrypoint:
-    #   - "/bin/sh"
-    #   - "-c"
-    #   - |
-    #     while true; do
-    #       traefik-certs-dumper file \
-    #         --version v3 \
-    #         --source /data/acme.json \
-    #         --domain "*.domain.com" \
-    #         --crt-name fullchain.pem \
-    #         --key-name privkey.pem \
-    #         --output /output
-    #       sleep 12h
-    #     done
-    entrypoint: sh -c '
-      while ! [ -e /data/acme.json ]
-      || ! [ `jq ".[] | .Certificates | length" /data/acme.json | jq -s "add" ` != 0 ]; do
-      sleep 1
-      ; done
-      && traefik-certs-dumper file --version v3 --watch
-      --source /data/acme.json --domain-subdir --crt-name=fullchain --crt-ext=.pem --key-name=privkey --key-ext=.pem --dest /output --post-hook "chown -R $PUID:$PGID /output"'
-    volumes:
-      - "${BAK_CFG_DIR}/traefik:/data:ro"
-      - "${BAK_CFG_DIR}/headscale/scale/certs:/output"
+## don't need certs-dumper since traefik is handling tls for grpc now
+  # certs-dumper:
+  #   image: ldez/traefik-certs-dumper:latest
+  #   restart: unless-stopped
+  #   container_name: headscale-certs-dumper
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   # entrypoint:
+  #   #   - "/bin/sh"
+  #   #   - "-c"
+  #   #   - |
+  #   #     while true; do
+  #   #       traefik-certs-dumper file \
+  #   #         --version v3 \
+  #   #         --source /data/acme.json \
+  #   #         --domain "*.domain.com" \
+  #   #         --crt-name fullchain.pem \
+  #   #         --key-name privkey.pem \
+  #   #         --output /output
+  #   #       sleep 12h
+  #   #     done
+  #   entrypoint: sh -c '
+  #     while ! [ -e /data/acme.json ]
+  #     || ! [ `jq ".[] | .Certificates | length" /data/acme.json | jq -s "add" ` != 0 ]; do
+  #     sleep 1
+  #     ; done
+  #     && traefik-certs-dumper file --version v3 --watch
+  #     --source /data/acme.json --domain-subdir --crt-name=fullchain --crt-ext=.pem --key-name=privkey --key-ext=.pem --dest /output --post-hook "chown -R $PUID:$PGID /output"'
+  #   volumes:
+  #     - "${BAK_CFG_DIR}/traefik:/data:ro"
+  #     - "${BAK_CFG_DIR}/headscale/scale/certs:/output"
 
 networks:
     proxy:

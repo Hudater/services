@@ -13,6 +13,15 @@ http:
       middlewares:
         - 'rewrite'
 
+    headscale-grpc:
+      rule: "Host(`HEADSCALE-GRPC.EXAMPLE.COM`)"
+      entryPoints:
+        - https
+      tls: true
+      service: headscale-grpc
+      middlewares:
+        - grpcweb
+
     headplane:
       rule: 'Host(`HEADSCALE.EXAMPLE.COM`) && PathPrefix(`/admin`)'
       service: 'headplane'
@@ -30,6 +39,12 @@ http:
       loadBalancer:
         servers:
           - url: 'http://headscale:8080'
+
+    headscale-grpc:
+      loadBalancer:
+        servers:
+          - url: "h2c://headscale:50443"
+        passHostHeader: true
 
     headplane:
       loadBalancer:
@@ -56,6 +71,11 @@ http:
           - 'https://HEADSCALE.EXAMPLE.COM'
         accessControlMaxAge: 100
         addVaryHeader: true
+
+    grpcweb:
+      grpcWeb:
+        allowOrigins:
+          - "*"
 
 
 ################# WARNING
