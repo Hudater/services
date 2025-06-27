@@ -1,0 +1,35 @@
+{
+    "groups": {
+      "group:admin": ["mobile@", "srv-cloud@", "srv-home@"],
+      "group:consoomers": ["guest@"],
+      "group:exp-nodes": ["exp@"]
+    },
+    "hosts": {
+      "mdsrv.internal": "10.2.0.11/32",
+    },
+    "acls": [
+      // Immich and Jellyfin for consoomers
+      {
+        "action": "accept",
+        "src": ["group:consoomers"],
+        "proto": "tcp",
+        "dst": [
+          "mdsrv.internal:8096",
+          "mdsrv.internal:2283"
+        ]
+      },
+      // allow myself access to my homelab
+      {
+        "action": "accept",
+        "src": ["group:admin"],
+        "dst": ["*:*"]
+      },
+      // We still have to allow internal users communications since nothing guarantees that each user have
+      // their own users.
+      { "action": "accept", "src": ["mobile@"], "dst": ["mobile@:*"] },
+      { "action": "accept", "src": ["srv-cloud@"], "dst": ["srv-cloud@:*"] },
+      { "action": "accept", "src": ["srv-home@"], "dst": ["srv-home@:*"] },
+      { "action": "accept", "src": ["guest@"], "dst": ["guest@:*"] },
+      { "action": "accept", "src": ["exp@"], "dst": ["exp@:*"] }
+    ]
+  }
