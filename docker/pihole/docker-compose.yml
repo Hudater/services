@@ -8,12 +8,11 @@ services:
             dns_net:
                 ipv4_address: 172.23.0.6
             proxy:
-                # external: true
         ports:
-        - "53:53/tcp"
-        - "53:53/udp"
-        - "85:80/tcp"
-        #- "443:443/tcp"
+            - "53:53/tcp"
+            - "53:53/udp"
+            - "85:80/tcp"
+            # - "443:443/tcp"
         env_file:
             - "${BAK_CFG_DIR}/pihole/.env"
         volumes:
@@ -21,17 +20,8 @@ services:
             - '${BAK_CFG_DIR}/pihole/pihole-config/etc-pihole/pihole.toml:/etc/pihole/pihole.toml'
             - '${CFG_DIR}/pihole/pihole-config/etc-dnsmasq.d/:/etc/dnsmasq.d/'
         restart: unless-stopped
-        # labels:
-        #     - traefik.enable: "true"
-        #     - traefik.http.services.pihole.loadbalancer.server.port: "85"
-        #     - traefik.http.routers.pihole.middlewares: "middlewares-authentik@file" #add this to any container you want to use the Authentik web proxy
-        #     - com.centurylinklabs.watchtower.monitor-only: "true" #to only monitor update with watchtower not install
         labels:
-            traefik.enable: true
-            traefik.http.services.serviceName.loadbalancer.server.port: 85
-            traefik.http.routers.serviceName.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
-            com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
-        
+            com.centurylinklabs.watchtower.monitor-only: true
         # https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
         cap_add:
             - NET_ADMIN
@@ -39,7 +29,6 @@ services:
             - NET_RAW
             - SYS_NICE
             - CHOWN
-
 
     unbound:
         container_name: unbound
@@ -58,8 +47,8 @@ services:
         volumes:
             - "${BAK_CFG_DIR}/pihole/unbound/pihole.conf:/etc/unbound/custom.conf.d/pihole.conf"
         # ports:
-        # - "5053:53/tcp"
-        # - "5053:53/udp"
+        #     - "5053:53/tcp"
+        #     - "5053:53/udp"
         restart: unless-stopped
         labels:
             com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install

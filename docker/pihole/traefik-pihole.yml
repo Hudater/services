@@ -1,0 +1,31 @@
+http:
+  routers:
+    pihole:
+      rule: "Host(`pihole.DOMAIN.COM`)"
+      entryPoints:
+        - https
+      service: pihole
+      middlewares:
+        - pihole-headers
+        - pihole-redirect
+        - 'middlewares-authentik'
+
+  services:
+    pihole:
+      loadBalancer:
+        servers:
+          - url: "http://pihole"
+
+  middlewares:
+    pihole-headers:
+      headers:
+        frameDeny: false
+        browserXssFilter: true
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+
+    pihole-redirect:
+      redirectRegex:
+        regex: "^https://pihole\\.DOMAIN\\.COM/?$"
+        replacement: "https://pihole.DOMAIN.COM/admin/"
+        permanent: true
