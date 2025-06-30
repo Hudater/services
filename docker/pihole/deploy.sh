@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-CREATE_DIRS=( "${BAK_CFG_DIR}"/pihole/{multiple,dir,names} "$DB_CFG_DIR"/serviceNameDb "$DB_CFG_DIR"/authentik_postgres )
+CREATE_DIRS=( "${BAK_CFG_DIR}"/pihole/unbound "${BAK_CFG_DIR}"/pihole/pihole-config/etc-pihole "${CFG_DIR}"/pihole/pihole-config/{etc-pihole,etc-dnsmasq.d} )
 mkdir -p "${CREATE_DIRS[@]}"
 # ls -alh "$BAK_CFG_DIR"/pihole/ "$DB_CFG_DIR"
 ls -alh "${CREATE_DIRS[@]}"

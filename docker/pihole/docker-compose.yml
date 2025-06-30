@@ -6,8 +6,9 @@ services:
         image: jacklul/pihole:latest
         networks:
             dns_net:
-                ipv4_address: 172.23.0.7
+                ipv4_address: 172.23.0.6
             proxy:
+                # external: true
         ports:
         - "53:53/tcp"
         - "53:53/udp"
@@ -15,69 +16,59 @@ services:
         #- "443:443/tcp"
         env_file:
             - "${BAK_CFG_DIR}/pihole/.env"
-        # environment:
-        #     TZ: 'Europe/London'
-        #     WEBPASSWORD: 'password'
-        #     PIHOLE_DNS_: '172.23.0.8#5053'
         volumes:
-            - '/home/ubuntu/docker/pihole/etc-pihole/:/etc/pihole/'
-            - '/home/ubuntu/docker/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+            - '${CFG_DIR}/pihole/pihole-config/etc-pihole/:/etc/pihole/'
+            - '${BAK_CFG_DIR}/pihole/pihole-config/etc-pihole/pihole.toml:/etc/pihole/pihole.toml'
+            - '${CFG_DIR}/pihole/pihole-config/etc-dnsmasq.d/:/etc/dnsmasq.d/'
         restart: unless-stopped
+        # labels:
+        #     - traefik.enable: "true"
+        #     - traefik.http.services.pihole.loadbalancer.server.port: "85"
+        #     - traefik.http.routers.pihole.middlewares: "middlewares-authentik@file" #add this to any container you want to use the Authentik web proxy
+        #     - com.centurylinklabs.watchtower.monitor-only: "true" #to only monitor update with watchtower not install
         labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.pihole.entrypoints=http"
-            - "traefik.http.routers.pihole.rule=Host(`pihole.yourdomain.com`)"
-            - "traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https"
-            - "traefik.http.routers.pihole.middlewares=pihole-https-redirect"
-            - "traefik.http.routers.pihole-secure.entrypoints=https"
-            - "traefik.http.routers.pihole-secure.rule=Host(`pihole.yourdomain.com`)"
-            - "traefik.http.routers.pihole-secure.tls=true"
-            - "traefik.http.routers.pihole-secure.service=pihole"
-            - "traefik.http.services.pihole.loadbalancer.server.port=80"
-            - "traefik.docker.network=proxy"
+            traefik.enable: true
+            traefik.http.services.serviceName.loadbalancer.server.port: 85
+            traefik.http.routers.serviceName.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+        
+        # https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+        cap_add:
+            - NET_ADMIN
+            - NET_BIND_SERVICE
+            - NET_RAW
+            - SYS_NICE
+            - CHOWN
+
 
     unbound:
         container_name: unbound
-        image: mvance/unbound:latest
+        image: klutchell/unbound:latest
         networks:
             dns_net:
                 ipv4_address: 172.23.0.8
+            # - proxy
+        healthcheck:
+        # Use the drill wrapper binary to reduce the exit codes to 0 or 1 for healthchecks
+            test: ['CMD', 'drill-hc', '@127.0.0.1', 'dnssec.works']
+            interval: 30s
+            timeout: 30s
+            retries: 3
+            start_period: 30s
         volumes:
-        - /home/ubuntu/docker/unbound:/opt/unbound/etc/unbound
-        ports:
-        - "5053:53/tcp"
-        - "5053:53/udp"
+            - "${BAK_CFG_DIR}/pihole/unbound/pihole.conf:/etc/unbound/custom.conf.d/pihole.conf"
+        # ports:
+        # - "5053:53/tcp"
+        # - "5053:53/udp"
         restart: unless-stopped
-
-    # pihole:
-    #     # environment:
-    #     #     - PUID=${PUID}
-    #     #     - PGID=${PGID}
-    #     #     - TZ=${TZ}
-    #     #     - HOSTNAME=${HOSTNAME}
-    #     image: MAINTAINER/IMAGE:latest
-    #     container_name: "pihole-${HOSTNAME}" #
-    #     hostname: "pihole-${HOSTNAME}" #
-    #     env_file:
-    #         - "${BAK_CFG_DIR}/pihole/.env"
-    #     restart: unless-stopped
-    #     volumes:
-    #         - "${CFG_DIR}/pihole:/config" #
-    #     ports:
-    #         -80:80 #
-    #     networks:
-    #         - proxy
-    #     labels:
-    #         traefik.enable: true
-    #         traefik.http.services.pihole.loadbalancer.server.port: portNumber #
-    #         traefik.http.routers.pihole.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
-    #         com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+        labels:
+            com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
 
 networks:
     dns_net:
         driver: bridge
         ipam:
             config:
-            - subnet: 172.21.0.0/16
+            - subnet: 172.23.0.0/16
     proxy:
         external: true
