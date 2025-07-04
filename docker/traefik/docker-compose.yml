@@ -11,6 +11,8 @@ services:
       - 8080:8080
     volumes:
       - "${BAK_CFG_DIR}/traefik/:/etc/traefik/"
+      - "${BAK_CFG_DIR}/traefik/captcha.html:/captcha.html"
+      - "${BAK_CFG_DIR}/traefik/ban.html:/ban.html"
       - "${BAK_CFG_DIR}/traefik/logs:/var/log/traefik"
     networks:
       - proxy # rename this to your custom docker network

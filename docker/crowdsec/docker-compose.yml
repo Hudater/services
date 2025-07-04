@@ -12,6 +12,8 @@ services:
             - "${CFG_DIR}/crowdsec/:/etc/crowdsec/"
             - "${BAK_CFG_DIR}/crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml"
             - "${BAK_CFG_DIR}/traefik/logs/:/var/log/traefik/:ro"
+            # - "${BAK_CFG_DIR}/crowdsec/profiles.yaml:/etc/crowdsec/profiles.yaml:ro"
+            - "${BAK_CFG_DIR}/crowdsec/home-whitelist.yaml:/etc/crowdsec/postoverflows/s01-whitelist/home-whitelist.yaml:ro"
         networks:
             - proxy
 
