@@ -6,10 +6,10 @@ services:
         hostname: "whoami-${HOSTNAME}" #
         restart: unless-stopped
         networks:
-          - proxy
+            - proxy
         labels:
             traefik.enable: true
-            traefik.http.routers.whoami.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            # traefik.http.routers.whoami.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
 
 networks:
     proxy:

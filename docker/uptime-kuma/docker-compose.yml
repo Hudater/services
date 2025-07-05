@@ -7,6 +7,7 @@ services:
       - proxy # rename this to your custom docker network
     labels:
       traefik.enable: true
+      traefik.http.routers.uptime.middlewares: middlewares-authentik@file
     volumes:
       - "${CFG_DIR}/uptime:/app/data"
       - /etc/localtime:/etc/localtime:ro
