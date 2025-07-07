@@ -1,8 +1,7 @@
 ---
-version: "3.3"
 services:
   home:
-    image: ghcr.io/benphelps/homepage:latest
+    image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     restart: unless-stopped
     volumes:
@@ -14,12 +13,14 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - HOMEPAGE_ALLOWED_HOSTS=home.${CF_DOMAIN}
     ports:
       - 3333:3000
     networks:
       - proxy
     labels:
       traefik.enable: true
+      traefik.http.routers.home.middlewares: middlewares-authentik@file
 
 networks:
   proxy:
