@@ -2,22 +2,27 @@
 services:
     qbit:
         container_name: qbit
-        image: hotio/qbittorrent:release
+        image: lscr.io/linuxserver/qbittorrent:latest
         networks:
             - proxy
         labels:
             traefik.enable: true
         ports:
-            - 4000:8080
+            - 4000:4000
+            - 6881:6881
+            - 6881:6881/udp
         environment:
             - PUID=${PUID}
             - PGID=${PGID}
             - UMASK=002
             - TZ=${TZ}
+            - WEBUI_PORT=4000
+            - TORRENTING_PORT=6881
+            - DOCKER_MODS=ghcr.io/vuetorrent/vuetorrent-lsio-mod:latest
         volumes:
             - "${CFG_DIR}/qbittorrent:/config"
             - "${DATA_DIR}/Torrents:/data/Torrents"
-            - "${DATA_DIR}/Del:/Del"
+            # - "${DATA_DIR}/Del:/Del"
         restart: unless-stopped
 
 networks:
