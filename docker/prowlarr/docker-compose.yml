@@ -32,21 +32,8 @@ services:
       - /dev/net/tun:/dev/net/tun
     volumes:
       - "${BAK_CFG_DIR}/gluetun/Gluetun.conf:/gluetun/config.conf:ro"
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - VPN_SERVICE_PROVIDER=custom
-      - VPN_TYPE=wireguard
-      - HTTPPROXY=on
-      - HTTPPROXY_LOG=on
-      # For Wireguard
-      - VPN_ENDPOINT_IP=${VPN_ENDPOINT_IP}
-      - VPN_ENDPOINT_PORT=${VPN_ENDPOINT_PORT}
-      - WIREGUARD_PUBLIC_KEY=${WIREGUARD_PUBLIC_KEY}
-      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
-      - WIREGUARD_PRESHARED_KEY=${WIREGUARD_PRESHARED_KEY}
-      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+    env_file:
+      - "${BAK_CFG_DIR}/gluetun/.env"
     ports:
       - 8999:8888/tcp # HTTP proxy
     networks:
