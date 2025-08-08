@@ -18,6 +18,7 @@ services:
       - proxy
     labels:
       traefik.enable: true
+      traefik.http.routers.wallos.middlewares: middlewares-authentik@file
 
 networks:
   proxy:
