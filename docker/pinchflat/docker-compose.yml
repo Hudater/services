@@ -12,6 +12,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - ENABLE_PROMETHEUS=1
     ports:
       - '8945:8945'
     networks:
