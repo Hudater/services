@@ -2,7 +2,7 @@
 services:
   collector:
     image: 'ghcr.io/analogj/scrutiny:master-collector'
-    container_name: scrutiny_mdsrv
+    container_name: scrutiny_pve-pc
     privileged: true #Required for NVME drives
     cap_add:
       - SYS_RAWIO
@@ -11,15 +11,18 @@ services:
       - '/run/udev:/run/udev:ro'
     environment:
       COLLECTOR_API_ENDPOINT: ${SCRU_API_ENDPOINT}
-      COLLECTOR_HOST_ID: "Media Server"
+      COLLECTOR_HOST_ID: "PVE-PC Host"
     devices:
+      - "/dev/sda"
       - "/dev/sdb"
       - "/dev/sdc"
       - "/dev/sdd"
+      - "/dev/sde"
+      - "/dev/sdf"
+      - "/dev/nvme0n1"
     networks:
       - proxy
     restart: unless-stopped
-
 
 networks:
   proxy:

@@ -5,46 +5,35 @@ services:
     container_name: scrutiny_influxdb
     image: influxdb:2.1-alpine
     ports:
-      - 8086:8086
+        - 8086:8086
     volumes:
-      - ${DB_CFG_DIR}/scrutiny_influxdb2/db:/var/lib/influxdb2
-      - ${DB_CFG_DIR}/scrutiny_influxdb2/config:/etc/influxdb2
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=Admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=${SCRU_DB_PASS}
-      - DOCKER_INFLUXDB_INIT_ORG=homelab
-      - DOCKER_INFLUXDB_INIT_BUCKET=scrutiny
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${SCRU_DB_TOKEN}
+        - ${DB_CFG_DIR}/scrutiny_influxdb2/db:/var/lib/influxdb2
+        - ${DB_CFG_DIR}/scrutiny_influxdb2/config:/etc/influxdb2
+    env_file:
+        - "${BAK_CFG_DIR}/scrutiny/.env"
     restart: unless-stopped
     networks:
-      - proxy
-      - dbs
+        - proxy
+        - dbs
 #scrutiny web gui
   scrutiny:
     container_name: scrutiny
     hostname: scrutiny
     image: ghcr.io/analogj/scrutiny:master-web
     ports:
-      - 8780:8080
+        - 8780:8080
     volumes:
-      - ${BAK_CFG_DIR}/scrutiny:/opt/scrutiny/config
-    environment:
-      - SCRUTINY_WEB_INFLUXDB_HOST=influxdb
-      - SCRUTINY_WEB_INFLUXDB_PORT=8086
-      - SCRUTINY_WEB_INFLUXDB_TOKEN=${SCRU_DB_TOKEN}
-      - SCRUTINY_WEB_INFLUXDB_ORG=homelab
-      - SCRUTINY_WEB_INFLUXDB_BUCKET=scrutiny
-      # Optional but highly recommended to notify you in case of a problem
-      # I'm handling notifications in config file
-      # - SCRUTINY_WEB_NOTIFY_URLS=${SCRU_NOTI}
+        - ${BAK_CFG_DIR}/scrutiny:/opt/scrutiny/config
+    env_file:
+        - "${BAK_CFG_DIR}/scrutiny/.env"
     depends_on:
-      - influxdb
+        - influxdb
     restart: unless-stopped
     networks:
-      - proxy
+        - proxy
     labels:
       traefik.enable: true
+      traefik.http.routers.scrutiny.middlewares: middlewares-authentik@file
 
 networks:
   proxy:
