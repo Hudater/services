@@ -1,0 +1,23 @@
+---
+services:
+    netbootxyz:
+        environment:
+            # - PUID=${PUID}
+            # - PGID=${PGID}
+            # - TZ=${TZ}
+            - HOSTNAME=${HOSTNAME}
+            # - MENU_VERSION=2.0.84 # optional
+            # - NGINX_PORT=80 # optional
+            # - WEB_APP_PORT=3000 # optional
+            - TFTPD_OPTS='--tftp-single-port'
+        image: ghcr.io/netbootxyz/netbootxyz:latest
+        container_name: "netbootxyz-${HOSTNAME}"
+        hostname: "netbootxyz-${HOSTNAME}"
+        restart: unless-stopped
+        volumes:
+            - "./netbootxyz:/config"
+            - "/seagate_one/Netboot:/assets"
+        ports:
+            - 3000:3000
+            - 69:69/udp
+            - 8080:80

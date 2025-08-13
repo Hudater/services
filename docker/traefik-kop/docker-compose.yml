@@ -1,0 +1,29 @@
+---
+services:
+    traefik-kop:
+        # environment:
+        #     - PUID=${PUID}
+        #     - PGID=${PGID}
+        #     - TZ=${TZ}
+        #     - HOSTNAME=${HOSTNAME}
+        image: MAINTAINER/IMAGE:latest
+        container_name: "traefik-kop-${HOSTNAME}" #
+        hostname: "traefik-kop-${HOSTNAME}" #
+        env_file:
+            - "${BAK_CFG_DIR}/traefik-kop/.env"
+        restart: unless-stopped
+        volumes:
+            - "${CFG_DIR}/traefik-kop:/config" #
+        ports:
+            - 80:80 #
+        networks:
+            - proxy
+        labels:
+            traefik.enable: true
+            traefik.http.services.traefik-kop.loadbalancer.server.port: portNumber #
+            traefik.http.routers.traefik-kop.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+
+networks:
+    proxy:
+        external: true
