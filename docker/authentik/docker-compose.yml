@@ -1,17 +1,11 @@
 ---
 services:
   authentik:
-    image: ghcr.io/goauthentik/server:2025.6.3
+    image: ghcr.io/goauthentik/server:2025.8.4
     container_name: authentik-server
     command: server
-    environment:
-      - AUTHENTIK_REDIS__HOST=authentik-redis
-      - AUTHENTIK_POSTGRESQL__HOST=authentik-db
-      - AUTHENTIK_POSTGRESQL__USER=${AUTHENTIK_PG_USER}
-      - AUTHENTIK_POSTGRESQL__NAME=${AUTHENTIK_PG_DB}
-      - AUTHENTIK_POSTGRESQL__PASSWORD=${AUTHENTIK_PG_PASSWORD}
-      - AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
-      - AUTHENTIK_ERROR_REPORTING__ENABLED=true
+    env_file:
+      - "${BAK_CFG_DIR}/authentik/.env"
     labels:
       - traefik.enable=true
       - traefik.http.services.authentik.loadbalancer.server.port=9000
@@ -27,17 +21,11 @@ services:
       - proxy
 
   authentik-worker:
-    image: ghcr.io/goauthentik/server:2025.6.3
+    image: ghcr.io/goauthentik/server:2025.8.4
     container_name: authentik-worker
     command: worker
-    environment:
-      - AUTHENTIK_REDIS__HOST=authentik-redis
-      - AUTHENTIK_POSTGRESQL__HOST=authentik-db
-      - AUTHENTIK_POSTGRESQL__USER=${AUTHENTIK_PG_USER}
-      - AUTHENTIK_POSTGRESQL__NAME=${AUTHENTIK_PG_DB}
-      - AUTHENTIK_POSTGRESQL__PASSWORD=${AUTHENTIK_PG_PASSWORD}
-      - AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
-      - AUTHENTIK_ERROR_REPORTING__ENABLED=true
+    env_file:
+      - "${BAK_CFG_DIR}/authentik/.env"
     user: root
     volumes:
       - /run/docker.sock:/run/docker.sock
@@ -68,13 +56,10 @@ services:
       - proxy
 
   authentik-db:
-    image: docker.io/library/postgres:latest
+    image: docker.io/library/postgres:17
     container_name: authentik-db
-    environment:
-      - POSTGRES_USER=${AUTHENTIK_PG_USER}
-      - POSTGRES_PASSWORD=${AUTHENTIK_PG_PASSWORD}
-      - POSTGRES_DB=${AUTHENTIK_PG_DB}
-      - TZ=${TZ}
+    env_file:
+      - "${BAK_CFG_DIR}/authentik/.env"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_period: 30s
