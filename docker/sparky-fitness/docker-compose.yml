@@ -1,0 +1,47 @@
+---
+services:
+    sparkyfitness-db:
+        image: postgres:15-alpine
+        restart: always
+        container_name: sparky-db
+        env_file:
+            - "${BAK_CFG_DIR}/sparky-fitness/.env"
+        volumes:
+            - "${DB_CFG_DIR}/sparky-fitness-postgresql:/var/lib/postgresql/data"
+        networks:
+            - proxy
+        # labels:
+        #     com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+
+    sparkyfitness-server:
+        image: codewithcj/sparkyfitness_server:latest
+        container_name: sparky-server
+        env_file:
+            - "${BAK_CFG_DIR}/sparky-fitness/.env"
+        networks:
+            - proxy
+        restart: always
+        depends_on:
+            - sparkyfitness-db # Backend depends on the database being available
+        # labels:
+        #     com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+
+    sparkyfitness-frontend:
+        image: codewithcj/sparkyfitness:latest
+        container_name: sparky-frontend
+        ports:
+            - "3004:80"
+        networks:
+            - proxy
+        restart: always
+        depends_on:
+            - sparkyfitness-server # Frontend depends on the server
+        labels:
+            traefik.enable: true
+            traefik.http.routers.sparky.rule: Host(`sparky.${CF_DOMAIN}`)
+            # traefik.http.routers.sparky.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            # com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+
+networks:
+    proxy:
+        external: true
