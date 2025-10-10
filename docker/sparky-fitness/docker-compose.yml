@@ -18,6 +18,8 @@ services:
         container_name: sparky-server
         env_file:
             - "${BAK_CFG_DIR}/sparky-fitness/.env"
+        volumes:
+            - "${BAK_CFG_DIR}/sparky-fitness/backup:/app/SparkyFitnessServer/backup"
         networks:
             - proxy
         restart: always

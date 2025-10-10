@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-CREATE_DIRS=( "$DB_CFG_DIR"/sparky-fitness-postgresql )
+CREATE_DIRS=( "$DB_CFG_DIR"/sparky-fitness-postgresql "$BAK_CFG_DIR"/sparky-fitness/backup )
 mkdir -p "${CREATE_DIRS[@]}"
 # ls -alh "$BAK_CFG_DIR"/sparky-fitness/ "$DB_CFG_DIR"
 #ls -alh "${CREATE_DIRS[@]}"
