@@ -1,0 +1,24 @@
+---
+services:
+    oauth2proxy:
+        image: quay.io/oauth2-proxy/oauth2-proxy:latest
+        container_name: "oauth2-proxy"
+        hostname: "oauth2-proxy-${HOSTNAME}"
+        env_file:
+            - "${BAK_CFG_DIR}/oauth2-proxy/.env"
+        restart: unless-stopped
+        volumes:
+            - "${CFG_DIR}/oauth2-proxy/templates:/templates"
+            - "${BAK_CFG_DIR}/oauth2-proxy/sign_in.html:/templates/sign_in.html"
+        ports:
+            - 4180:4180
+        networks:
+            - proxy
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.oauth2proxy.rule=Host(`keycloak.${CF_DOMAIN}`) && PathPrefix(`/oauth2`) || PathPrefix(`/oauth2`)
+            - traefik.http.services.oauth2proxy.loadbalancer.server.port=4180
+
+networks:
+    proxy:
+        external: true
