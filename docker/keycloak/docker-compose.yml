@@ -22,6 +22,8 @@ services:
             - "${BAK_CFG_DIR}/keycloak/.env"
         networks:
             - proxy
+        ports:
+            - 8690:8080
         labels:
             traefik.enable: true
             # traefik.http.services.keycloak.loadbalancer.server.port: portNumber #
