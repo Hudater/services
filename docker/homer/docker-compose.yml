@@ -20,7 +20,7 @@ services:
     labels:
       traefik.enable: true
       # traefik.http.services.it-tools.loadbalancer.server.port: portNumber #
-      traefik.http.routers.homer.middlewares: middlewares-authentik@file 
+      traefik.http.routers.homer.middlewares: oauth@file 
 
 networks:
   proxy:    # rename this to your custom docker network.

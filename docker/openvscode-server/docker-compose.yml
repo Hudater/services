@@ -15,7 +15,7 @@ services:
             - proxy
         labels:
             traefik.enable: true
-            traefik.http.routers.code.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            traefik.http.routers.code.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
 
 networks:
     proxy:

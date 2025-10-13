@@ -20,7 +20,7 @@ services:
             - proxy
         labels:
             traefik.enable: true
-            traefik.http.routers.metube.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            traefik.http.routers.metube.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
 
 networks:
     proxy:

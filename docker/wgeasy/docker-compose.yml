@@ -27,7 +27,7 @@ services:
     labels:
       traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
       traefik.http.services.wgeasy.loadbalancer.server.port: 51821
-      traefik.http.routers.wgeasy.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.wgeasy.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
     restart: unless-stopped
     cap_add:
       - NET_ADMIN

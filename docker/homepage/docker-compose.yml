@@ -20,7 +20,7 @@ services:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.home.middlewares: middlewares-authentik@file
+      traefik.http.routers.home.middlewares: oauth@file
 
 networks:
   proxy:

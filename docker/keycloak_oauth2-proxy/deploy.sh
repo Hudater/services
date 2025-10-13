@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -e
-CREATE_DIRS=( "${DB_CFG_DIR}"/keycloak_postgresql )
+CREATE_DIRS=( "${CFG_DIR}"/oauth2-proxy/templates "${DB_CFG_DIR}"/keycloak_postgresql )
 mkdir -p "${CREATE_DIRS[@]}"
 # ls -alh "$BAK_CFG_DIR"/keycloak/ "$DB_CFG_DIR"
 #ls -alh "${CREATE_DIRS[@]}"
-docker compose  --env-file "$BAK_CFG_DIR/keycloak/.env" -f "${COMPOSE_DIR}/keycloak/docker-compose.yml" up -d --force-recreate
+docker compose  --env-file "$BAK_CFG_DIR/keycloak/.env" -f "${COMPOSE_DIR}/keycloak_oauth2-proxy/docker-compose.yml" up -d --force-recreate
 
 
 ### Credit: https://askubuntu.com/a/957278

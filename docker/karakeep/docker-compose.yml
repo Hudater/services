@@ -23,7 +23,7 @@ services:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.karakeep.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.karakeep.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
 
   chrome:
     image: gcr.io/zenika-hub/alpine-chrome:latest

@@ -11,7 +11,7 @@ services:
             - proxy
         labels:
             traefik.enable: true
-            traefik.http.routers.omnitools.middlewares: middlewares-authentik@file #add this to any container you want to use the Authentik web proxy
+            traefik.http.routers.omnitools.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
             # com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
 
 networks:
