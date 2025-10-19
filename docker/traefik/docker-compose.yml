@@ -41,6 +41,8 @@ services:
     depends_on:
       dockersocket:
         condition: service_healthy
+      traefik-redis:
+        condition: service_healthy
 
   dockersocket:
     container_name: dockersocket
@@ -60,6 +62,24 @@ services:
       timeout: "5s"
       retries: 3
       start_period: "21s"
+
+  traefik-redis:
+    image: docker.io/library/redis:latest
+    container_name: traefik-redis
+    command: --save 60 1 --loglevel warning
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    volumes:
+      - "${DB_CFG_DIR}/traefik_redis/:/data"
+    restart: unless-stopped
+    networks:
+      - proxy
 
 networks:
   proxy:    # rename this to your custom docker network.
