@@ -9,6 +9,7 @@ services:
       - 80:80
       - 443:443
       - 8080:8080
+      - 2224:2224
     volumes:
       - "${BAK_CFG_DIR}/traefik/:/etc/traefik/"
       - "${BAK_CFG_DIR}/traefik/captcha.html:/captcha.html"
@@ -32,8 +33,14 @@ services:
       traefik.http.services.api.loadbalancer.server.port: 8080
       traefik.http.routers.api.service: api@internal
     restart: always
+    healthcheck:
+      test: ['CMD', 'traefik', 'healthcheck', '--ping']
+      interval: 10s
+      timeout: 10s
+      retries: 5
     depends_on:
-      - dockersocket
+      dockersocket:
+        condition: service_healthy
 
   dockersocket:
     container_name: dockersocket
@@ -47,6 +54,12 @@ services:
       POST: 0
     privileged: true
     restart: always
+    healthcheck:
+      test: wget --spider --tries=1 http://localhost:2375/_ping || exit 1
+      interval: "29s"
+      timeout: "5s"
+      retries: 3
+      start_period: "21s"
 
 networks:
   proxy:    # rename this to your custom docker network.
