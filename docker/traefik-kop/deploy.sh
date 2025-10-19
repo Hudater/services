@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 set -e
-CREATE_DIRS=( "${BAK_CFG_DIR}"/traefik-kop/{multiple,dir,names} "$DB_CFG_DIR"/traefik-kop "$CFG_DIR"/traefik-kop )
-mkdir -p "${CREATE_DIRS[@]}"
-# ls -alh "$BAK_CFG_DIR"/traefik-kop/ "$DB_CFG_DIR"
-ls -alh "${CREATE_DIRS[@]}"
 docker compose  --env-file "$BAK_CFG_DIR/traefik-kop/.env" -f "${COMPOSE_DIR}/traefik-kop/docker-compose.yml" up -d --force-recreate
 
 
