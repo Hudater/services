@@ -8,6 +8,9 @@ services:
       proxy:
     labels:
       traefik.enable: true
+      traefik.http.routers.sonarr.rule: Host(`sonarr.${CF_DOMAIN}`)
+      traefik.http.routers.sonarr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      #traefik.http.services.sonarr.loadbalancer.server.port: 8989
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

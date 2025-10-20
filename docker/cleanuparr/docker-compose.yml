@@ -15,6 +15,9 @@ services:
             - proxy
         labels:
             traefik.enable: true
+            traefik.http.routers.cleanuparr.rule: Host(`cleanuparr.${CF_DOMAIN}`)
+            traefik.http.routers.cleanuparr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+            traefik.http.services.cleanuparr.loadbalancer.server.port: 11011
 
 networks:
     proxy:

@@ -19,6 +19,9 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
+      traefik.http.routers.prowlarr.rule: Host(`prowlarr.${CF_DOMAIN}`)
+      traefik.http.routers.prowlarr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.prowlarr.loadbalancer.server.port: 9696
 
 #Gluetun for VPN
   gluetun:

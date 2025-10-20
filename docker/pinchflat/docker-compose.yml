@@ -19,6 +19,9 @@ services:
       - proxy
     labels:
       traefik.enable: true
+      traefik.http.routers.pinchflat.rule: Host(`pinchflat.${CF_DOMAIN}`)
+      traefik.http.routers.pinchflat.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.pinchflat.loadbalancer.server.port: 8945
 
 networks:
   proxy:

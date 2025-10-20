@@ -7,6 +7,9 @@ services:
       - proxy # rename this to your custom docker network
     labels:
       traefik.enable: true
+      traefik.http.routers.bazarr.rule: Host(`bazarr.${CF_DOMAIN}`)
+      traefik.http.routers.bazarr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.bazarr.loadbalancer.server.port: 6767
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

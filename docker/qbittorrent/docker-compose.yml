@@ -7,6 +7,9 @@ services:
             - proxy
         labels:
             traefik.enable: true
+            traefik.http.routers.qbit.rule: Host(`qbit.${CF_DOMAIN}`)
+            traefik.http.routers.qbit.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+            traefik.http.services.qbit.loadbalancer.server.port: 4000
         ports:
             - 4000:4000
             - 6881:6881

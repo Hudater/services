@@ -1,11 +1,6 @@
 ---
 services:
     metube:
-        # environment:
-        #     - PUID=${PUID}
-        #     - PGID=${PGID}
-        #     - TZ=${TZ}
-        #     - HOSTNAME=${HOSTNAME}
         image: ghcr.io/alexta69/metube:latest
         container_name: "metube-${HOSTNAME}" #
         hostname: "metube-${HOSTNAME}" #
@@ -20,7 +15,9 @@ services:
             - proxy
         labels:
             traefik.enable: true
+            traefik.http.routers.metube.rule: Host(`metube.${CF_DOMAIN}`)
             traefik.http.routers.metube.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+            traefik.http.services.metube.loadbalancer.server.port: 8081
 
 networks:
     proxy:

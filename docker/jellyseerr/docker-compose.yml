@@ -16,6 +16,9 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
+      traefik.http.routers.jellyseerr.rule: Host(`jellyseerr.${CF_DOMAIN}`)
+      traefik.http.routers.jellyseerr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.jellyseerr.loadbalancer.server.port: 5055
 
 networks:
   proxy:

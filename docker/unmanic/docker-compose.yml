@@ -9,6 +9,9 @@ services:
       - proxy
     labels:
       traefik.enable: true
+      traefik.http.routers.unmanic.rule: Host(`unmanic.${CF_DOMAIN}`)
+      traefik.http.routers.unmanic.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.unmanic.loadbalancer.server.port: 8888
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
