@@ -1,0 +1,67 @@
+---
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:12
+    container_name: forgejo-server
+    restart: always
+    env_file:
+      - "${BAK_CFG_DIR}/forgejo/.env"
+    volumes:
+      - "${BAK_CFG_DIR}/forgejo/data:/data"
+    ports:
+      - 3205:3000
+      - 2222:22
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.forgejo.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.forgejo.loadbalancer.server.port: "3205"
+      traefik.http.routers.forgejo.rule: Host(`forgejo.${CF_DOMAIN}`)
+      # com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+    depends_on:
+      - database
+
+  database:
+    image: postgres:17
+    container_name: forgejo-database
+    restart: always
+    networks:
+      - proxy
+    env_file:
+      - "${BAK_CFG_DIR}/forgejo/.env"
+    volumes:
+      - "${DB_CFG_DIR}/forgejo_postgres:/var/lib/postgresql/data"
+
+  # dind:
+  #   image: docker:latest
+  #   container_name: forgejo-dind
+  #   networks:
+  #     - proxy
+  #   privileged: true
+  #   restart: unless-stopped
+  #   command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
+
+  # runner:
+  #   image: code.forgejo.org/forgejo/runner:9
+  #   links:
+  #     - dind
+  #   depends_on:
+  #     dind:
+  #       condition: service_started
+  #   container_name: forgejo-runner
+  #   user: 1000:1000 # replace this with the UUID:GUID of the user you want to run the runner as
+  #   environment:
+  #     DOCKER_HOST: tcp://dind:2375
+  #   volumes:
+  #     - "${BAK_CFG_DIR}/forgejo/runner/data:/data"
+  #     - "${BAK_CFG_DIR}/forgejo/runner/config.yaml:/config.yaml"
+  #   restart: unless-stopped
+  #   networks:
+  #     - proxy
+  #   # command: '/bin/sh -c "while : ; do sleep 1 ; done ;"'
+  #   command: '/bin/sh -c "sleep 5; forgejo-runner daemon --config /config.yaml"'
+
+networks:
+  proxy:
+    external: true
