@@ -17,7 +17,7 @@ services:
       start_period: 5s
       start_interval: 5s
     environment:
-      - DOZZLE_HOSTNAME="${HOSTNAME}"
+      - DOZZLE_HOSTNAME=${HOSTNAME}
     networks:
       - proxy
 
