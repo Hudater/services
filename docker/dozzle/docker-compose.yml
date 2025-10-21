@@ -1,8 +1,8 @@
 ---
 services:
   dozzle:
-    container_name: "dozzle-${HOSTNAME}" #
-    hostname: "dozzle-${HOSTNAME}" #
+    container_name: "dozzle-${HOSTNAME}"
+    hostname: "dozzle-${HOSTNAME}"
     image: amir20/dozzle:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -14,6 +14,16 @@ services:
     networks:
       - proxy
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 3s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    environment:
+      DOZZLE_ENABLE_ACTIONS: true
+      DOZZLE_ENABLE_SHELL: true
+      DOZZLE_REMOTE_AGENT: "${MD_SRV_LOCAL_IP}:7007"
 
 networks:
   proxy:    # rename this to your custom docker network.
