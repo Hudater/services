@@ -4,7 +4,7 @@ services:
         image: postgres:17
         container_name: "keycloak-postgres"
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            test: ["CMD-SHELL", "pg_isready -U keycloak"]
             interval: 5s
             timeout: 5s
             retries: 5
@@ -16,26 +16,17 @@ services:
             - proxy
         labels:
             com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+
     keycloak:
         image: quay.io/keycloak/keycloak:26.4
         container_name: "keycloak"
         restart: always
         command: start
-        # healthcheck:
-        #     test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/health/live']
-        #     interval: 5s
-        #     timeout: 5s
-        #     retries: 30
         healthcheck:
             test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { java.net.URI uri = java.net.URI.create(args[0]); System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)uri.toURL().openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:9000/health/live']
             interval: 5s
             timeout: 5s
             retries: 5
-        # healthcheck:
-        #     test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000; echo -e 'GET /health/ready HTTP/1.1\r\nHost: localhost:9000\r\nConnection: close\r\n\r\n' >&3;cat <&3 | grep -q '\"status\": \"UP\"' && exit 0 || exit 1"]
-        #     interval: 30s
-        #     timeout: 10s
-        #     retries: 3
         depends_on:
             postgresql:
                 condition: service_healthy
@@ -47,16 +38,13 @@ services:
             - 8690:8080
         labels:
             traefik.enable: true
-            # traefik.http.services.keycloak.loadbalancer.server.port: portNumber #
-            # traefik.http.routers.keycloak.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
             com.centurylinklabs.watchtower.monitor-only: true #to only monitor update with watchtower not install
+
     oauth2proxy:
         image: quay.io/oauth2-proxy/oauth2-proxy:latest
         container_name: "oauth2-proxy"
         hostname: "oauth2-proxy-${HOSTNAME}"
         depends_on:
-            # - postgresql
-            # - keycloak
             postgresql:
                 condition: service_healthy
             keycloak:
