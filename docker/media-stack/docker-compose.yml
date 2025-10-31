@@ -21,7 +21,7 @@ services:
       - JELLYFIN_PublishedServerUrl=media.lan #optional
     volumes:
       - "${CFG_DIR}/jellyfin:/config"
-      - "${BAK_CFG_DIR}/jellyfin:/config/data/data/backups"
+      #- "${BAK_CFG_DIR}/jellyfin:/config/data/data/backups"
       - "${DATA_DIR}:/data"
     ports:
       - 8096:8096
