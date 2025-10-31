@@ -1,0 +1,252 @@
+---
+services:
+  jellyfin:
+    image: linuxserver/jellyfin:latest
+    container_name: jellyfin
+    networks:
+      - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
+      traefik.http.routers.jellyfin.rule: Host(`jellyfin.${CF_DOMAIN}`)
+      traefik.http.routers.jellyfin.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.jellyfin.loadbalancer.server.port: 8096
+    group_add:
+      - "993"
+    #adding group `render` 
+    #remeber to change the group id which is present in /etc/group
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - JELLYFIN_PublishedServerUrl=media.lan #optional
+    volumes:
+      - "${CFG_DIR}/jellyfin:/config"
+      - "${BAK_CFG_DIR}/jellyfin:/config/data/data/backups"
+      - "${DATA_DIR}:/data"
+    ports:
+      - 8096:8096
+      ## discovery ports
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    restart: unless-stopped
+
+  jellyseerr:
+    image: ghcr.io/fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    init: true
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ}
+    volumes:
+      - "${CFG_DIR}/jellyseerr:/app/config"
+      # - "${BAK_CFG_DIR}/jellyseerr/settings.json:/app/config/settings.json"
+    ports:
+      - 5055:5055
+    networks:
+      - proxy
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.jellyseerr.rule: Host(`jellyseerr.${CF_DOMAIN}`)
+      traefik.http.routers.jellyseerr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.jellyseerr.loadbalancer.server.port: 5055
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+
+  bazarr:
+    image: linuxserver/bazarr:latest
+    container_name: bazarr
+    networks:
+      - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
+      traefik.http.routers.bazarr.rule: Host(`bazarr.${CF_DOMAIN}`)
+      traefik.http.routers.bazarr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.bazarr.loadbalancer.server.port: 6767
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gilbn/theme.park:bazarr
+      - TP_THEME=organizr
+    volumes:
+      - ${CFG_DIR}/bazarr:/config
+      - ${BAK_CFG_DIR}/bazarr:/config/backup
+      - ${DATA_DIR}/Media:/data/Media
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    networks:
+      - proxy # rename this to your custom docker network
+    labels:
+      traefik.enable: true
+      traefik.http.routers.radarr.rule: Host(`radarr.${CF_DOMAIN}`)
+      traefik.http.routers.radarr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.radarr.loadbalancer.server.port: 7878
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - TP_COMMUNITY_THEME=true
+      - DOCKER_MODS=ghcr.io/gilbn/theme.park:radarr
+      - TP_THEME=catppuccin-mocha
+    volumes:
+      - ${CFG_DIR}/radarr:/config
+      - ${BAK_CFG_DIR}/radarr:/config/Backups
+      - ${DATA_DIR}:/data
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  sonarr:
+    image: linuxserver/sonarr:develop
+    container_name: sonarr
+    hostname: sonarr
+    networks:
+      proxy:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.sonarr.rule: Host(`sonarr.${CF_DOMAIN}`)
+      traefik.http.routers.sonarr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      #traefik.http.services.sonarr.loadbalancer.server.port: 8989
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gilbn/theme.park:sonarr
+      - TP_THEME=organizr
+    volumes:
+      - ${CFG_DIR}/sonarr:/config
+      - ${BAK_CFG_DIR}/sonarr:/config/Backups
+      - ${DATA_DIR}:/data
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  prowlarr:
+    image: linuxserver/prowlarr:latest
+    container_name: prowlarr
+    networks:
+      - proxy
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gilbn/theme.park:prowlarr
+      - TP_THEME=organizr
+    volumes:
+      - "${CFG_DIR}/prowlarr:/config"
+      - "${BAK_CFG_DIR}/prowlarr:/config/Backups"
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.prowlarr.rule: Host(`prowlarr.${CF_DOMAIN}`)
+      traefik.http.routers.prowlarr.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.prowlarr.loadbalancer.server.port: 9696
+
+#Gluetun for VPN
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    restart: unless-stopped
+    hostname: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - "${BAK_CFG_DIR}/gluetun/Gluetun.conf:/gluetun/config.conf:ro"
+    env_file:
+      - "${BAK_CFG_DIR}/gluetun/.env"
+    ports:
+      - 8999:8888/tcp # HTTP proxy
+    networks:
+      proxy:
+
+#Flaresolerr for cloudflare
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    networks:
+      - proxy # rename this to your custom docker network
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    ports:
+      - "${PORT:-8191}:8191"
+    restart: unless-stopped
+
+  qbit:
+    container_name: qbit
+    image: lscr.io/linuxserver/qbittorrent:latest
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.qbit.rule: Host(`qbit.${CF_DOMAIN}`)
+      traefik.http.routers.qbit.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.qbit.loadbalancer.server.port: 4000
+    ports:
+      - 4000:4000
+      - 6881:6881
+      - 6881:6881/udp
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - UMASK=002
+      - TZ=${TZ}
+      - WEBUI_PORT=4000
+      - TORRENTING_PORT=6881
+      - DOCKER_MODS=ghcr.io/vuetorrent/vuetorrent-lsio-mod:latest
+    volumes:
+      - "${CFG_DIR}/qbittorrent:/config"
+      - "${DATA_DIR}/Torrents:/data/Torrents"
+      # - "${DATA_DIR}/Del:/Del"
+    restart: unless-stopped
+
+  unmanic:
+    container_name: unmanic
+    image: josh5/unmanic:latest
+    ports:
+      - 8888:8888
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.unmanic.rule: Host(`unmanic.${CF_DOMAIN}`)
+      traefik.http.routers.unmanic.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.services.unmanic.loadbalancer.server.port: 8888
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CFG_DIR}/unmanic:/config
+      - /var/tmp/unmanic:/tmp/unmanic
+      - ${DATA_DIR}:/library
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_MODULE
+        #    devices:
+        #        - /dev/dri:/dev/dri
+
+networks:
+  proxy:    # rename this to your custom docker network.
+    external: true
