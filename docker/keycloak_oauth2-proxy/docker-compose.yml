@@ -5,7 +5,7 @@ services:
         container_name: "keycloak-postgres"
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U keycloak"]
-            interval: 5s
+            interval: 30s
             timeout: 5s
             retries: 5
         env_file:
@@ -23,8 +23,12 @@ services:
         restart: always
         command: start
         healthcheck:
-            test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { java.net.URI uri = java.net.URI.create(args[0]); System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)uri.toURL().openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:9000/health/live']
-            interval: 5s
+            test:
+                [
+                    "CMD-SHELL",
+                    '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { java.net.URI uri = java.net.URI.create(args[0]); System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)uri.toURL().openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:9000/health/live',
+                ]
+            interval: 60s
             timeout: 5s
             retries: 5
         depends_on:

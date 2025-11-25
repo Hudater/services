@@ -9,11 +9,10 @@ services:
       - 80:80
       - 443:443
       - 8080:8080
-      - 2224:2224
     volumes:
       - "${BAK_CFG_DIR}/traefik/:/etc/traefik/"
-      - "${BAK_CFG_DIR}/traefik/captcha.html:/captcha.html"
-      - "${BAK_CFG_DIR}/traefik/ban.html:/ban.html"
+      # - "${BAK_CFG_DIR}/traefik/captcha.html:/captcha.html"
+      # - "${BAK_CFG_DIR}/traefik/ban.html:/ban.html"
       - "${BAK_CFG_DIR}/traefik/logs:/var/log/traefik"
     networks:
       - proxy # rename this to your custom docker network
@@ -21,20 +20,21 @@ services:
     # extra_hosts:
     #   - "host.docker.internal:host-gateway"
     env_file:
-          - "${BAK_CFG_DIR}/traefik/.env"
+      - "${BAK_CFG_DIR}/traefik/.env"
     # environment:
     #   CF_DNS_API_TOKEN: "${CF_DNS_API_TOKEN}"
     #   CF_API_EMAIL: "${CF_API_EMAIL}"
     labels:
-      traefik.enable: true   # Enable Traefik reverse proxy for the Traefik dashboard.
-      traefik.http.routers.api.rule: Host(`traefik.${CF_DOMAIN}`)    # Define the subdomain for the traefik dashboard.
-      traefik.http.routers.api.entryPoints: https    # Set the Traefik entry point.
+      traefik.enable: true # Enable Traefik reverse proxy for the Traefik dashboard.
+      traefik.http.routers.api.tls: true
+      traefik.http.routers.api.rule: Host(`traefik.${CF_DOMAIN}`) # Define the subdomain for the traefik dashboard.
+      # traefik.http.routers.api.entryPoints: https # Set the Traefik entry point.
       traefik.http.routers.api.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
       traefik.http.services.api.loadbalancer.server.port: 8080
       traefik.http.routers.api.service: api@internal
     restart: always
     healthcheck:
-      test: ['CMD', 'traefik', 'healthcheck', '--ping']
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -82,8 +82,7 @@ services:
       - proxy
 
 networks:
-  proxy:    # rename this to your custom docker network.
+  proxy: # rename this to your custom docker network.
     external: true
-
 # volumes:
 #   traefik-logs:

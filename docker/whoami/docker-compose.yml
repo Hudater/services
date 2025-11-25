@@ -9,7 +9,12 @@ services:
             - proxy
         labels:
             traefik.enable: true
-            traefik.http.routers.whoami.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+            # traefik.http.routers.whoami.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+            # traefik.http.routers.whoami.rule: Host(`whoami.${CF_DOMAIN}`)
+            # traefik.http.routers.whoami.entrypoints: https
+            # traefik.http.routers.whoami.tls: true
+            # traefik.http.routers.whoami.tls.certresolver: letsencrypt
+
 
 networks:
     proxy:
