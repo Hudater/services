@@ -14,8 +14,8 @@ services:
     networks:
       - proxy
     labels:
-      traefik.enable: true
-      traefik.http.routers.karakeep.rule: Host(`karakeep.${CF_DOMAIN}`)
+      traefik.enable: true # Enable Traefik reverse proxy for the Traefik dashboard.
+      traefik.http.routers.karakeep.rule: Host(`karakeep.${CF_DOMAIN}`) # Define the subdomain for the traefik dashboard.
       traefik.http.routers.karakeep.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
       traefik.http.services.karakeep.loadbalancer.server.port: 3000
 
@@ -31,8 +31,8 @@ services:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.karakeep.rule: Host(`kara-dash.${CF_DOMAIN}`)
-      traefik.http.routers.karakeep.middlewares: oauth@file
+      traefik.http.routers.karadash.rule: Host(`kara-dash.${CF_DOMAIN}`)
+      traefik.http.routers.karadash.middlewares: oauth@file
     restart: unless-stopped
     depends_on:
       - karakeep
