@@ -1,0 +1,49 @@
+---
+services:
+  socket-proxy:
+    image: lscr.io/linuxserver/socket-proxy:latest
+    container_name: tugtainer-socket-proxy
+    environment:
+      CONTAINERS: 1
+      EVENTS: 1
+      IMAGES: 1
+      INFO: 1
+      LOG_LEVEL: warning
+      PING: 1
+      NETWORKS: 1
+      POST: 1
+      TZ: ${TZ}
+      VERSION: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /run
+    networks:
+      - proxy
+    labels:
+      dev.quenary.tugtainer.protected: True
+
+  tugtainer-agent:
+    depends_on:
+      - socket-proxy
+    container_name: "tugtainer-agent-${HOSTNAME}"
+    hostname: "tugtainer-agent-${HOSTNAME}"
+    image: quenary/tugtainer-agent:latest
+    restart: unless-stopped
+    read_only: true
+    env_file:
+      - "${BAK_CFG_DIR}/tugtainer-agent/.env"
+    tmpfs:
+      - /run
+    networks:
+      - proxy
+    ports:
+      - '9413:8001'
+    labels:
+      dev.quenary.tugtainer.protected: True
+
+networks:
+  proxy:
+    external: true

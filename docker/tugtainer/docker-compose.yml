@@ -1,0 +1,53 @@
+---
+services:
+  socket-proxy:
+    image: lscr.io/linuxserver/socket-proxy:latest
+    container_name: tugtainer-socket-proxy
+    environment:
+      CONTAINERS: 1
+      EVENTS: 1
+      IMAGES: 1
+      INFO: 1
+      LOG_LEVEL: warning
+      PING: 1
+      NETWORKS: 1
+      POST: 1
+      TZ: ${TZ}
+      VERSION: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /run
+    networks:
+      - proxy
+    labels:
+      dev.quenary.tugtainer.protected: True
+
+  tugtainer:
+    depends_on:
+      - socket-proxy
+    container_name: tugtainer
+    image: quenary/tugtainer:latest
+    volumes:
+      - "${BAK_CFG_DIR}/tugtainer:/tugtainer"
+      # You can uncomment this to mount socket directly,
+      # and remove socket-proxy service and DOCKER_HOST variable
+      # - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    networks:
+      - proxy
+    ports:
+      - '9412:80'
+    env_file:
+      - "${BAK_CFG_DIR}/tugtainer/.env"
+    labels:
+      dev.quenary.tugtainer.protected: True
+      traefik.enable: true
+      # traefik.http.routers.tugtainer.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.tugtainer.rule: Host(`tugtainer.${CF_DOMAIN}`)
+
+networks:
+  proxy:
+    external: true

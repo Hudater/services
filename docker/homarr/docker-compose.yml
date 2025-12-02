@@ -1,10 +1,11 @@
 ---
-version: '3'
 services:
   homarr:
     container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
+    image: ghcr.io/homarr-labs/homarr:latest
     restart: unless-stopped
+    env_file:
+      - "${BAK_CFG_DIR}/homarr/.env"
     volumes:
       - "${BAK_CFG_DIR}/homarr:/app/data/configs"
       - /var/run/docker.sock:/var/run/docker.sock
@@ -15,6 +16,7 @@ services:
       - proxy
     labels:
       traefik.enable: true
+      traefik.http.routers.homarr.middlewares: oauth@file
 
 networks:
   proxy:    # rename this to your custom docker network.
