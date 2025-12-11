@@ -1,0 +1,109 @@
+---
+services:
+  loki:
+    image: docker.io/grafana/loki:3.6.2
+    restart: unless-stopped
+    container_name: lgtm-loki
+    # user: root
+    command: "-config.file=/etc/loki/config.yaml"
+    ports:
+      - "3100:3100"
+    volumes:
+      - "lgtm_loki_data:/loki:rw"
+      - "${BAK_CFG_DIR}/monitoring-lgtm/loki/config.yaml:/etc/loki/config.yaml:ro"
+    networks:
+      - proxy
+    environment:
+      - TZ=${TZ}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.loki.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.loki.rule: Host(`loki.${CF_DOMAIN}`)
+
+  prometheus:
+    image: docker.io/prom/prometheus:v3.7.3
+    restart: unless-stopped
+    container_name: lgtm-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+      - --storage.tsdb.retention.time=15d
+      - --storage.tsdb.retention.size=15GB
+      - --web.enable-remote-write-receiver
+      - --web.external-url=https://prom.${CF_DOMAIN}
+    ports:
+      - "9090:9090"
+    volumes:
+      - "lgtm_prom_data:/prometheus"
+      - "${BAK_CFG_DIR}/monitoring-lgtm/prom/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro"
+    networks:
+      - proxy
+    environment:
+      - TZ=${TZ}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.prom.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.prom.rule: Host(`prom.${CF_DOMAIN}`)
+
+  alloy:
+    image: docker.io/grafana/alloy:v1.12.0
+    restart: unless-stopped
+    hostname: alloy
+    container_name: lgtm-alloy
+    networks:
+      - proxy
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+    ports:
+      - "12345:12345"
+    volumes:
+      - "lgtm_alloy_data:/alloy/data"
+      - "${BAK_CFG_DIR}/monitoring-lgtm/alloy/config.alloy:/etc/alloy/config.alloy:ro"
+      - /:/rootfs:ro
+      - /sys:/sys:ro
+      - /run:/run:ro
+      - /var/log:/var/log:ro
+      - /var/lib/docker/:/var/lib/docker/:ro
+      - /run/udev/data:/run/udev/data:ro
+    environment:
+      - TZ=${TZ}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.alloy.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.alloy.rule: Host(`alloy.${CF_DOMAIN}`)
+
+  grafana:
+    image: docker.io/grafana/grafana-oss:12.1.1
+    restart: unless-stopped
+    container_name: lgtm-grafana
+    networks:
+      - proxy
+    ports:
+      - "3030:3000"
+    env_file:
+      - "${BAK_CFG_DIR}/monitoring-lgtm/.env"
+    volumes:
+      - "lgtm_grafana_data:/var/lib/grafana"
+    labels:
+      traefik.enable: true
+      # traefik.http.routers.grafana.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.grafana.rule: Host(`grafana.${CF_DOMAIN}`)
+    environment:
+      - TZ=${TZ}
+
+volumes:
+  lgtm_loki_data:
+    driver: local
+  lgtm_prom_data:
+    driver: local
+  lgtm_alloy_data:
+    driver: local
+  lgtm_grafana_data:
+    driver: local
+
+
+networks:
+  proxy:
+    external: true
