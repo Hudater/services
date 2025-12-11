@@ -1,0 +1,24 @@
+---
+services:
+  tracktor:
+    image: ghcr.io/javedh-dev/tracktor:latest
+    container_name: "tracktor-${HOSTNAME}" #
+    hostname: "tracktor-${HOSTNAME}" #
+    env_file:
+      - "${BAK_CFG_DIR}/tracktor/.env"
+    restart: unless-stopped
+    volumes:
+      - "${CFG_DIR}/tracktor:/data" #
+    ports:
+      - 3333:3000
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.tracktor.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.tracktor.rule: Host(`tracktor.${CF_DOMAIN}`)
+      # dev.quenary.tugtainer.protected: True #tugtainer ignore label `https://github.com/Quenary/tugtainer?tab=readme-ov-file#custom-labels`
+
+networks:
+  proxy:
+    external: true
