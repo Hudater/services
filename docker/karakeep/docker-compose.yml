@@ -65,6 +65,14 @@ services:
     volumes:
       - meilisearch:/meili_data
 
+  karakeep-sync:
+    image: ghcr.io/sidoshi/karakeep-sync:latest
+    container_name: karakeep-sync
+    restart: unless-stopped
+    networks:
+      - proxy
+    env_file:
+      - "${BAK_CFG_DIR}/karakeep/karakeep-sync.env"
 
 networks:
   proxy:
