@@ -1,0 +1,28 @@
+---
+services:
+  gatus:
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - HOSTNAME=${HOSTNAME}
+      - GATUS_CONFIG_PATH=/config
+    image: twinproduction/gatus:latest
+    container_name: "gatus-${HOSTNAME}" #
+    hostname: "gatus-${HOSTNAME}" #
+    restart: unless-stopped
+    volumes:
+      - "${BAK_CFG_DIR}/gatus:/config"
+      - "${DB_CFG_DIR}/gatus:/data/"
+    ports:
+      - 8580:8080 #
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.gatus.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.gatus.rule: Host(`gatus.${CF_DOMAIN}`)
+
+networks:
+  proxy:
+    external: true

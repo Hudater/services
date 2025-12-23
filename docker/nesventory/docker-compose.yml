@@ -1,0 +1,31 @@
+---
+services:
+  nesventory:
+    image: ghcr.io/tokendad/nesventory:latest
+    container_name: "nesventory-${HOSTNAME}" #
+    hostname: "nesventory-${HOSTNAME}" #
+    env_file:
+      - "${BAK_CFG_DIR}/nesventory/.env"
+    restart: unless-stopped
+    ports:
+      - "5151:5151"
+    networks:
+      - proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - "${CFG_DIR}/nesventory:/app/data"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5151/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nesventory.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.nesventory.rule: Host(`nesventory.${CF_DOMAIN}`)
+      # dev.quenary.tugtainer.protected: True #tugtainer ignore label `https://github.com/Quenary/tugtainer?tab=readme-ov-file#custom-labels`
+
+networks:
+  proxy:
+    external: true
