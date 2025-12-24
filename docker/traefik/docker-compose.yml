@@ -81,6 +81,29 @@ services:
     networks:
       - proxy
 
+  trala:
+    environment:
+      - TRAEFIK_API_HOST=http://traefik:8080
+      - REFRESH_INTERVAL_SECONDS=30
+      - SEARCH_ENGINE_URL=https://google.com/?q=
+      - LOG_LEVEL=debug
+    image: ghcr.io/dannybouwers/trala:latest
+    container_name: "trala-${HOSTNAME}" #
+    hostname: "trala-${HOSTNAME}" #
+    restart: unless-stopped
+    volumes:
+      - "${BAK_CFG_DIR}/traefik/configuration.yml:/config/configuration.yml:ro" #
+    # ports:
+    #   - 80:80 #
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      # traefik.http.services.trala.loadbalancer.server.port: portNumber #
+      traefik.http.routers.trala.middlewares: oauth@file #add this to any container you want to use the Authentik web proxy
+      traefik.http.routers.trala.rule: Host(`trala.${CF_DOMAIN}`)
+      # dev.quenary.tugtainer.protected: True #tugtainer ignore label `https://github.com/Quenary/tugtainer?tab=readme-ov-file#custom-labels`
+
 networks:
   proxy: # rename this to your custom docker network.
     external: true
