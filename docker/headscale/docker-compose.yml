@@ -2,9 +2,15 @@
 ## NOTE: traefik labels not used in favor of dynamic config file
 services:
   headplane:
-    image: ghcr.io/tale/headplane:latest
+    image: ghcr.io/tale/headplane:latest-shell
     container_name: headplane
     restart: unless-stopped
+    # healthcheck:
+    #   test: ["NONE", "/bin/hp_healthcheck"]
+    #   interval: 30s
+    #   timeout: 5s
+    #   start_period: 5s
+    #   retries: 3
     # ports:
     #   - '3000:3000'
     volumes:
@@ -19,15 +25,6 @@ services:
       - proxy
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
-
-  # headscale-admin:
-  #     image: goodieshq/headscale-admin:latest
-  #     container_name: headscale-admin
-  #     restart: unless-stopped
-  #     networks:
-  #       - proxy
-  #     labels:
-  #       com.centurylinklabs.watchtower.monitor-only: "true"
 
   headscale:
     image: ghcr.io/juanfont/headscale:latest
@@ -58,6 +55,16 @@ services:
       - proxy
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
+      me.tale.headplane.target: headscale
+
+  # headscale-admin:
+  #     image: goodieshq/headscale-admin:latest
+  #     container_name: headscale-admin
+  #     restart: unless-stopped
+  #     networks:
+  #       - proxy
+  #     labels:
+  #       com.centurylinklabs.watchtower.monitor-only: "true"
 
 ## don't need certs-dumper since traefik is handling tls for grpc now
   # certs-dumper:
