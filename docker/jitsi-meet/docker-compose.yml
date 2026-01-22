@@ -1,0 +1,207 @@
+---
+services:
+  # Frontend
+  web:
+      image: jitsi/web:${JITSI_IMAGE_VERSION:-unstable}
+      restart: ${RESTART_POLICY:-unless-stopped}
+      container_name: "jitsi-web"
+      volumes:
+          - ${CFG_DIR}/jitsi-meet/web:/config:Z
+          - ${CFG_DIR}/jitsi-meet/web/crontabs:/var/spool/cron/crontabs:Z
+          - ${CFG_DIR}/jitsi-meet/transcripts:/usr/share/jitsi-meet/transcripts:Z
+          - ${CFG_DIR}/jitsi-meet/web/load-test:/usr/share/jitsi-meet/load-test:Z
+      env_file:
+        - "${BAK_CFG_DIR}/jitsi-meet/.env"
+      labels:
+          service: "jitsi-web"
+          dev.quenary.tugtainer.protected: True #tugtainer ignore label `https://github.com/Quenary/tugtainer?tab=readme-ov-file#custom-labels`
+          traefik.enable: true
+          traefik.http.routers.jitsi-meet.rule: Host(`meet.${CF_DOMAIN}`)
+          # traefik.http.routers.jitsi.entrypoints: http
+          # traefik.http.routers.jitsi.rule: Host(`meet2.jimsgarage.co.uk`)
+          # traefik.http.middlewares.jitsi-https-redirect.redirectscheme.scheme: https
+          # traefik.http.routers.jitsi.middlewares: jitsi-https-redirect
+          # traefik.http.routers.jitsi-secure.entrypoints: https
+          # traefik.http.routers.jitsi-secure.rule: Host(`meet2.jimsgarage.co.uk`)
+          # traefik.http.routers.jitsi-secure.tls: true
+          # traefik.http.routers.jitsi-secure.service: jitsi
+          # traefik.http.services.jitsi.loadbalancer.server.port: 80
+          # traefik.docker.network: proxy
+      networks:
+        meet.jitsi:
+        proxy:
+      depends_on:
+          - jvb
+
+  # XMPP server
+  prosody:
+      image: jitsi/prosody:${JITSI_IMAGE_VERSION:-unstable}
+      # image: jitsi/prosody:unstable
+      restart: ${RESTART_POLICY:-unless-stopped}
+      container_name: "jitsi-prosody"
+      expose:
+          - '${XMPP_PORT:-5222}'
+          - '${PROSODY_S2S_PORT:-5269}'
+          - '5347'
+          - '${PROSODY_HTTP_PORT:-5280}'
+      env_file:
+          - "${BAK_CFG_DIR}/jitsi-meet/.env"
+      labels:
+          service: "jitsi-prosody"
+          dev.quenary.tugtainer.protected: True #tugtainer ignore label `https://github.com/Quenary/tugtainer?tab=readme-ov-file#custom-labels`
+      volumes:
+          - ${CFG_DIR}/jitsi-meet/prosody/config:/config:Z
+          - ${CFG_DIR}/jitsi-meet/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
+      networks:
+          meet.jitsi:
+              aliases:
+                  - ${XMPP_SERVER:-xmpp.meet.jitsi}
+          proxy:
+
+  # Focus component
+  jicofo:
+      image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-unstable}
+      # image: jitsi/jicofo:unstable
+      restart: ${RESTART_POLICY:-unless-stopped}
+      container_name: "jitsi-jicofo"
+      ports:
+          - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
+      volumes:
+          - ${CFG_DIR}/jitsi-meet/jicofo:/config:Z
+      env_file:
+          - "${BAK_CFG_DIR}/jitsi-meet/.env"
+      labels:
+          service: "jitsi-jicofo"
+          dev.quenary.tugtainer.protected: True
+      depends_on:
+          - prosody
+      networks:
+          meet.jitsi:
+          proxy:
+
+  # Video bridge
+  jvb:
+      image: jitsi/jvb:${JITSI_IMAGE_VERSION:-unstable}
+      restart: ${RESTART_POLICY:-unless-stopped}
+      container_name: "jitsi-jvb"
+      ports:
+          - '${JVB_PORT:-10000}:${JVB_PORT:-10000}/udp'
+          # - '127.0.0.1:${JVB_COLIBRI_PORT:-8080}:8080'
+      volumes:
+          - ${CFG_DIR}/jitsi-meet/jvb:/config:Z
+      env_file:
+          - "${BAK_CFG_DIR}/jitsi-meet/.env"
+      labels:
+          dev.quenary.tugtainer.protected: True
+          service: "jitsi-jvb"
+      
+      depends_on:
+          - prosody
+      networks:
+        meet.jitsi:
+        proxy:
+
+  jibri:
+    image: jitsi/jibri:${JITSI_IMAGE_VERSION:-stable-10710}
+    restart: ${RESTART_POLICY:-unless-stopped}
+    container_name: "jitsi-jibri"
+    env_file:
+          - "${BAK_CFG_DIR}/jitsi-meet/.env"
+    labels:
+          dev.quenary.tugtainer.protected: True
+          # service: "jitsi-jibri"
+    volumes:
+        - ${CFG_DIR}/jitsi-meet/jibri:/config:Z
+    shm_size: '2gb'
+    cap_add:
+        - SYS_ADMIN
+    depends_on:
+        - jicofo
+    networks:
+        meet.jitsi:
+        proxy:
+
+
+  whiteboard:
+    image: jitsi/excalidraw-backend:21
+    restart: ${RESTART_POLICY:-unless-stopped}
+    container_name: "jitsi-whiteboard"
+    # env_file:
+    #       - "${BAK_CFG_DIR}/jitsi-meet/.env"
+    labels:
+          dev.quenary.tugtainer.protected: True
+          # service: "jitsi-whiteboard"
+          traefik.enable: true
+          # traefik.http.routers.whiteboard.rule: Host(`.${CF_DOMAIN}`)
+    depends_on:
+      - web
+    networks:
+      meet.jitsi:
+        aliases:
+          - whiteboard.meet.jitsi
+      proxy:
+
+  etherpad:
+    image: etherpad/etherpad:2.0.3
+    restart: ${RESTART_POLICY:-unless-stopped}
+    container_name: "jitsi-etherpad"
+    # env_file:
+    #       - "${BAK_CFG_DIR}/jitsi-meet/.env"
+    labels:
+          dev.quenary.tugtainer.protected: True
+          traefik.enable: true
+          # service: "jitsi-whiteboard"
+    environment:
+      - TITLE=${ETHERPAD_TITLE:-""}
+      - DEFAULT_PAD_TEXT=${ETHERPAD_DEFAULT_PAD_TEXT:-""}
+      - SKIN_NAME=${ETHERPAD_SKIN_NAME:-colibris}
+      - SKIN_VARIANTS=${ETHERPAD_SKIN_VARIANTS:-"super-light-toolbar super-light-editor light-background full-width-editor"}
+      - SUPPRESS_ERRORS_IN_PAD_TEXT=true
+    networks:
+      meet.jitsi:
+        aliases:
+          - etherpad.meet.jitsi
+      proxy:
+
+# SIP gateway (audio)
+  jigasi:
+    image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-stable-10710}
+    restart: ${RESTART_POLICY:-unless-stopped}
+    container_name: "jitsi-jigasi"
+    env_file:
+        - "${BAK_CFG_DIR}/jitsi-meet/.env"
+    labels:
+          dev.quenary.tugtainer.protected: True
+          # service: "jitsi-whiteboard"
+    ports:
+        - '${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}:${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}/udp'
+    volumes:
+        - ${CFG_DIR}/jitsi-meet/jigasi:/config:Z
+    depends_on:
+        - prosody
+    networks:
+        meet.jitsi:
+        proxy:
+
+  transcriber:
+    image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-stable-10710}
+    restart: ${RESTART_POLICY:-unless-stopped}
+    env_file:
+        - "${BAK_CFG_DIR}/jitsi-meet/.env"
+    labels:
+          dev.quenary.tugtainer.protected: True
+          # service: "jitsi-whiteboard"
+    volumes:
+        - ${CFG_DIR}/jitsi-meet/transcriber:/config:Z
+        - ${CFG_DIR}/jitsi-meet/transcripts:/tmp/transcripts:Z
+    depends_on:
+        - prosody
+    networks:
+        meet.jitsi:
+        proxy:
+
+
+networks:
+  meet.jitsi:
+  proxy:
+    external: true
